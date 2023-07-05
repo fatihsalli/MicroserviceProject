@@ -4,46 +4,45 @@ using MongoDB.Driver;
 
 namespace MicroserviceProject.Shared.Repositories;
 
-public class GenericRepository<Entity>:IGenericRepository<Entity> where Entity:BaseModel
+public class GenericRepository<TEntity>:IGenericRepository<TEntity> where TEntity:BaseModel
 {
-    private readonly IMongoCollection<Entity> _collection;
-    
+    private readonly IMongoCollection<TEntity> _collection;
     public GenericRepository(IMongoDatabase database, string collectionName)
     {
-        _collection = database.GetCollection<Entity>(collectionName);
+        _collection = database.GetCollection<TEntity>(collectionName);
     }
     
-    public IEnumerable<Entity> GetAll()
+    public IEnumerable<TEntity> GetAll()
     {
         return _collection.Find(_ => true).ToList();
     }
     
-    public Entity GetById(string id)
+    public TEntity GetById(string id)
     {
-        var filter = Builders<Entity>.Filter.Eq("_id", id);
+        var filter = Builders<TEntity>.Filter.Eq("_id", id);
         return _collection.Find(filter).FirstOrDefault();
     }
     
-    public IEnumerable<Entity> Where(Expression<Func<Entity, bool>> filterExpression)
+    public IEnumerable<TEntity> Where(Expression<Func<TEntity, bool>> filterExpression)
     {
         return _collection.Find(filterExpression).ToList();
     }
     
-    public void Insert(Entity entity)
+    public void Insert(TEntity entity)
     {
         _collection.InsertOne(entity);
     }
     
-    public void Update(Entity entity)
+    public void Update(TEntity entity)
     {
         var id = entity.GetType().GetProperty("ID").GetValue(entity).ToString();
-        var filter = Builders<Entity>.Filter.Eq("_id", id);
+        var filter = Builders<TEntity>.Filter.Eq("_id", id);
         _collection.ReplaceOne(filter, entity);
     }
     
     public void Delete(string id)
     {
-        var filter = Builders<Entity>.Filter.Eq("_id", id);
+        var filter = Builders<TEntity>.Filter.Eq("_id", id);
         _collection.DeleteOne(filter);
     }
 }
