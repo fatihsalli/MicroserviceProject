@@ -4,15 +4,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{9D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{582040DC-B799-4C61-A707-83BF377742A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceProject.OrderAPI", "Services\Order\MicroserviceProject.OrderAPI\MicroserviceProject.OrderAPI.csproj", "{D79A25E9-8DBC-48DF-8DEB-F3AEE9787A84}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User", "User", "{8E30C346-D1C1-4440-8E93-450A81EBF8C7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceProject.UserAPI", "Services\User\MicroserviceProject.UserAPI\MicroserviceProject.UserAPI.csproj", "{B4379EF1-E85F-43FE-B31B-04AB6931F3E0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{F9029C6E-14E9-4B23-BFF1-EF9C95238EEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceProject.Shared", "Shared\MicroserviceProject.Shared\MicroserviceProject.Shared.csproj", "{584BFE2F-C307-4323-A7FB-8B5F154BFA25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceProject.Order", "Services\Order\MicroserviceProject.Order\MicroserviceProject.Order.csproj", "{025C6C77-3E3E-4FC7-B4C2-DF000B2CD961}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,23 +19,18 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{582040DC-B799-4C61-A707-83BF377742A9} = {9DEB36BB-33C5-4626-9258-9FC9B912784A}
-		{D79A25E9-8DBC-48DF-8DEB-F3AEE9787A84} = {582040DC-B799-4C61-A707-83BF377742A9}
 		{8E30C346-D1C1-4440-8E93-450A81EBF8C7} = {9DEB36BB-33C5-4626-9258-9FC9B912784A}
-		{B4379EF1-E85F-43FE-B31B-04AB6931F3E0} = {8E30C346-D1C1-4440-8E93-450A81EBF8C7}
 		{584BFE2F-C307-4323-A7FB-8B5F154BFA25} = {F9029C6E-14E9-4B23-BFF1-EF9C95238EEA}
+		{025C6C77-3E3E-4FC7-B4C2-DF000B2CD961} = {582040DC-B799-4C61-A707-83BF377742A9}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D79A25E9-8DBC-48DF-8DEB-F3AEE9787A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D79A25E9-8DBC-48DF-8DEB-F3AEE9787A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D79A25E9-8DBC-48DF-8DEB-F3AEE9787A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D79A25E9-8DBC-48DF-8DEB-F3AEE9787A84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4379EF1-E85F-43FE-B31B-04AB6931F3E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4379EF1-E85F-43FE-B31B-04AB6931F3E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4379EF1-E85F-43FE-B31B-04AB6931F3E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4379EF1-E85F-43FE-B31B-04AB6931F3E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{584BFE2F-C307-4323-A7FB-8B5F154BFA25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{584BFE2F-C307-4323-A7FB-8B5F154BFA25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{584BFE2F-C307-4323-A7FB-8B5F154BFA25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{584BFE2F-C307-4323-A7FB-8B5F154BFA25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{025C6C77-3E3E-4FC7-B4C2-DF000B2CD961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{025C6C77-3E3E-4FC7-B4C2-DF000B2CD961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{025C6C77-3E3E-4FC7-B4C2-DF000B2CD961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{025C6C77-3E3E-4FC7-B4C2-DF000B2CD961}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

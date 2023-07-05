@@ -1,4 +1,4 @@
-namespace MicroserviceProject.OrderAPI;
+namespace MicroserviceProject.Order;
 
 public class WeatherForecast
 {
