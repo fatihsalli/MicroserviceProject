@@ -1,3 +1,4 @@
+using MicroserviceProject.Order.Extensions;
 using MicroserviceProject.Order.Service;
 using MicroserviceProject.Shared.Configs;
 
@@ -12,7 +13,8 @@ builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.Environment
 // Add services to the container.
 builder.Services.Configure<Config>(builder.Configuration.GetSection("Config"));
 
-builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddRepositoryExtension(builder.Configuration.GetSection("Config").Get<Config>());
+builder.Services.AddServiceExtension();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

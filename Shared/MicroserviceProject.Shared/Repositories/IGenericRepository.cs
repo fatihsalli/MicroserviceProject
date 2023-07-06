@@ -1,13 +1,14 @@
 ﻿using System.Linq.Expressions;
+using MicroserviceProject.Shared.Models;
 
 namespace MicroserviceProject.Shared.Repositories;
 
-public interface IGenericRepository<TEntity>
+public interface IGenericRepository<TEntity> where TEntity : BaseModel
 {
-    public IEnumerable<TEntity> GetAll();
-    public TEntity GetById(string id);
-    public IEnumerable<TEntity> Where(Expression<Func<TEntity, bool>> filterExpression);
-    public void Insert(TEntity entity);
-    public void Update(TEntity entity);
-    public void Delete(string id);
+    IEnumerable<TEntity> GetAll();
+    TEntity GetById(string id);
+    IEnumerable<TEntity> Where(Expression<Func<TEntity, bool>> filterExpression);
+    void Insert(TEntity entity);
+    void Update(TEntity entity);
+    void Delete(string id);
 }

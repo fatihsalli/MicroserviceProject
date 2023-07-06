@@ -1,7 +1,8 @@
-﻿namespace MicroserviceProject.Order.Service;
+﻿using MicroserviceProject.Shared.Services;
+using OrderModel = MicroserviceProject.Shared.Models.Order;
 
-public interface IOrderService
+namespace MicroserviceProject.Order.Service;
+
+public interface IOrderService : IGenericService<OrderModel>
 {
-    public List<Shared.Models.Order> GetAll();
-    public Shared.Models.Order Create(Shared.Models.Order order);
 }
