@@ -1,4 +1,4 @@
-﻿using MicroserviceProject.Shared.Services;
+﻿using MicroserviceProject.Shared.BaseService;
 using OrderModel = MicroserviceProject.Shared.Models.Order;
 
 namespace MicroserviceProject.Order.Service;

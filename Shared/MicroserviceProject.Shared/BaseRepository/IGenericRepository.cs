@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using MicroserviceProject.Shared.Models;
 
-namespace MicroserviceProject.Shared.Repositories;
+namespace MicroserviceProject.Shared.BaseRepository;
 
 public interface IGenericRepository<TEntity> where TEntity : BaseModel
 {

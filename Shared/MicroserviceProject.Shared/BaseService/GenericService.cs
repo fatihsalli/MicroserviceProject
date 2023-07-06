@@ -1,7 +1,8 @@
-﻿using MicroserviceProject.Shared.Models;
-using MicroserviceProject.Shared.Repositories;
+﻿using MicroserviceProject.Shared.BaseRepository;
+using MicroserviceProject.Shared.Exceptions;
+using MicroserviceProject.Shared.Models;
 
-namespace MicroserviceProject.Shared.Services;
+namespace MicroserviceProject.Shared.BaseService;
 
 public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : BaseModel
 {
@@ -26,6 +27,25 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
         }
     }
 
+    public virtual TEntity GetById(string id)
+    {
+        try
+        {
+            var entity = _repository.GetById(id);
+            if (entity == null)
+                throw new NotFoundException($"{typeof(TEntity).Name} with {id} cannot found!");
+
+            return entity;
+        }
+        catch (Exception ex)
+        {
+            if (ex is NotFoundException)
+                throw new NotFoundException($"Not Found Exception!:{ex.Message}");
+
+            throw new Exception($"Something went wrong!:{ex.Message}");
+        }
+    }
+    
     public virtual TEntity Create(TEntity entity)
     {
         try
@@ -39,7 +59,7 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            throw;
+            throw new Exception($"Something went wrong!:{ex.Message}");
         }
     }
     

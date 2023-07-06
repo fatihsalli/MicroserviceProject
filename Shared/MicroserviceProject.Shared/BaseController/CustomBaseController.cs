@@ -1,7 +1,7 @@
 ﻿using MicroserviceProject.Shared.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MicroserviceProject.Shared.ControllerBases;
+namespace MicroserviceProject.Shared.BaseController;
 
 [Route("api/[controller]")]
 [ApiController]

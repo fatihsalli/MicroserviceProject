@@ -1,5 +1,5 @@
 ﻿using MicroserviceProject.Order.Service;
-using MicroserviceProject.Shared.Services;
+using MicroserviceProject.Shared.BaseService;
 
 namespace MicroserviceProject.Order.Extensions;
 

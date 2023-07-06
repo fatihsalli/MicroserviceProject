@@ -2,7 +2,7 @@
 using MicroserviceProject.Shared.Models;
 using MongoDB.Driver;
 
-namespace MicroserviceProject.Shared.Repositories;
+namespace MicroserviceProject.Shared.BaseRepository;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseModel
 {

@@ -1,6 +1,6 @@
-﻿using MicroserviceProject.Shared.Configs;
-using MicroserviceProject.Shared.Repositories;
-using MicroserviceProject.Shared.Services;
+﻿using MicroserviceProject.Shared.BaseRepository;
+using MicroserviceProject.Shared.BaseService;
+using MicroserviceProject.Shared.Configs;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using OrderModel = MicroserviceProject.Shared.Models.Order;
