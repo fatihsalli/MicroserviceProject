@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MicroserviceProject.Services.Order.Domain\MicroserviceProject.Services.Order.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
