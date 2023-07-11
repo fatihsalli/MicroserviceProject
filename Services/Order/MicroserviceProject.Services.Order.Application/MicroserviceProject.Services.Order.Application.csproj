@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\MicroserviceProject.Shared\MicroserviceProject.Shared.csproj" />
       <ProjectReference Include="..\MicroserviceProject.Services.Order.Infrastructure\MicroserviceProject.Services.Order.Infrastructure.csproj" />
     </ItemGroup>
 
