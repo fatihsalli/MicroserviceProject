@@ -16,6 +16,10 @@ public class Order : Entity, IAggregateRoot
     // Kapsülleme
     public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
+    public Order()
+    {
+    }
+
     public Order(Address address, string userId)
     {
         _orderItems = new List<OrderItem>();

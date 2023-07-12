@@ -18,7 +18,7 @@ public class OrderDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Domain.OrderAggregate.Order>().ToTable("Orders", DEFAULT_SCHEMA);
-        modelBuilder.Entity<OrderItem>().ToTable("Orders", DEFAULT_SCHEMA);
+        modelBuilder.Entity<OrderItem>().ToTable("OrderItems", DEFAULT_SCHEMA);
 
         modelBuilder.Entity<OrderItem>().Property(x => x.Price).HasColumnType(("decimal(18,2)"));
         modelBuilder.Entity<Domain.OrderAggregate.Order>().OwnsOne(o => o.Address).WithOwner();
@@ -26,3 +26,6 @@ public class OrderDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 }
+
+// dotnet ef migrations add MyFirstMigration --startup-project ../MicroserviceProject.Services.Order.API
+// dotnet ef database update --startup-project ../MicroserviceProject.Services.Order.API
