@@ -1,3 +1,4 @@
+using MediatR;
 using MicroserviceProject.Services.Order.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<OrderDbContext>(opt =>
     });
 });
 
+// Add MediatR
+builder.Services.AddMediatR(typeof(MicroserviceProject.Services.Order.Application.Handlers.CreateOrderCommandHandler).Assembly);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

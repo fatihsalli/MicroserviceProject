@@ -12,18 +12,18 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Ordering");
+                name: "ordering");
 
             migrationBuilder.CreateTable(
                 name: "Orders",
-                schema: "Ordering",
+                schema: "ordering",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address_Province = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_Disctrict = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address_District = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_Zip = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_Line = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -36,7 +36,7 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "OrderItems",
-                schema: "Ordering",
+                schema: "ordering",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -53,14 +53,14 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
-                        principalSchema: "Ordering",
+                        principalSchema: "ordering",
                         principalTable: "Orders",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderId",
-                schema: "Ordering",
+                schema: "ordering",
                 table: "OrderItems",
                 column: "OrderId");
         }
@@ -70,11 +70,11 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "OrderItems",
-                schema: "Ordering");
+                schema: "ordering");
 
             migrationBuilder.DropTable(
                 name: "Orders",
-                schema: "Ordering");
+                schema: "ordering");
         }
     }
 }

@@ -21,7 +21,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
     {
         var newAddress = new Address(
             request.Address.Province,
-            request.Address.Disctrict,
+            request.Address.District,
             request.Address.Street,
             request.Address.Zip,
             request.Address.Line);

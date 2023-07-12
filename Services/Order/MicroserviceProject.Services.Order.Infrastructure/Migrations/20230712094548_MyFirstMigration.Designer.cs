@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20230712074719_MyFirstMigration")]
+    [Migration("20230712094548_MyFirstMigration")]
     partial class MyFirstMigration
     {
         /// <inheritdoc />
@@ -41,7 +41,7 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", "Ordering");
+                    b.ToTable("Orders", "ordering");
                 });
 
             modelBuilder.Entity("MicroserviceProject.Services.Order.Domain.OrderAggregate.OrderItem", b =>
@@ -71,7 +71,7 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", "Ordering");
+                    b.ToTable("OrderItems", "ordering");
                 });
 
             modelBuilder.Entity("MicroserviceProject.Services.Order.Domain.OrderAggregate.Order", b =>
@@ -81,7 +81,7 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
                             b1.Property<int>("OrderId")
                                 .HasColumnType("int");
 
-                            b1.Property<string>("Disctrict")
+                            b1.Property<string>("District")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Line")
@@ -98,7 +98,7 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("Orders", "Ordering");
+                            b1.ToTable("Orders", "ordering");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");

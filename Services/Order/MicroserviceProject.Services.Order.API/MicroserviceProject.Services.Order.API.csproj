@@ -16,12 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Shared\MicroserviceProject.Shared\MicroserviceProject.Shared.csproj" />
       <ProjectReference Include="..\MicroserviceProject.Services.Order.Application\MicroserviceProject.Services.Order.Application.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Controllers\" />
     </ItemGroup>
 
 </Project>

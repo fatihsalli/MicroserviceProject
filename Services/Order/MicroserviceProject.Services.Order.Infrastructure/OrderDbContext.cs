@@ -5,7 +5,7 @@ namespace MicroserviceProject.Services.Order.Infrastructure;
 
 public class OrderDbContext : DbContext
 {
-    public const string DEFAULT_SCHEMA = "Ordering";
+    public const string DEFAULT_SCHEMA = "ordering";
 
     public OrderDbContext(DbContextOptions options) : base(options)
     {
