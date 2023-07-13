@@ -10,7 +10,6 @@ namespace MicroserviceProject.Services.Order.Domain.Entities;
 // -- Backing Field
 public class Order : AuditableEntity, IHasDomainEvent
 {
-    public DateTime CreatedAt { get; set; }
     public Address Address { get; set; }
     public string UserId { get; set; }
     private readonly List<OrderItem> _orderItems;
