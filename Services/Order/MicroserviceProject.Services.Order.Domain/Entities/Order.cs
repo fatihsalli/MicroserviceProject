@@ -54,6 +54,7 @@ public class Order : AuditableEntity, IHasDomainEvent
         if (!existProduct)
         {
             var newOrderItem = new OrderItem(productId, productName, quantity, price);
+            newOrderItem.Id = Guid.NewGuid().ToString();
             _orderItems.Add(newOrderItem);
         }
     }

@@ -34,6 +34,8 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
 
         var newOrder = new Domain.Entities.Order(newAddress, request.UserId,false);
 
+        newOrder.Id = Guid.NewGuid().ToString();
+
         request.OrderItems.ForEach(x => { newOrder.AddOrderItem(x.ProductId, x.ProductName, x.Quantity, x.Price); });
 
         newOrder.DomainEvents.Add(new OrderCreatedEvent(newOrder));
