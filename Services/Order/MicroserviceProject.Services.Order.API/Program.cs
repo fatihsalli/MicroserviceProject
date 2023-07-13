@@ -1,5 +1,6 @@
 using MediatR;
-using MicroserviceProject.Services.Order.Infrastructure;
+using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
+using MicroserviceProject.Services.Order.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,12 +13,12 @@ builder.Services.AddDbContext<OrderDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), configure =>
     {
-        configure.MigrationsAssembly("MicroserviceProject.Services.Order.Infrastructure");
+        configure.MigrationsAssembly("MicroserviceProject.Services.Order.Infrastructure.Persistence");
     });
 });
 
 // Add MediatR
-builder.Services.AddMediatR(typeof(MicroserviceProject.Services.Order.Application.Handlers.CreateOrderCommandHandler).Assembly);
+builder.Services.AddMediatR(typeof(CreateOrderCommandHandler).Assembly);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -12,9 +12,9 @@ public class Order : AuditableEntity, IHasDomainEvent
 {
     public Address Address { get; set; }
     public string UserId { get; set; }
-    private readonly List<OrderItem> _orderItems;
-
+    
     // Kapsülleme
+    private readonly List<OrderItem> _orderItems;
     public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
     
     private bool _done;
@@ -34,18 +34,17 @@ public class Order : AuditableEntity, IHasDomainEvent
 
     public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
     
-    
-
     public Order()
     {
         
     }
-    public Order(Address address, string userId)
+    
+    public Order(Address address, string userId,bool done)
     {
         _orderItems = new List<OrderItem>();
-        CreatedAt=DateTime.Now;
         Address = address;
         UserId = userId;
+        Done = done;
     }
 
     public void AddOrderItem(string productId, string productName, int quantity, decimal price)

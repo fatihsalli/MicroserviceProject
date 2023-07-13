@@ -1,10 +1,12 @@
-﻿using MicroserviceProject.Services.Order.Domain.Common;
+﻿using System.Reflection;
+using MicroserviceProject.Services.Order.Application.Common.Interfaces;
+using MicroserviceProject.Services.Order.Domain.Common;
 using MicroserviceProject.Services.Order.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace MicroserviceProject.Services.Order.Infrastructure;
+namespace MicroserviceProject.Services.Order.Infrastructure.Persistence;
 
-public class OrderDbContext : DbContext
+public class OrderDbContext : DbContext, IOrderDbContext
 {
     public const string DEFAULT_SCHEMA = "ordering";
 
@@ -24,30 +26,23 @@ public class OrderDbContext : DbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.CreatedAt=DateTime.Now;
-                    entry.Entity.UpdadetAt=DateTime.Now;
+                    entry.Entity.CreatedAt = DateTime.Now;
+                    entry.Entity.UpdadetAt = DateTime.Now;
                     break;
-                    
+
                 case EntityState.Modified:
                     entry.Property(x => x.CreatedAt).IsModified = false;
-                    entry.Entity.UpdadetAt=DateTime.Now;
+                    entry.Entity.UpdadetAt = DateTime.Now;
                     break;
             }
         }
-        
-        
-        
+
         return base.SaveChangesAsync(cancellationToken);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Domain.Entities.Order>().ToTable("Orders", DEFAULT_SCHEMA);
-        modelBuilder.Entity<OrderItem>().ToTable("OrderItems", DEFAULT_SCHEMA);
-
-        modelBuilder.Entity<OrderItem>().Property(x => x.Price).HasColumnType(("decimal(18,2)"));
-        modelBuilder.Entity<Domain.Entities.Order>().OwnsOne(o => o.Address).WithOwner();
-
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }
 }

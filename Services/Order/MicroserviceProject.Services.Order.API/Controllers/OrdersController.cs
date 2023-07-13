@@ -1,7 +1,5 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.Order.Application.Commands;
-using MicroserviceProject.Services.Order.Application.Commands.CreateOrder;
-using MicroserviceProject.Services.Order.Application.Queries;
+using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Shared.BaseController;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +14,6 @@ public class OrdersController : CustomBaseController
         _mediator = mediator;
     }
     
-    [HttpGet]
-    public async Task<IActionResult> GetOrders([FromQuery] string userId)
-    {
-        var response = await _mediator.Send(new GetOrdersByUserIdQuery { UserId = userId });
-        
-        return CreateActionResult(response);
-    }
-
     [HttpPost]
     public async Task<IActionResult> SaveOrder([FromBody] CreateOrderCommand createOrderCommand)
     {

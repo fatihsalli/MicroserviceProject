@@ -3,7 +3,7 @@ using MicroserviceProject.Services.Order.Application.Common.Models;
 using MicroserviceProject.Services.Order.Domain.Events;
 using Microsoft.Extensions.Logging;
 
-namespace MicroserviceProject.Services.Order.Application.EventHandlers;
+namespace MicroserviceProject.Services.Order.Application.Orders.EventHandlers;
 
 public class OrderCreatedEventHandler : INotificationHandler<DomainEventNotification<OrderCreatedEvent>>
 {
