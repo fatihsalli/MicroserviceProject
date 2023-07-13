@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MicroserviceProject.Services.Order.Application.Commands;
 using MicroserviceProject.Services.Order.Application.Dtos;
-using MicroserviceProject.Services.Order.Domain.OrderAggregate;
+using MicroserviceProject.Services.Order.Domain.ValueObjects;
 using MicroserviceProject.Services.Order.Infrastructure;
 using MicroserviceProject.Shared.Responses;
 
@@ -26,7 +26,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
             request.Address.Zip,
             request.Address.Line);
 
-        var newOrder = new Domain.OrderAggregate.Order(newAddress, request.UserId);
+        var newOrder = new Domain.Entities.Order(newAddress, request.UserId);
 
         request.OrderItems.ForEach(x => { newOrder.AddOrderItem(x.ProductId, x.ProductName, x.Quantity, x.Price); });
 

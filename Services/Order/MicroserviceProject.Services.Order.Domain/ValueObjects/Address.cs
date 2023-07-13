@@ -1,6 +1,6 @@
-﻿using MicroserviceProject.Services.Order.Domain.Core;
+﻿using MicroserviceProject.Services.Order.Domain.Common;
 
-namespace MicroserviceProject.Services.Order.Domain.OrderAggregate;
+namespace MicroserviceProject.Services.Order.Domain.ValueObjects;
 
 // Value Object
 public class Address : ValueObject

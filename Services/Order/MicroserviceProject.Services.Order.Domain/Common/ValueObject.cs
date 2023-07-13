@@ -1,4 +1,4 @@
-﻿namespace MicroserviceProject.Services.Order.Domain.Core;
+﻿namespace MicroserviceProject.Services.Order.Domain.Common;
 
 public abstract class ValueObject
 {

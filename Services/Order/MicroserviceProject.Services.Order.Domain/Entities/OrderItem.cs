@@ -1,8 +1,8 @@
-﻿using MicroserviceProject.Services.Order.Domain.Core;
+﻿using MicroserviceProject.Services.Order.Domain.Common;
 
-namespace MicroserviceProject.Services.Order.Domain.OrderAggregate;
+namespace MicroserviceProject.Services.Order.Domain.Entities;
 
-public class OrderItem : Entity
+public class OrderItem : AuditableEntity
 {
     public string ProductId { get; private set; }
     public string ProductName { get; private set; }

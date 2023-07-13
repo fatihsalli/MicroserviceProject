@@ -1,12 +1,14 @@
-﻿using MicroserviceProject.Services.Order.Domain.Core;
+﻿using MicroserviceProject.Services.Order.Domain.Common;
+using MicroserviceProject.Services.Order.Domain.Events;
+using MicroserviceProject.Services.Order.Domain.ValueObjects;
 
-namespace MicroserviceProject.Services.Order.Domain.OrderAggregate;
+namespace MicroserviceProject.Services.Order.Domain.Entities;
 
 // EF Core Features
 // --Owned Types
 // -- Shadow Property
 // -- Backing Field
-public class Order : Entity, IAggregateRoot
+public class Order : AuditableEntity, IHasDomainEvent
 {
     public DateTime CreatedAt { get; set; }
     public Address Address { get; set; }
@@ -15,6 +17,25 @@ public class Order : Entity, IAggregateRoot
 
     // Kapsülleme
     public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
+    
+    private bool _done;
+    public bool Done
+    {
+        get => _done;
+        set
+        {
+            if (value == true && _done == false)
+            {
+                DomainEvents.Add(new OrderCompletedEvent(this));
+            }
+
+            _done = value;
+        }
+    }
+
+    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
+    
+    
 
     public Order()
     {

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using MicroserviceProject.Services.Order.Application.Dtos;
-using MicroserviceProject.Services.Order.Domain.OrderAggregate;
 using MicroserviceProject.Shared.Responses;
 
 namespace MicroserviceProject.Services.Order.Application.Commands;
