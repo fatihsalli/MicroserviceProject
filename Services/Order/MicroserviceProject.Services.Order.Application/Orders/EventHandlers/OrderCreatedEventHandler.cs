@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using MicroserviceProject.Services.Order.Domain.Events;
-using Microsoft.Extensions.Logging;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.EventHandlers;
 

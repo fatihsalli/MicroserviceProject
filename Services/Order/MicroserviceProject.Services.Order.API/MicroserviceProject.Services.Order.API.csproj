@@ -16,7 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MicroserviceProject.Services.Order.Application\MicroserviceProject.Services.Order.Application.csproj" />
       <ProjectReference Include="..\MicroserviceProject.Services.Order.Infrastructure\MicroserviceProject.Services.Order.Infrastructure.csproj" />
     </ItemGroup>
 
