@@ -2,7 +2,7 @@
 
 namespace MicroserviceProject.Services.Order.Domain.Entities;
 
-public class OrderItem : AuditableEntity
+public class OrderItem : BaseAuditableEntity
 {
     public string ProductId { get; private set; }
     public string ProductName { get; private set; }

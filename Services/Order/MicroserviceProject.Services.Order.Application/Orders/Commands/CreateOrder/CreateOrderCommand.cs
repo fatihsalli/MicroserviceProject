@@ -37,8 +37,9 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
         newOrder.Id = Guid.NewGuid().ToString();
 
         request.OrderItems.ForEach(x => { newOrder.AddOrderItem(x.ProductId, x.ProductName, x.Quantity, x.Price); });
-
-        newOrder.DomainEvents.Add(new OrderCreatedEvent(newOrder));
+        newOrder.TotalPrice = request.OrderItems.Sum(x => x.Price * x.Quantity);    
+        
+        newOrder.AddDomainEvent(new OrderCreatedEvent(newOrder));
 
         await _context.Orders.AddAsync(newOrder);
         await _context.SaveChangesAsync(cancellationToken);

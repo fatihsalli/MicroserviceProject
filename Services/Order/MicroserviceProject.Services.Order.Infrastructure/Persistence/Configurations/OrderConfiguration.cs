@@ -14,7 +14,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domain.Entities.Order
         builder.HasKey(x => x.Id);
         builder.Property(x => x.CreatedAt).IsRequired(true);
         builder.Property(x => x.UpdadetAt).IsRequired(true);
-        // builder.Property(x => x.GetTotalPrice).IsRequired(true).HasColumnType("decimal(18,2)");
+        builder.Property(x => x.TotalPrice).IsRequired(true).HasColumnType("decimal(18,2)");
 
         builder.Ignore(x => x.DomainEvents);
     }

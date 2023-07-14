@@ -1,17 +1,14 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Models;
 using MicroserviceProject.Services.Order.Domain.Events;
 using Microsoft.Extensions.Logging;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.EventHandlers;
 
-public class OrderCreatedEventHandler : INotificationHandler<DomainEventNotification<OrderCreatedEvent>>
+public class OrderCreatedEventHandler : INotificationHandler<OrderCreatedEvent>
 {
-    public Task Handle(DomainEventNotification<OrderCreatedEvent> notification, CancellationToken cancellationToken)
+    public Task Handle(OrderCreatedEvent notification, CancellationToken cancellationToken)
     {
-        var domainEvent = notification.DomainEvent;
-        
-        string domainEventName = domainEvent.GetType().Name;
+        string domainEventName = notification.GetType().Name;
         
         Console.WriteLine($"CleanArchitecture Domain Event: {domainEventName}");
 

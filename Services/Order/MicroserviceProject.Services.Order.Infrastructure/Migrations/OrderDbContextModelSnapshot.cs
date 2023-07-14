@@ -33,6 +33,9 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
                     b.Property<bool>("Done")
                         .HasColumnType("bit");
 
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime>("UpdadetAt")
                         .HasColumnType("datetime2");
 

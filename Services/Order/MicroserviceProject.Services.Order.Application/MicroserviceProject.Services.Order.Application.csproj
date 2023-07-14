@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Common\Models\" />
       <Folder Include="Orders\" />
     </ItemGroup>
 

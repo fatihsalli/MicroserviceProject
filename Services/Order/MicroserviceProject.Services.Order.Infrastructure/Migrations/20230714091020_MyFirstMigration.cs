@@ -26,6 +26,7 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
                     Address_Zip = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_Line = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Done = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdadetAt = table.Column<DateTime>(type: "datetime2", nullable: false)

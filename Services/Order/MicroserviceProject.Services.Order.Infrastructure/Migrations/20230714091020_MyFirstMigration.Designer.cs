@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20230713112857_MyFirstMigration")]
+    [Migration("20230714091020_MyFirstMigration")]
     partial class MyFirstMigration
     {
         /// <inheritdoc />
@@ -35,6 +35,9 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
 
                     b.Property<bool>("Done")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("UpdadetAt")
                         .HasColumnType("datetime2");
