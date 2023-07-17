@@ -5,6 +5,7 @@ using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Mapping;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Services.Order.Infrastructure;
+using MicroserviceProject.Shared.Extensions;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Custom middleware
+app.UseCustomException();
 
 app.UseAuthorization();
 
