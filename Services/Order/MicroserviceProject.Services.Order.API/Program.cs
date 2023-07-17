@@ -1,5 +1,6 @@
 using System.Reflection;
 using MediatR;
+using MicroserviceProject.Services.Order.Application;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Mapping;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
@@ -14,15 +15,9 @@ Log.Information("Application is starting...");
 
 // Add services to the container.
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 builder.Services.AddControllers();
-
-// Add AutoMapper
-builder.Services.AddAutoMapper(typeof(MapperProfile));
-
-// Add MediatR
-builder.Services.AddMediatR(typeof(CreateOrderCommandHandler).Assembly);
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
