@@ -42,10 +42,10 @@ public class AddressCreateValidator : AbstractValidator<AddressRequest>
             .NotEmpty().WithMessage("{PropertyName} is required")
             .MaximumLength(10).WithMessage("{PropertyName} 's maximum lenght is 10");
         
-        RuleFor(x => x.Province)
+        RuleFor(x => x.Line)
             .NotNull().WithMessage("{PropertyName} is required")
             .NotEmpty().WithMessage("{PropertyName} is required")
-            .MaximumLength(50).WithMessage("{PropertyName} 's maximum lenght is 50");
+            .MaximumLength(100).WithMessage("{PropertyName} 's maximum lenght is 100");
     }
 }
 public class OrderItemRequestValidator : AbstractValidator<OrderItemRequest>

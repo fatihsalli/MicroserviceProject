@@ -13,7 +13,7 @@ public static class ConfigureServices
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         // Add AutoMapper
-        services.AddAutoMapper(typeof(MapperProfile));
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         
         // Add FluentValidation
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

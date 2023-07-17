@@ -16,35 +16,39 @@ public static class UseCustomExceptionHandler
             config.Run(async context =>
             {
                 context.Response.ContentType = "application/json";
-                
                 var exceptionFeature = context.Features.Get<IExceptionHandlerFeature>();
 
-                if (exceptionFeature.Error is ValidationException validationException)
+                switch (exceptionFeature.Error)
                 {
-                    context.Response.StatusCode = 400;
-                    
-                    var failures = validationException.Errors;
-                    
-                    
-                    var response = CustomResponse<NoContent>.Fail(400, failures);
-                    
-                    await context.Response.WriteAsync(JsonSerializer.Serialize(failures));
-                    
-                    
-                }
-                else
-                {
-                    var statusCode = exceptionFeature.Error switch
+                    case ValidationException validationException:
                     {
-                        ClientSideException => 400,
-                        ValidationException => 400,
-                        NotFoundException => 404,
-                        _ => 500
-                    };
-                    context.Response.StatusCode = statusCode;
-                    var response = CustomResponse<NoContent>.Fail(statusCode, exceptionFeature.Error.Message);
-                    //Custom middleware oluşturduğumuz için kendimiz json formatına serialize etmemiz gerekir.
-                    await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                        context.Response.StatusCode = 400;
+                        var failures = validationException.Errors;
+                        var response = CustomResponse<NoContent>.Fail(400, failures);
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                        return;
+                    }
+                    case ClientSideException:
+                    {
+                        context.Response.StatusCode = 400;
+                        var response = CustomResponse<NoContent>.Fail(400, exceptionFeature.Error.Message);
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                        return;
+                    }
+                    case NotFoundException:
+                    {
+                        context.Response.StatusCode = 404;
+                        var response = CustomResponse<NoContent>.Fail(400, exceptionFeature.Error.Message);
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                        return;
+                    }
+                    default:
+                    {
+                        context.Response.StatusCode = 500;
+                        var responseServer = CustomResponse<NoContent>.Fail(500, exceptionFeature.Error.Message);
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(responseServer));
+                        return;
+                    }
                 }
             });
         });

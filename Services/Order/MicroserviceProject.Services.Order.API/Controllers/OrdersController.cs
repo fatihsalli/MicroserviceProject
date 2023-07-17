@@ -28,6 +28,7 @@ public class OrdersController : CustomBaseController
     
     [HttpPost]
     [ProducesResponseType(typeof(CustomResponse<CreatedOrderResponse>), (int)HttpStatusCode.Created)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> SaveOrder([FromBody] CreateOrderCommand createOrderCommand)
     {
