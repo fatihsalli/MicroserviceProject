@@ -21,6 +21,7 @@ public static class ConfigureServices
             });
         });
 
+        // Direkt olarak OrderDbContext'i de geçebilirdik ancak proje referans yapılanmasında Infrastructure=>Application katmanını kullandığı için interface üzerinden erişebilecek.
         services.AddScoped<IOrderDbContext>(provider => provider.GetRequiredService<OrderDbContext>());
         
         return services;

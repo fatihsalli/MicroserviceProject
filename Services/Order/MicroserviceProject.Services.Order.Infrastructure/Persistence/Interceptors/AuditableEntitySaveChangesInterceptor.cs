@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace MicroserviceProject.Services.Order.Infrastructure.Persistence.Interceptors;
 
+/// <summary>
+/// SavingChanges veya SavingChangesAsync metotları için "interceptor" metotlarımızı oluşturuyoruz. Amacımız "CreatedAt" veya "UpdatedAt" gibi değerleri business katmanında tek tek vermek yerine daha merkezi bir noktadan kontrol etmek.
+/// </summary>
 public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)

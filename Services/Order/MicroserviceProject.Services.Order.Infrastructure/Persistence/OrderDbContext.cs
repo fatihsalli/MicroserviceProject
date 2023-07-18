@@ -15,9 +15,7 @@ public class OrderDbContext : DbContext, IOrderDbContext
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
     
-    public OrderDbContext(
-        DbContextOptions<OrderDbContext> options,
-        IMediator mediator,
+    public OrderDbContext(DbContextOptions<OrderDbContext> options, IMediator mediator, 
         AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) 
         : base(options)
     {
