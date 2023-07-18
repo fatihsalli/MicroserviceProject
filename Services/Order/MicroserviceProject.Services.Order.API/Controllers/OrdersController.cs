@@ -52,10 +52,13 @@ public class OrdersController : CustomBaseController
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType(typeof(CustomResponse<bool>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> UpdateOrderAddress([FromRoute] string id, [FromBody] AddressRequest addressRequest)
     {
-        var updateOrderCommand = new UpdateOrderCommand { Id = id, Address = addressRequest };
-        var response = await _mediator.Send(updateOrderCommand);
+        var response = await _mediator.Send(new UpdateOrderCommand { Id = id, Address = addressRequest });
         return CreateActionResult(response);
     }
 }
