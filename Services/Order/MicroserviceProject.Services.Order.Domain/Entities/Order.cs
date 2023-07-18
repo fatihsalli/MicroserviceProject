@@ -61,4 +61,9 @@ public class Order : BaseAuditableEntity
         }
     }
 
+    public void UpdateAddress(Address address)
+    {
+        Address = address;
+    }
+
 }

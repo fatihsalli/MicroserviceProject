@@ -12,15 +12,15 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
             .NotEmpty().WithMessage("{PropertyName} is required")
             .Length(32).WithMessage("{PropertyName} must be uuid");
         
-        RuleFor(x => x.Address).SetValidator(new AddressCreateValidator());
+        RuleFor(x => x.Address).SetValidator(new AddressRequestValidator());
         
         RuleForEach(x => x.OrderItems).SetValidator(new OrderItemRequestValidator());
     }
 }
 
-public class AddressCreateValidator : AbstractValidator<AddressRequest>
+public class AddressRequestValidator : AbstractValidator<AddressRequest>
 {
-    public AddressCreateValidator()
+    public AddressRequestValidator()
     {
         RuleFor(x => x.Province)
             .NotNull().WithMessage("{PropertyName} is required")
