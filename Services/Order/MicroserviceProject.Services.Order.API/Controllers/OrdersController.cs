@@ -4,6 +4,7 @@ using MicroserviceProject.Services.Order.Application.Dtos;
 using MicroserviceProject.Services.Order.Application.Dtos.Requests;
 using MicroserviceProject.Services.Order.Application.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
+using MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteOrder;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetAllOrders;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById;
@@ -31,13 +32,13 @@ public class OrdersController : CustomBaseController
         return CreateActionResult(response);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:length(36)}")]
     [ProducesResponseType(typeof(CustomResponse<OrderResponse>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> GetOrderById([FromRoute] string id)
     {
-        var response = await _mediator.Send(new GetOrderByIdQuery() { Id = id });
+        var response = await _mediator.Send(new GetOrderByIdQuery(id));
         return CreateActionResult(response);
     }
 
@@ -51,7 +52,7 @@ public class OrdersController : CustomBaseController
         return CreateActionResult(response);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:length(36)}")]
     [ProducesResponseType(typeof(CustomResponse<bool>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.NotFound)]
@@ -59,6 +60,16 @@ public class OrdersController : CustomBaseController
     public async Task<IActionResult> UpdateOrderAddress([FromRoute] string id, [FromBody] AddressRequest addressRequest)
     {
         var response = await _mediator.Send(new UpdateOrderCommand { Id = id, Address = addressRequest });
+        return CreateActionResult(response);
+    }
+    
+    [HttpDelete("{id:length(36)}")]
+    [ProducesResponseType(typeof(CustomResponse<bool>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> DeleteOrder([FromRoute] string id)
+    {
+        var response = await _mediator.Send(new DeleteOrderCommand(id));
         return CreateActionResult(response);
     }
 }

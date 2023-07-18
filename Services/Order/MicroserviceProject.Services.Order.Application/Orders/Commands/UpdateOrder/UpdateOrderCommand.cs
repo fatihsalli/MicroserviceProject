@@ -58,8 +58,14 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Cus
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "CreateOrderCommandHandler Exception");
-            throw new Exception($"Something went wrong!");
+            if (ex is NotFoundException)
+            {
+                Log.Information(ex, "UpdateOrderCommandHandler exception. Not Found Error");
+                throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
+            }
+            
+            Log.Error(ex, "UpdateOrderCommandHandler exception. Internal Server Error");
+            throw new Exception("Something went wrong.");
         }
     }
 }

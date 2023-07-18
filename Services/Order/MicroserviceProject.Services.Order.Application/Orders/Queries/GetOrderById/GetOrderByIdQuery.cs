@@ -9,9 +9,9 @@ using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById;
 
-public class GetOrderByIdQuery : IRequest<CustomResponse<OrderResponse>>
+public record GetOrderByIdQuery(string Id) : IRequest<CustomResponse<OrderResponse>>
 {
-    public string Id { get; set; }
+
 }
 
 public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery,CustomResponse<OrderResponse>>
