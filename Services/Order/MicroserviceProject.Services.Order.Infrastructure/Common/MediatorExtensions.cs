@@ -8,7 +8,7 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Common;
 public static class MediatorExtensions
 {
     /// <summary>
-    /// Entity içinde yer alan DomainEvents listelerimizi alarak publish ediyoruz. Publish etmeden öncede DomainEvent'i boşaltıyoruz ki tekrar aynı event'leri publish etmemek için. Bu metodu "SaveChangesAsync" metodu çağrıldığında kullanmak için "interceptor" metot olarak "OrderDbContext" tarafında yazıldı. "ClearDomainEvents" ile event listemizi temizledikten sonra "SaveChangesAsync" metodu çalışacağı için bu sayede bu değişiklik de kaydedilmiş olacaktır.
+    /// Entity içinde yer alan DomainEvents listelerimizi alarak publish ediyoruz. Publish etmeden öncede DomainEvent'i boşaltıyoruz ki tekrar aynı event'leri publish etmemek için. Bu metodu "SaveChangesAsync" metodu çağrıldığında kullanmak için "interceptor" metot olarak "OrderDbContext" tarafında yazıldı. "ClearDomainEvents" ile event listemizi temizledikten sonra "SaveChangesAsync" metodu çalışacağı için bu sayede bu değişiklik de kaydedilmiş olacaktır. Event nesneleri publish edildikten sonra ilgili handlerlar çalışır o sebeple publish edilmeyen event herhangi bir handle'da işlenmez.
     /// </summary>
     /// <param name="mediator"></param>
     /// <param name="context"></param>
