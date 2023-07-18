@@ -3,6 +3,7 @@ using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Responses;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteOrder;
@@ -22,15 +23,17 @@ public class DeleteTodoItemCommandHandler : IRequestHandler<DeleteOrderCommand,C
     {
         try
         {
-            var entity = await _context.Orders
-                .FindAsync(new object[] { request.Id }, cancellationToken);
+            var order = await _context.Orders
+                .Include(x => x.OrderItems)
+                .Where(x=>x.Id==request.Id)
+                .SingleOrDefaultAsync(cancellationToken);
 
-            if (entity == null)
+            if (order == null)
                 throw new NotFoundException(nameof(Domain.Entities.Order), request.Id);
 
-            _context.Orders.Remove(entity);
+            _context.Orders.Remove(order);
 
-            entity.AddDomainEvent(new OrderDeletedEvent(entity));
+            order.AddDomainEvent(new OrderDeletedEvent(order));
 
             await _context.SaveChangesAsync(cancellationToken);
 

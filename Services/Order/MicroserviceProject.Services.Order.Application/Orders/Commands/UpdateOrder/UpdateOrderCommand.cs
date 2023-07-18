@@ -17,7 +17,6 @@ public class UpdateOrderCommand : IRequest<CustomResponse<bool>>
 {
     public string Id { get; set; }
     public AddressRequest Address { get; set; }
-    public bool Done { get; set; }
 }
 
 public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, CustomResponse<bool>>
@@ -50,7 +49,6 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Cus
                 request.Address.Line);
             
             order.UpdateAddress(newAddress);
-            order.Done = request.Done;
 
             await _context.SaveChangesAsync(cancellationToken);
 

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MicroserviceProject.Services.Order.Application.Common.Helpers;
 using MicroserviceProject.Services.Order.Application.Dtos.Requests;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
@@ -10,7 +11,7 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
         RuleFor(x => x.UserId)
             .NotNull().WithMessage("{PropertyName} is required")
             .NotEmpty().WithMessage("{PropertyName} is required")
-            .Length(32).WithMessage("{PropertyName} must be uuid");
+            .Must(Helpers.BeValidGuid).WithMessage("{PropertyName} must be uuid");
         
         RuleFor(x => x.Address).SetValidator(new AddressRequestValidator());
         
@@ -55,7 +56,7 @@ public class OrderItemRequestValidator : AbstractValidator<OrderItemRequest>
         RuleFor(x => x.ProductId)
             .NotNull().WithMessage("{PropertyName} is required")
             .NotEmpty().WithMessage("{PropertyName} is required")
-            .Length(32).WithMessage("{PropertyName} must be uuid");
+            .Must(Helpers.BeValidGuid).WithMessage("{PropertyName} must be uuid");
         
         RuleFor(x => x.ProductName)
             .NotNull().WithMessage("{PropertyName} is required")

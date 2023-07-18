@@ -31,11 +31,10 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
             if (entry.State == EntityState.Added)
             {
                 entry.Entity.CreatedAt = DateTime.Now;
-                entry.Entity.UpdadetAt = DateTime.Now;
+                entry.Entity.UpdadetAt = entry.Entity.CreatedAt;
             }
 
-            if (entry.State == EntityState.Added || entry.State == EntityState.Modified ||
-                entry.HasChangedOwnedEntities())
+            if (entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
                 entry.Property(x => x.CreatedAt).IsModified = false;
                 entry.Entity.UpdadetAt = DateTime.Now;
@@ -44,8 +43,12 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
     }
 }
 
+
 public static class Extensions
 {
+    /// <summary>
+    /// Owned varlık nesnelerinde herhangi bir değişim olup olmadığını kontrol etmek için kullanılır. Örneğin "Order" modelinde sadece value object olan "Address" kısmında bir değişiklik olduğu taktirde bu metot sayesinde "UpdateEntities" metodunda bu durumu yakalayabiliyoruz.
+    /// </summary>
     public static bool HasChangedOwnedEntities(this EntityEntry entry) =>
         entry.References.Any(r => 
             r.TargetEntry != null && 
