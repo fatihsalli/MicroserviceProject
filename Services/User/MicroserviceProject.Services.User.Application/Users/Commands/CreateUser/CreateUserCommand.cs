@@ -4,6 +4,7 @@ using MediatR;
 using MicroserviceProject.Services.User.Application.Common.Interfaces;
 using MicroserviceProject.Services.User.Application.Dtos.Requests;
 using MicroserviceProject.Services.User.Application.Dtos.Responses;
+using MicroserviceProject.Services.User.Domain.Events;
 using MicroserviceProject.Services.User.Domain.ValueObjects;
 using MicroserviceProject.Shared.Responses;
 using MongoDB.Driver;
@@ -23,11 +24,13 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Custo
 {
     private readonly IUserDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
-    public CreateUserCommandHandler(IUserDbContext context,IMapper mapper)
+    public CreateUserCommandHandler(IUserDbContext context,IMapper mapper,IMediator mediator)
     {
         _context = context;
         _mapper = mapper;
+        _mediator = mediator;
     }
 
     public async Task<CustomResponse<CreatedUserResponse>> Handle(CreateUserCommand request,
@@ -45,6 +48,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Custo
         };
 
         newUser.UpdadetAt = newUser.CreatedAt;
+        
+        newUser.AddDomainEvent(new UserCreatedEvent(newUser));
+        await _context.PublishDomainEvents();
 
         await _context.Users.InsertOneAsync(newUser, new InsertOneOptions(), cancellationToken);
         

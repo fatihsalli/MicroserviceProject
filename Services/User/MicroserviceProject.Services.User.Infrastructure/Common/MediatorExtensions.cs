@@ -9,6 +9,7 @@ namespace MicroserviceProject.Services.User.Infrastructure.Common;
 
 public static class MediatorExtensions
 {
+    // TODO: Çalışmıyor incelenecek
     public static async Task DispatchDomainEvents(this IMediator mediator, IUserDbContext context) 
     {
         var collections = new IMongoCollection<Domain.Entities.User>[]
