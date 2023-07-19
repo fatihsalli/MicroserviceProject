@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using MicroserviceProject.Services.Order.Application.Common.Helpers;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
+using MicroserviceProject.Shared.Helpers;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
 
