@@ -12,14 +12,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="12.0.1" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0" />
       <PackageReference Include="MongoDB.Driver" Version="2.20.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Dtos\Requests\" />
-      <Folder Include="Dtos\Responses\" />
       <Folder Include="Users\EventHandlers\" />
-      <Folder Include="Users\Queries\" />
     </ItemGroup>
 
 </Project>

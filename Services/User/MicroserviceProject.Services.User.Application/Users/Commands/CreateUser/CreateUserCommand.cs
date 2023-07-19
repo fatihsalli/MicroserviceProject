@@ -1,44 +1,54 @@
 ﻿using System.Text;
+using AutoMapper;
 using MediatR;
 using MicroserviceProject.Services.User.Application.Common.Interfaces;
+using MicroserviceProject.Services.User.Application.Dtos.Requests;
+using MicroserviceProject.Services.User.Application.Dtos.Responses;
 using MicroserviceProject.Services.User.Domain.ValueObjects;
 using MicroserviceProject.Shared.Responses;
+using MongoDB.Driver;
 
 namespace MicroserviceProject.Services.User.Application.Users.Commands.CreateUser;
 
-public class CreateUserCommand : IRequest<CustomResponse<Domain.Entities.User>>
+public class CreateUserCommand : IRequest<CustomResponse<CreatedUserResponse>>
 {
     public string Username { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
     public string FullName { get; set; }
-    public List<Address> Addresses { get; set; }
+    public List<AddressRequest> Addresses { get; set; }
 }
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CustomResponse<Domain.Entities.User>>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CustomResponse<CreatedUserResponse>>
 {
     private readonly IUserDbContext _context;
+    private readonly IMapper _mapper;
 
-    public CreateUserCommandHandler(IUserDbContext context)
+    public CreateUserCommandHandler(IUserDbContext context,IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
-    public async Task<CustomResponse<Domain.Entities.User>> Handle(CreateUserCommand request,
+    public async Task<CustomResponse<CreatedUserResponse>> Handle(CreateUserCommand request,
         CancellationToken cancellationToken)
     {
-        var newUser = new Domain.Entities.User();
+        var newUser = new Domain.Entities.User
+        {
+            Id = Guid.NewGuid().ToString(),
+            Username = request.Username,
+            Email = request.Email,
+            Password = Encoding.UTF8.GetBytes(request.Password),
+            FullName = request.FullName,
+            Addresses = _mapper.Map<List<Address>>(request.Addresses),
+            CreatedAt = DateTime.Now
+        };
 
-        newUser.Id = Guid.NewGuid().ToString();
-        newUser.Username = request.Username;
-        newUser.Email = request.Email;
-        newUser.Password = Encoding.UTF8.GetBytes(request.Password);
-        newUser.FullName = request.FullName;
-        newUser.Addresses = request.Addresses;
-        newUser.CreatedAt = DateTime.Now;
         newUser.UpdadetAt = newUser.CreatedAt;
 
-        await _context.Users.InsertOneAsync(newUser, cancellationToken);
-        return CustomResponse<Domain.Entities.User>.Success(201, newUser);
+        await _context.Users.InsertOneAsync(newUser, new InsertOneOptions(), cancellationToken);
+        
+        return CustomResponse<CreatedUserResponse>
+            .Success(201, new CreatedUserResponse{UserId = newUser.Id});
     }
 }
