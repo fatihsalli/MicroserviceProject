@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\MicroserviceProject.Shared\MicroserviceProject.Shared.csproj" />
+      <ProjectReference Include="..\MicroserviceProject.Services.User.Domain\MicroserviceProject.Services.User.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MongoDB.Driver" Version="2.20.0" />
+    </ItemGroup>
+
 </Project>

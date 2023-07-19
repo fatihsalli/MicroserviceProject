@@ -15,4 +15,8 @@
       <Folder Include="Controllers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MicroserviceProject.Services.User.Infrastructure\MicroserviceProject.Services.User.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
