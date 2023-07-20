@@ -50,7 +50,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Custo
         newUser.UpdadetAt = newUser.CreatedAt;
         
         newUser.AddDomainEvent(new UserCreatedEvent(newUser));
-        await _context.PublishDomainEvents();
+        await _context.PublishDomainEvents(newUser);
 
         await _context.Users.InsertOneAsync(newUser, new InsertOneOptions(), cancellationToken);
         

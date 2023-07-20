@@ -9,6 +9,8 @@ public class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
     public Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
         Log.Information("MicroserviceProject Domain Event: {DomainEvent}", notification.GetType().Name);
+        
+        Log.Information("MicroserviceProject Domain Event:");
 
         return Task.CompletedTask;
     }

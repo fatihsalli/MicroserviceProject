@@ -19,8 +19,8 @@ public class UserDbContext : IUserDbContext
 
     public IMongoCollection<Domain.Entities.User> Users { get; }
 
-    public async Task PublishDomainEvents()
+    public async Task PublishDomainEvents(Domain.Entities.User user)
     {
-        await _mediator.DispatchDomainEvents(this);
+        await _mediator.DispatchDomainEvents(user);
     } 
 }
