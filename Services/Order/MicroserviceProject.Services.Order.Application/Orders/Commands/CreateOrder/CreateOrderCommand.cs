@@ -5,6 +5,7 @@ using MicroserviceProject.Services.Order.Application.Dtos.Requests;
 using MicroserviceProject.Services.Order.Application.Dtos.Responses;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
+using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Responses;
 using Serilog;
 
@@ -20,10 +21,12 @@ public class CreateOrderCommand : IRequest<CustomResponse<CreatedOrderResponse>>
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CustomResponse<CreatedOrderResponse>>
 {
     private readonly IOrderDbContext _context;
+    private readonly HttpClient _httpClient;
 
-    public CreateOrderCommandHandler(IOrderDbContext context)
+    public CreateOrderCommandHandler(IOrderDbContext context,HttpClient httpClient)
     {
         _context = context;
+        _httpClient = httpClient;
     }
 
     public async Task<CustomResponse<CreatedOrderResponse>> Handle(CreateOrderCommand request,
@@ -31,6 +34,14 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
     {
         try
         {
+            // User Check
+            string userMicroserviceBaseUrl = "http://localhost:5012/api/users/";
+            string requestUrl = $"{userMicroserviceBaseUrl}{request.UserId}";
+            HttpResponseMessage response = await _httpClient.GetAsync(requestUrl,cancellationToken);
+            
+            if (!response.IsSuccessStatusCode)
+                throw new NotFoundException("order with userid",request.UserId);
+            
             var newAddress = new Address(
                 request.Address.Province,
                 request.Address.District,
@@ -58,6 +69,12 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
         }
         catch (Exception ex)
         {
+            if (ex is NotFoundException)
+            {
+                Log.Information(ex, "CreateOrderCommandHandler exception. Not Found Error");
+                throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
+            }
+            
             Log.Error(ex, "CreateOrderCommandHandler Exception");
             throw new Exception($"Something went wrong!");
         }

@@ -18,6 +18,9 @@ public static class ConfigureServices
         // Add FluentValidation
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         
+        // Add HttpClient
+        services.AddHttpClient();
+        
         // Add MediatR
         services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());

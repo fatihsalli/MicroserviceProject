@@ -9,6 +9,9 @@ public static class ConfigureServices
     {
         // Add AutoMapper
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+        // Add HttpClient
+        services.AddHttpClient();
         
         // Add MediatR
         services.AddMediatR(cfg => {
