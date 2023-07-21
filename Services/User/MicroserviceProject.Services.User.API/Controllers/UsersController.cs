@@ -4,6 +4,7 @@ using MicroserviceProject.Services.User.Application.Dtos.Responses;
 using MicroserviceProject.Services.User.Application.Users.Commands.CreateUser;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetAllUsers;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetUserById;
+using MicroserviceProject.Services.User.Application.Users.Queries.GetUserByIdWithOrders;
 using MicroserviceProject.Shared.BaseController;
 using MicroserviceProject.Shared.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,16 @@ public class UsersController : CustomBaseController
     public async Task<IActionResult> GetUserById([FromRoute] string id)
     {
         var response = await _mediator.Send(new GetUserByIdQuery(id));
+        return CreateActionResult(response);
+    }
+    
+    [HttpGet("[action]/{id:length(36)}")]
+    [ProducesResponseType(typeof(CustomResponse<UserResponse>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> GetUserByIdWithOrders([FromRoute] string id)
+    {
+        var response = await _mediator.Send(new GetUserByIdWithOrdersQuery(id));
         return CreateActionResult(response);
     }
     
