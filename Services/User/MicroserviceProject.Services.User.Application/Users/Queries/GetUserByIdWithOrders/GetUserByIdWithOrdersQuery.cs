@@ -3,8 +3,10 @@ using AutoMapper;
 using MediatR;
 using MicroserviceProject.Services.User.Application.Common.Interfaces;
 using MicroserviceProject.Services.User.Application.Dtos.Responses;
+using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Responses;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Serilog;
 
@@ -20,12 +22,14 @@ public class GetUserByIdWithOrdersQueryHandler : IRequestHandler<GetUserByIdWith
     private readonly IUserDbContext _context;
     private readonly IMapper _mapper;
     private readonly HttpClient _httpClient;
+    private readonly Config _config;
 
-    public GetUserByIdWithOrdersQueryHandler(IUserDbContext context, IMapper mapper,HttpClient httpClient)
+    public GetUserByIdWithOrdersQueryHandler(IUserDbContext context, IMapper mapper,HttpClient httpClient,IOptions<Config> config)
     {
         _context = context;
         _mapper = mapper;
         _httpClient = httpClient;
+        _config = config.Value;
     }
 
     public async Task<CustomResponse<UserWithOrdersResponse>> Handle(GetUserByIdWithOrdersQuery request, CancellationToken cancellationToken)
@@ -37,9 +41,8 @@ public class GetUserByIdWithOrdersQueryHandler : IRequestHandler<GetUserByIdWith
             if (user==null)
                 throw new NotFoundException("user",request.Id);
             
-            // Get Orders
-            string userMicroserviceBaseUrl = "http://localhost:5011/api/orders";
-            string requestUrl = userMicroserviceBaseUrl+$"?userId={request.Id}";
+            // Get Orders with HttpClient
+            string requestUrl = _config.HttpClient.OrderApi+$"/GetOrdersByUserId?userId={request.Id}";
             HttpResponseMessage response = await _httpClient.GetAsync(requestUrl,cancellationToken);
 
             if (!response.IsSuccessStatusCode)
