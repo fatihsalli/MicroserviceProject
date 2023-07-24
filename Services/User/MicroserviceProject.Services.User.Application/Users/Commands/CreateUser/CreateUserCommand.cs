@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using AutoMapper;
 using MediatR;
+using MicroserviceProject.Services.User.Application.Common;
 using MicroserviceProject.Services.User.Application.Common.Interfaces;
 using MicroserviceProject.Services.User.Application.Dtos.Requests;
 using MicroserviceProject.Services.User.Application.Dtos.Responses;
@@ -41,7 +42,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Custo
             Id = Guid.NewGuid().ToString(),
             Username = request.Username,
             Email = request.Email,
-            Password = Encoding.UTF8.GetBytes(request.Password),
+            Password = PasswordCheck.HashPassword(request.Password),
             FullName = request.FullName,
             Addresses = _mapper.Map<List<Address>>(request.Addresses),
             CreatedAt = DateTime.Now

@@ -2,6 +2,7 @@
 using MediatR;
 using MicroserviceProject.Services.User.Application.Dtos.Responses;
 using MicroserviceProject.Services.User.Application.Users.Commands.CreateUser;
+using MicroserviceProject.Services.User.Application.Users.Commands.UpdateUser;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetAllUsers;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetUserById;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetUserByIdWithOrders;
@@ -56,6 +57,17 @@ public class UsersController : CustomBaseController
     public async Task<IActionResult> SaveUser([FromBody] CreateUserCommand createUserCommand)
     {
         var response = await _mediator.Send(createUserCommand);
+        return CreateActionResult(response);
+    }
+    
+    [HttpPut]
+    [ProducesResponseType(typeof(CustomResponse<bool>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> SaveUser([FromBody] UpdateUserCommand updateUserCommand)
+    {
+        var response = await _mediator.Send(updateUserCommand);
         return CreateActionResult(response);
     }
 }
