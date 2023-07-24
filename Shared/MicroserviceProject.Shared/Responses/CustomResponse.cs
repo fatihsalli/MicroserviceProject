@@ -5,7 +5,7 @@ namespace MicroserviceProject.Shared.Responses;
 public class CustomResponse<T>
 {
     public T Data { get; set; }
-    
+
     [JsonIgnore]
     public int StatusCode { get; set; }
     

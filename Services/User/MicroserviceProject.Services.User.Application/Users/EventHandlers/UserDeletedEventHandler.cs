@@ -4,9 +4,9 @@ using Serilog;
 
 namespace MicroserviceProject.Services.User.Application.Users.EventHandlers;
 
-public class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
+public class UserDeletedEventHandler:INotificationHandler<UserDeletedEvent>
 {
-    public Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
+    public Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
     {
         Log.Information("MicroserviceProject Domain Event: {DomainEvent}", notification.GetType().Name);
 

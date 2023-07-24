@@ -33,8 +33,9 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand,Custom
             if (result.DeletedCount < 1)
                 throw new Exception($"User with id {request.Id} cannot delete!");
 
-            // Add Event
+            // Add Event and publish
             user.AddDomainEvent(new UserDeletedEvent(user));
+            await _context.PublishDomainEvents(user);
 
             return CustomResponse<bool>.Success(200, true);
         }
