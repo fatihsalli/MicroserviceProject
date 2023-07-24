@@ -10,11 +10,11 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteO
 
 public record DeleteOrderCommand(string Id) : IRequest<CustomResponse<bool>>;
 
-public class DeleteTodoItemCommandHandler : IRequestHandler<DeleteOrderCommand,CustomResponse<bool>>
+public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand,CustomResponse<bool>>
 {
     private readonly IOrderDbContext _context;
 
-    public DeleteTodoItemCommandHandler(IOrderDbContext context)
+    public DeleteOrderCommandHandler(IOrderDbContext context)
     {
         _context = context;
     }

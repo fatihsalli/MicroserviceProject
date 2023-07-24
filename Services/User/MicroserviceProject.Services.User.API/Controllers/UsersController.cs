@@ -2,6 +2,7 @@
 using MediatR;
 using MicroserviceProject.Services.User.Application.Dtos.Responses;
 using MicroserviceProject.Services.User.Application.Users.Commands.CreateUser;
+using MicroserviceProject.Services.User.Application.Users.Commands.DeleteUser;
 using MicroserviceProject.Services.User.Application.Users.Commands.UpdateUser;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetAllUsers;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetUserById;
@@ -70,4 +71,15 @@ public class UsersController : CustomBaseController
         var response = await _mediator.Send(updateUserCommand);
         return CreateActionResult(response);
     }
+    
+    [HttpDelete("{id:length(36)}")]
+    [ProducesResponseType(typeof(CustomResponse<bool>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> DeleteUser([FromRoute] string id)
+    {
+        var response = await _mediator.Send(new DeleteUserCommand(id));
+        return CreateActionResult(response);
+    }
+    
 }
