@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App"></FrameworkReference>
+        <PackageReference Include="Confluent.Kafka" Version="2.2.0" />
         <PackageReference Include="FluentValidation" Version="11.6.0" />
       <PackageReference Include="MongoDB.Driver" Version="2.20.0" />
       <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
