@@ -4,7 +4,16 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\MicroserviceProject.Shared\MicroserviceProject.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Elasticsearch.Net" Version="7.17.5" />
+      <PackageReference Include="NEST" Version="7.17.5" />
+    </ItemGroup>
 
 </Project>

@@ -81,25 +81,6 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
             var kafkaProducer = new KafkaProducer(_config.Kafka.Address);
             await kafkaProducer.SendToKafkaWithMessage(jsonKafkaMessage,_config.Kafka.TopicName["OrderID"]);
             
-            // Geçici => Datayı okuma
-            var kafkaURL = _config.Kafka.Address; // Kafka broker'ınıza göre değiştirin
-            var groupId = "myGroup"; // Tüketici grubu adını belirtin
-            var bulkConsumeMaxTimeoutInSeconds = 5; // Maksimum zaman aşımı süresini belirtin
-
-            using (var kafkaConsumer = new KafkaConsumer(kafkaURL, groupId, bulkConsumeMaxTimeoutInSeconds))
-            {
-                var topics = new List<string> { _config.Kafka.TopicName["OrderID"] }; // Dinlemek istediğiniz topic adını belirtin
-                kafkaConsumer.SubscribeToTopics(topics);
-
-                var messages = kafkaConsumer.ConsumeFromTopics(bulkConsumeIntervalInSeconds: 30, bulkConsumeMaxTimeoutInSeconds: bulkConsumeMaxTimeoutInSeconds, maxReadCount: 10);
-                foreach (var message in messages)
-                {
-                    Console.WriteLine($"Received message: {message.Value}");
-                }
-
-                kafkaConsumer.CommitOffsets();
-            }
-            
             return CustomResponse<CreatedOrderResponse>.Success(201, new CreatedOrderResponse { OrderId = newOrder.Id });
         }
         catch (Exception ex)
