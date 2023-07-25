@@ -23,15 +23,9 @@ public class OrderElasticService
 
         // Elasticsearch bağlantı nesnesi oluşturma
         var esClient = new ElasticClient(settings);
-
-        // Sipariş nesnesini JSON formatına çevirme
-        var jsonOrder = Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(order));
-
-        var indexResponse = esClient.Index<byte[]>(new IndexRequest<byte[]>(jsonOrder)
-        {
-            Refresh = Refresh.True // Elasticsearch'e kaydedildikten hemen sonra erişilebilir olmasını sağlar
-        });
         
+        var indexResponse = esClient.IndexDocument(order);
+
         // Hata kontrolü
         if (!indexResponse.IsValid)
         {

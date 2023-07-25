@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Text.Json;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
@@ -8,11 +9,9 @@ using MicroserviceProject.Shared.Responses;
 using OrderElastic.Dtos;
 using OrderElastic.Service;
 
-
-// JSON dosyasının yolunu belirtin
-string configFile = "configs.json";
-
-// JSON dosyasını okuyup içeriğini alın
+// Json okuma
+string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+string configFile = Path.Combine(projectDirectory, "configs.json");
 string jsonConfig = File.ReadAllText(configFile);
 
 // JSON dosyasındaki verileri Config modeline doldurun
@@ -24,13 +23,14 @@ var orderElasticService = new OrderElasticService(config);
 while (true)
 {
     // Geçici => Datayı okuma
-    var kafkaURL = "localhost:9092"; // Kafka broker'ınıza göre değiştirin
+    var kafkaURL = config.Kafka.Address; // Kafka broker'ınıza göre değiştirin
     var groupId = "myGroup"; // Tüketici grubu adını belirtin
     var bulkConsumeMaxTimeoutInSeconds = 5; // Maksimum zaman aşımı süresini belirtin
 
     var kafkaConsumer = new KafkaConsumer(kafkaURL, groupId, bulkConsumeMaxTimeoutInSeconds);
     
-    var topics = new List<string> { "orderID-created-v01" }; // Dinlemek istediğiniz topic adını belirtin
+    var topics = new List<string> { config.Kafka.TopicName["OrderID"] }; // Dinlemek istediğiniz topic adını belirtin
+    
     kafkaConsumer.SubscribeToTopics(topics);
 
     var messages = kafkaConsumer.ConsumeFromTopics(bulkConsumeIntervalInSeconds: 30, bulkConsumeMaxTimeoutInSeconds: bulkConsumeMaxTimeoutInSeconds, maxReadCount: 10);
