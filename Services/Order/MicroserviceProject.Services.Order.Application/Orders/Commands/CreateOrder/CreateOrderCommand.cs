@@ -79,7 +79,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
 
             var jsonKafkaMessage = JsonSerializer.Serialize(orderResponseForElastic);
             var kafkaProducer = new KafkaProducer(_config.Kafka.Address);
-            kafkaProducer.SendToKafkaWithMessage(jsonKafkaMessage,_config.Kafka.TopicName["OrderID"]);
+            await kafkaProducer.SendToKafkaWithMessage(jsonKafkaMessage,_config.Kafka.TopicName["OrderID"]);
             
             // Geçici => Datayı okuma
             var kafkaURL = _config.Kafka.Address; // Kafka broker'ınıza göre değiştirin
