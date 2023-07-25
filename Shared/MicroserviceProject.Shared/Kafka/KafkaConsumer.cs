@@ -1,10 +1,11 @@
 ﻿using Confluent.Kafka;
+using Serilog;
 
 namespace MicroserviceProject.Shared.Kafka;
 
 public class KafkaConsumer : IDisposable
 {
-   private IConsumer<string, string> consumer;
+    private IConsumer<string, string> consumer;
     private List<TopicPartitionOffset> messageOffsets;
 
     public KafkaConsumer(string kafkaURL, string groupId, int bulkConsumeMaxTimeoutInSeconds)
@@ -26,7 +27,8 @@ public class KafkaConsumer : IDisposable
         consumer.Subscribe(topics);
     }
 
-    public List<Message<string, string>> ConsumeFromTopics(int bulkConsumeIntervalInSeconds, int bulkConsumeMaxTimeoutInSeconds, int maxReadCount)
+    public List<Message<string, string>> ConsumeFromTopics(int bulkConsumeIntervalInSeconds,
+        int bulkConsumeMaxTimeoutInSeconds, int maxReadCount)
     {
         var messages = new List<Message<string, string>>();
         var timeoutCount = 0;
@@ -45,6 +47,7 @@ public class KafkaConsumer : IDisposable
                     {
                         break;
                     }
+
                     continue;
                 }
 
@@ -63,7 +66,7 @@ public class KafkaConsumer : IDisposable
             }
             catch (ConsumeException e)
             {
-                Console.WriteLine($"Kafka read messages failed. | Error: {e.Error.Reason}");
+                Log.Error("Kafka read messages failed. | Error: {ErrorReason}", e.Error.Reason);
                 if (messages.Count > 0)
                 {
                     break;

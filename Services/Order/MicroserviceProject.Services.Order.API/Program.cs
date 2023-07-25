@@ -1,7 +1,9 @@
+using Confluent.Kafka;
 using MicroserviceProject.Services.Order.Application;
 using MicroserviceProject.Services.Order.Infrastructure;
 using MicroserviceProject.Shared.Extensions;
 using Serilog;
+using Config = MicroserviceProject.Shared.Configs.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
 Log.Information("Application is starting...");
 Log.Information("Now listening on: http://localhost:5011");
+
+// Create Config Class to use with options pattern
+builder.Services.Configure<Config>(builder.Configuration.GetSection("Config"));
 
 // Add services to the container.
 builder.Services.AddInfrastructureServices(builder.Configuration);

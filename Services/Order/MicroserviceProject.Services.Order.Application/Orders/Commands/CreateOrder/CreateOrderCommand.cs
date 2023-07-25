@@ -1,12 +1,16 @@
-﻿using MediatR;
+﻿
+using System.Text.Json;
+using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
-using MicroserviceProject.Services.Order.Application.Dtos;
 using MicroserviceProject.Services.Order.Application.Dtos.Requests;
 using MicroserviceProject.Services.Order.Application.Dtos.Responses;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
+using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Exceptions;
+using MicroserviceProject.Shared.Kafka;
 using MicroserviceProject.Shared.Responses;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
@@ -22,11 +26,13 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
 {
     private readonly IOrderDbContext _context;
     private readonly HttpClient _httpClient;
+    private readonly Config _config;
 
-    public CreateOrderCommandHandler(IOrderDbContext context,HttpClient httpClient)
+    public CreateOrderCommandHandler(IOrderDbContext context,HttpClient httpClient,IOptions<Config> config)
     {
         _context = context;
         _httpClient = httpClient;
+        _config = config.Value;
     }
 
     public async Task<CustomResponse<CreatedOrderResponse>> Handle(CreateOrderCommand request,
@@ -35,12 +41,11 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
         try
         {
             // User Check
-            string userMicroserviceBaseUrl = "http://localhost:5012/api/users/";
-            string requestUrl = $"{userMicroserviceBaseUrl}{request.UserId}";
-            HttpResponseMessage response = await _httpClient.GetAsync(requestUrl,cancellationToken);
-            
-            if (!response.IsSuccessStatusCode)
-                throw new NotFoundException("order with userid",request.UserId);
+            // string requestUrl = $"{_config.HttpClient.UserApi}/{request.UserId}";
+            // HttpResponseMessage response = await _httpClient.GetAsync(requestUrl,cancellationToken);
+            //
+            // if (!response.IsSuccessStatusCode)
+            //     throw new NotFoundException("order with userid",request.UserId);
             
             var newAddress = new Address(
                 request.Address.Province,
@@ -64,7 +69,37 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
 
             await _context.Orders.AddAsync(newOrder, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            
+            // Mesajı kafkaya gönderiyoruz.
+            var orderResponseForElastic = new OrderResponseForElastic
+            {
+                OrderId = newOrder.Id,
+                Status = "Created"
+            };
 
+            var jsonKafkaMessage = JsonSerializer.Serialize(orderResponseForElastic);
+            var kafkaProducer = new KafkaProducer(_config.Kafka.Address);
+            kafkaProducer.SendToKafkaWithMessage(jsonKafkaMessage,_config.Kafka.TopicName["OrderID"]);
+            
+            // Geçici => Datayı okuma
+            var kafkaURL = _config.Kafka.Address; // Kafka broker'ınıza göre değiştirin
+            var groupId = "myGroup"; // Tüketici grubu adını belirtin
+            var bulkConsumeMaxTimeoutInSeconds = 5; // Maksimum zaman aşımı süresini belirtin
+
+            using (var kafkaConsumer = new KafkaConsumer(kafkaURL, groupId, bulkConsumeMaxTimeoutInSeconds))
+            {
+                var topics = new List<string> { _config.Kafka.TopicName["OrderID"] }; // Dinlemek istediğiniz topic adını belirtin
+                kafkaConsumer.SubscribeToTopics(topics);
+
+                var messages = kafkaConsumer.ConsumeFromTopics(bulkConsumeIntervalInSeconds: 30, bulkConsumeMaxTimeoutInSeconds: bulkConsumeMaxTimeoutInSeconds, maxReadCount: 10);
+                foreach (var message in messages)
+                {
+                    Console.WriteLine($"Received message: {message.Value}");
+                }
+
+                kafkaConsumer.CommitOffsets();
+            }
+            
             return CustomResponse<CreatedOrderResponse>.Success(201, new CreatedOrderResponse { OrderId = newOrder.Id });
         }
         catch (Exception ex)
