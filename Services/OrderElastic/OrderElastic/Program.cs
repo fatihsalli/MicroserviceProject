@@ -2,16 +2,27 @@
 
 using System.Net.Http.Json;
 using System.Text.Json;
+using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
 using MicroserviceProject.Shared.Responses;
 using OrderElastic.Dtos;
 using OrderElastic.Service;
 
+
+// JSON dosyasının yolunu belirtin
+string configFile = "configs.json";
+
+// JSON dosyasını okuyup içeriğini alın
+string jsonConfig = File.ReadAllText(configFile);
+
+// JSON dosyasındaki verileri Config modeline doldurun
+Config config = JsonSerializer.Deserialize<Config>(jsonConfig);
+
+var orderElasticService = new OrderElasticService(config);
+
+
 while (true)
 {
-    var orderElasticService = new OrderElasticService();
-    
-    
     // Geçici => Datayı okuma
     var kafkaURL = "localhost:9092"; // Kafka broker'ınıza göre değiştirin
     var groupId = "myGroup"; // Tüketici grubu adını belirtin
