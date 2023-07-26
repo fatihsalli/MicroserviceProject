@@ -41,11 +41,11 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
         try
         {
             // User Check
-            // string requestUrl = $"{_config.HttpClient.UserApi}/{request.UserId}";
-            // HttpResponseMessage response = await _httpClient.GetAsync(requestUrl,cancellationToken);
-            //
-            // if (!response.IsSuccessStatusCode)
-            //     throw new NotFoundException("order with userid",request.UserId);
+            string requestUrl = $"{_config.HttpClient.UserApi}/{request.UserId}";
+            HttpResponseMessage response = await _httpClient.GetAsync(requestUrl,cancellationToken);
+            
+            if (!response.IsSuccessStatusCode)
+                throw new NotFoundException("order with userid",request.UserId);
             
             var newAddress = new Address(
                 request.Address.Province,
