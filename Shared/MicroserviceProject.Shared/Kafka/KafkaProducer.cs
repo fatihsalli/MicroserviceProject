@@ -4,7 +4,7 @@ using Serilog;
 namespace MicroserviceProject.Shared.Kafka;
 
 /// <summary>
-/// KafkaProducer sınıfı "Confluent.Kafka" paketini kullanarak Kafka'ya mesaj gönderebilmemizi sağlar. Constructor üzerinden üretilen "Producer" üzerinden "SendToKafkaWithMessage" metodu ile mesaj, topic ile birlikte gönderilir. "IDisposable" sınıfından miras alındı using ile kullandığımızda işimiz bittiğinde otomatik dispose edebilmek için.
+/// KafkaProducer sınıfı "Confluent.Kafka" paketini kullanarak Kafka'ya mesaj gönderebilmemizi sağlar. Constructor üzerinden üretilen "Producer" üzerinden "SendToKafkaWithMessageAsync" metodu ile mesaj, topic ile birlikte gönderilir. "IDisposable" sınıfından miras alındı using ile kullandığımızda işimiz bittiğinde otomatik dispose edebilmek için.
 /// </summary>
 public class KafkaProducer : IDisposable
 {
@@ -16,7 +16,7 @@ public class KafkaProducer : IDisposable
         _producer = new ProducerBuilder<string, string>(config).Build();
     }
 
-    public async Task SendToKafkaWithMessage(string message, string topic)
+    public async Task SendToKafkaWithMessageAsync(string message, string topic)
     {
         try
         {

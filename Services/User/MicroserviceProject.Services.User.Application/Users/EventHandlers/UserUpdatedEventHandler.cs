@@ -1,6 +1,15 @@
-﻿namespace MicroserviceProject.Services.User.Application.Users.EventHandlers;
+﻿using MediatR;
+using MicroserviceProject.Services.User.Domain.Events;
+using Serilog;
 
-public class UserUpdatedEventHandler
+namespace MicroserviceProject.Services.User.Application.Users.EventHandlers;
+
+public class UserUpdatedEventHandler : INotificationHandler<UserUpdatedEvent>
 {
-    
+    public Task Handle(UserUpdatedEvent notification, CancellationToken cancellationToken)
+    {
+        Log.Information("MicroserviceProject Domain Event: {DomainEvent}", notification.GetType().Name);
+
+        return Task.CompletedTask;
+    }
 }

@@ -23,7 +23,7 @@ public class OrderElasticRoot
     public async Task StartConsumeAndSaveOrderAsync()
     {
         // Dinlemek istediğimiz topic adını belirtiyoruz.
-        var topics = new List<string> { _config.Kafka.TopicName["OrderID"] };
+        var topics = new List<string> { _config.Kafka.TopicName["OrderModel"] };
         _kafkaConsumer.SubscribeToTopics(topics);
 
         while (true)
@@ -33,12 +33,10 @@ public class OrderElasticRoot
 
             foreach (var message in messages)
             {
-                var orderResponseForElastic = JsonSerializer.Deserialize<OrderResponseForElastic>(message.Value);
-                var orderEventService = new OrderEventService(_config);
-                var orderResponse =
-                    await orderEventService.GetOrderWithHttpClientAsync(orderResponseForElastic.OrderId);
-                _orderElasticService.SaveOrderToElasticsearch(orderResponse);
+                var orderResponse = JsonSerializer.Deserialize<OrderResponse>(message.Value);
                 Log.Information($"Received message: {message.Value}");
+                _orderElasticService.SaveOrderToElasticsearch(orderResponse);
+                Log.Information($"Order model saved on elasticsearch: {orderResponse.Id}");
             }
             
             // Aynı mesajların tekrar okunmaması için message offsetlerini commitleyip temizliyoruz.

@@ -70,6 +70,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
             await _context.Orders.AddAsync(newOrder, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             
+            // Kafka ile gönderme işini event tarafında yapabiliriz.
             // Mesajı kafkaya gönderiyoruz.
             var orderResponseForElastic = new OrderResponseForElastic
             {
@@ -79,7 +80,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
 
             var jsonKafkaMessage = JsonSerializer.Serialize(orderResponseForElastic);
             var kafkaProducer = new KafkaProducer(_config.Kafka.Address);
-            await kafkaProducer.SendToKafkaWithMessage(jsonKafkaMessage,_config.Kafka.TopicName["OrderID"]);
+            await kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage,_config.Kafka.TopicName["OrderID"]);
             
             return CustomResponse<CreatedOrderResponse>.Success(201, new CreatedOrderResponse { OrderId = newOrder.Id });
         }

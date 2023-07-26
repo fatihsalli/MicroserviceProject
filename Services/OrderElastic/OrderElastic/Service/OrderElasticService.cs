@@ -19,14 +19,7 @@ public class OrderElasticService
 
     public void SaveOrderToElasticsearch(OrderResponse order)
     {
-        // Elasticsearch bağlantısı ve indeksleme işlemi için yapılandırma ayarları
-        var settings = new ConnectionSettings(new Uri(_config.Elasticsearch.Addresses["Address-1"]))
-            .DefaultIndex(_config.Elasticsearch.IndexName["OrderSave"]);
-
-        // Elasticsearch bağlantı nesnesi oluşturma
-        var esClient = new ElasticClient(settings);
-        
-        var indexResponse = esClient.IndexDocument(order);
+        var indexResponse = _client.IndexDocument(order);
 
         // Hata kontrolü
         if (!indexResponse.IsValid)
@@ -43,15 +36,8 @@ public class OrderElasticService
 
     public void DeleteOrderFromElasticsearch(string orderId)
     {
-        // Elasticsearch bağlantısı ve silme işlemi için yapılandırma ayarları
-        var settings = new ConnectionSettings(new Uri(_config.Elasticsearch.Addresses["Address 1"]))
-            .DefaultIndex(_config.Elasticsearch.IndexName["OrderSave"]);
-
-        // Elasticsearch bağlantı nesnesi oluşturma
-        var esClient = new ElasticClient(settings);
-
         // Elasticsearch'den silme işlemi
-        var deleteResponse = esClient.Delete<byte[]>(orderId, d => d
+        var deleteResponse = _client.Delete<byte[]>(orderId, d => d
                 .Refresh(Refresh.True) // Elasticsearch'ten silindikten sonra hemen güncellemesi için
         );
 
