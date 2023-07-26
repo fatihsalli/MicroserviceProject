@@ -7,17 +7,21 @@ using Serilog;
 
 namespace OrderElastic.Roots;
 
+/// <summary>
+/// OrderElasticRoot sınıfım Kafka'ya "OrderEventRoot" tarafından gönderilen OrderResponse modelimi içeren mesajımı dinlemektir. Bu mesajı aldıktan sonra da elasticsearch'e kayıt (Create veya update) işlemini yapmaktadır. 
+/// </summary>
 public class OrderElasticRoot
 {
     private readonly Config _config;
     private readonly KafkaConsumer _kafkaConsumer;
     private readonly OrderElasticService _orderElasticService;
 
-    public OrderElasticRoot(Config config, KafkaConsumer kafkaConsumer, OrderElasticService orderElasticService)
+    public OrderElasticRoot()
     {
-        _config = config;
-        _kafkaConsumer = kafkaConsumer;
-        _orderElasticService = orderElasticService;
+        var setup = new Setup.Setup();
+        _config = setup.CreateConfig();
+        _kafkaConsumer = setup.CreateKafkaConsumer(_config);
+        _orderElasticService = setup.CreateOrderElasticService(_config);
     }
 
     public async Task StartConsumeAndSaveOrderAsync()

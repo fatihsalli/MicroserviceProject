@@ -15,13 +15,14 @@ public class OrderEventRoot
     private readonly OrderElasticService _orderElasticService;
     private readonly OrderEventService _orderEventService;
 
-    public OrderEventRoot(Config config, KafkaProducer kafkaProducer, KafkaConsumer kafkaConsumer, OrderElasticService orderElasticService,OrderEventService orderEventService)
+    public OrderEventRoot()
     {
-        _config = config;
-        _kafkaProducer = kafkaProducer;
-        _kafkaConsumer = kafkaConsumer;
-        _orderElasticService = orderElasticService;
-        _orderEventService = orderEventService;
+        var setup = new Setup.Setup();
+        _config = setup.CreateConfig();
+        _orderElasticService = setup.CreateOrderElasticService(_config);
+        _orderEventService = setup.CreateOrderEventService(_config);
+        _kafkaProducer = setup.CreateKafkaProducer(_config);
+        _kafkaConsumer = setup.CreateKafkaConsumer(_config);
     }
 
     public async Task StartGetOrderAndPushOrder()
@@ -42,6 +43,7 @@ public class OrderEventRoot
                 
                 switch (orderResponseForElastic.Status)
                 {
+                    // Gelen mesaj status değeri "Created" veya "Updated" ise "HttpClient" ile order modelimi alıyorum. Bu order modelimi tekrar kafkaya gönderiyorum. Bunun sebebi de bu gönderdiğim ordermodeli birden fazla servis dinleyebilir ve işlem yapabilir.
                     case "Created":
                     case "Updated":
                         var orderResponse = await _orderEventService.GetOrderWithHttpClientAsync(orderResponseForElastic.OrderId);
@@ -50,6 +52,8 @@ public class OrderEventRoot
                         await _kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage,_config.Kafka.TopicName["OrderModel"]);
                         Log.Information($"Pushed order model: {orderResponse.Id} | Topic: {_config.Kafka.TopicName["OrderModel"]}");
                         break;
+                    
+                    // Gelen mesaj status değeri "Deleted" ise elasticsearch'den direkt olarak siliyorum.
                     case "Deleted":
                         _orderElasticService.DeleteOrderFromElasticsearch(orderResponseForElastic.OrderId);
                         Log.Information($"Deleted order: {orderResponseForElastic.OrderId}");

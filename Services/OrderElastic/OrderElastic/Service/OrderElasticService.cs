@@ -1,36 +1,34 @@
-﻿using System.Text;
-using OrderElastic.Dtos;
+﻿using OrderElastic.Dtos;
 using Elasticsearch.Net;
 using MicroserviceProject.Shared.Configs;
 using Nest;
+using Serilog;
 
 namespace OrderElastic.Service;
 
 public class OrderElasticService
 {
-    private readonly Config _config;
     private readonly IElasticClient _client;
 
-    public OrderElasticService(Config config,IElasticClient client)
+    public OrderElasticService(IElasticClient client)
     {
-        _config = config;
         _client = client;
     }
 
     public void SaveOrderToElasticsearch(OrderResponse order)
     {
-        var indexResponse = _client.IndexDocument(order);
+        try
+        {
+            var indexResponse = _client.IndexDocument(order);
 
-        // Hata kontrolü
-        if (!indexResponse.IsValid)
-        {
-            Console.WriteLine($"Elasticsearch'e kayıt işlemi başarısız oldu. Hata: {indexResponse.DebugInformation}");
-            // Burada hata durumuna göre işlemler yapabilirsiniz.
+            if (!indexResponse.IsValid)
+                throw new Exception(indexResponse.ServerError.Error.Reason);
+            Log.Information("Order model successfully saved on elasticsearch. ID: {OrderId}",order.Id);
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine($"Sipariş Elasticsearch'e başarıyla kaydedildi. ID: {order.Id}");
-            // Başarılı kayıt durumunda yapılacak işlemler
+            Log.Error(ex, "SaveOrderToElasticsearch exception. Internal Server Error");
+            throw new Exception("Something went wrong.");
         }
     }
 

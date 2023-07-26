@@ -22,30 +22,30 @@ public class Setup
     }
 
     /// <summary>
-    /// Config modeli üzerinden gerekli bilgiler ile "IElasticClient" nesnesi oluşturuyoruz. Elasticservice sınıfımızda kullanmak için.
+    /// "Config" parametreleri ile birlikte OrderElasticService nesnemizi oluşturuyoruz.
     /// </summary>
     /// <param name="config"></param>
     /// <returns></returns>
-    public IElasticClient CreateElasticClient(Config config)
+    public OrderElasticService CreateOrderElasticService(Config config)
     {
         // Elasticsearch bağlantısı ve indeksleme işlemi için yapılandırma ayarları
         var settings = new ConnectionSettings(new Uri(config.Elasticsearch.Addresses["Address-1"]))
             .DefaultIndex(config.Elasticsearch.IndexName["OrderSave"]);
         
         var client = new ElasticClient(settings);
-        return client;
+        var orderElasticService = new OrderElasticService(client);
+        return orderElasticService;
     }
-
+    
     /// <summary>
-    /// "IElasticClient" ve "Config" parametreleri ile birlikte OrderElasticService nesnemizi oluşturuyoruz.
+    /// "Config" parametresi ile birlikte OrderEventService nesnemizi oluşturuyoruz.
     /// </summary>
-    /// <param name="client"></param>
     /// <param name="config"></param>
     /// <returns></returns>
-    public OrderElasticService CreateOrderElasticService(IElasticClient client,Config config)
+    public OrderEventService CreateOrderEventService(Config config)
     {
-        var orderElasticService = new OrderElasticService(config,client);
-        return orderElasticService;
+        var orderEventService = new OrderEventService(config);
+        return orderEventService;
     }
     
     /// <summary>
@@ -60,6 +60,16 @@ public class Setup
         return kafkaConsumer;
     }
     
-    
+    /// <summary>
+    /// Config modeli üzerinden gerekli bilgiler ile Shared.KafkaProducer nesnesini oluşturuyoruz.
+    /// </summary>
+    /// <param name="config"></param>
+    /// <returns></returns>
+    public KafkaProducer CreateKafkaProducer(Config config)
+    {
+        var kafkaUrl = config.Kafka.Address;
+        var kafkaProducer = new KafkaProducer(kafkaUrl);
+        return kafkaProducer;
+    }
     
 }
