@@ -9,10 +9,12 @@ namespace OrderElastic.Service;
 public class OrderElasticService
 {
     private readonly Config _config;
+    private readonly IElasticClient _client;
 
-    public OrderElasticService(Config config)
+    public OrderElasticService(Config config,IElasticClient client)
     {
         _config = config;
+        _client = client;
     }
 
     public void SaveOrderToElasticsearch(OrderResponse order)

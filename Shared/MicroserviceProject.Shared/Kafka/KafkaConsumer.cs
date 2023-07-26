@@ -3,17 +3,20 @@ using Serilog;
 
 namespace MicroserviceProject.Shared.Kafka;
 
+/// <summary>
+/// KafkaConsumer mesajları dinlediğimiz sınıftır. Constructor'dan alınan bilgiler ile birlikte "IConsumer" oluşturulur ve bunun üzerinden mesajlar tüketilir.
+/// </summary>
 public class KafkaConsumer : IDisposable
 {
     private IConsumer<string, string> consumer;
     private List<TopicPartitionOffset> messageOffsets;
 
-    public KafkaConsumer(string kafkaURL, string groupId, int bulkConsumeMaxTimeoutInSeconds)
+    public KafkaConsumer(string kafkaUrl)
     {
         var config = new ConsumerConfig
         {
-            BootstrapServers = kafkaURL,
-            GroupId = groupId,
+            BootstrapServers = kafkaUrl,
+            GroupId = "myGroup",
             AutoOffsetReset = AutoOffsetReset.Earliest,
             EnableAutoCommit = false // Disable auto commit to manually commit offsets
         };
