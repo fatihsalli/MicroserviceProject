@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using OrderElastic.Roots;
+﻿using OrderElastic.Roots;
 using OrderElastic.Setup;
 
 var setup = new Setup();
@@ -11,3 +9,5 @@ var kafkaConsumer = setup.CreateKafkaConsumer(config);
 var orderElasticRoot = new OrderElasticRoot(config, kafkaConsumer, orderElasticService);
 
 await orderElasticRoot.StartConsumeAndSaveOrderAsync();
+
+

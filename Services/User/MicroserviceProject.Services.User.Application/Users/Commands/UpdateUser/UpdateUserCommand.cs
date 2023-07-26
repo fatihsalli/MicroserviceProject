@@ -3,6 +3,7 @@ using MediatR;
 using MicroserviceProject.Services.User.Application.Common;
 using MicroserviceProject.Services.User.Application.Common.Interfaces;
 using MicroserviceProject.Services.User.Application.Dtos.Requests;
+using MicroserviceProject.Services.User.Domain.Events;
 using MicroserviceProject.Services.User.Domain.ValueObjects;
 using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Responses;
@@ -69,6 +70,17 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Custo
             if (result.ModifiedCount < 1)
                 throw new Exception("User cannot update!");
             
+            // Publish etmek için güncel user modeline ihtiyacım var.
+            var newUser = await _context.Users
+                .Find(x=>x.Id==request.Id)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (newUser == null)
+                throw new NotFoundException("user",request.Id);
+            
+            newUser.AddDomainEvent(new UserUpdatedEvent(newUser));
+            await _context.PublishDomainEvents(newUser);
+
             return CustomResponse<bool>.Success(200, true);
         }
         catch (Exception ex)

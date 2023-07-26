@@ -8,10 +8,10 @@ namespace MicroserviceProject.Shared.Kafka;
 /// </summary>
 public class KafkaConsumer : IDisposable
 {
-    private IConsumer<string, string> _consumer;
+    private readonly IConsumer<string, string> _consumer;
     
     // Kafka mesajlarının konumunu takip etmek için liste
-    private List<TopicPartitionOffset> _messageOffsets;
+    private readonly List<TopicPartitionOffset> _messageOffsets;
 
     public KafkaConsumer(string kafkaUrl)
     {

@@ -2,11 +2,11 @@
 
 namespace MicroserviceProject.Services.User.Domain.Events;
 
-public class UserCompletedEvent : BaseEvent
+public class UserUpdatedEvent : BaseEvent
 {
     public Entities.User User { get; }
 
-    public UserCompletedEvent(Entities.User user)
+    public UserUpdatedEvent(Entities.User user)
     {
         User = user;
     }
