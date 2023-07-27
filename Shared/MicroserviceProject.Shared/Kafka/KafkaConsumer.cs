@@ -102,11 +102,22 @@ public class KafkaConsumer : IDisposable
     {
         if (_messageOffsets.Count > 0)
         {
-            // Tüketilen mesajların konumlarını Kafka'ya göndererek ofsetleri kaydediyoruz
-            _consumer.Commit(_messageOffsets);
+            try
+            {
+                // Tüketilen mesajların konumlarını Kafka'ya göndererek ofsetleri kaydediyoruz
+                _consumer.Commit(_messageOffsets);
             
-            // Kaydedilen ofsetleri temizliyoruz
-            _messageOffsets.Clear();
+                // Kaydedilen ofsetleri temizliyoruz
+                _messageOffsets.Clear();
+            }
+            catch (ProduceException<Null, string> e)
+            {
+                Log.Error("Kafka commit offsets failed. | Error: {ErrorReason}", e.Error.Reason);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while committing offsets");
+            }
         }
     }
 
