@@ -1,5 +1,4 @@
-﻿
-using System.Text.Json;
+﻿using System.Text.Json;
 using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Dtos.Requests;
@@ -22,17 +21,20 @@ public class CreateOrderCommand : IRequest<CustomResponse<CreatedOrderResponse>>
     public AddressRequest Address { get; set; }
 }
 
+// TODO: Handler ları ayrı classlarda yapılacak.
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CustomResponse<CreatedOrderResponse>>
 {
     private readonly IOrderDbContext _context;
     private readonly HttpClient _httpClient;
     private readonly Config _config;
+    private readonly KafkaProducer _kafkaProducer;
 
-    public CreateOrderCommandHandler(IOrderDbContext context,HttpClient httpClient,IOptions<Config> config)
+    public CreateOrderCommandHandler(IOrderDbContext context, HttpClient httpClient, IOptions<Config> config)
     {
         _context = context;
         _httpClient = httpClient;
         _config = config.Value;
+        _kafkaProducer = new KafkaProducer(_config.Kafka.Address);
     }
 
     public async Task<CustomResponse<CreatedOrderResponse>> Handle(CreateOrderCommand request,
@@ -42,11 +44,11 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
         {
             // User Check
             string requestUrl = $"{_config.HttpClient.UserApi}/{request.UserId}";
-            HttpResponseMessage response = await _httpClient.GetAsync(requestUrl,cancellationToken);
-            
+            HttpResponseMessage response = await _httpClient.GetAsync(requestUrl, cancellationToken);
+
             if (!response.IsSuccessStatusCode)
-                throw new NotFoundException("order with userid",request.UserId);
-            
+                throw new NotFoundException("order with userid", request.UserId);
+
             var newAddress = new Address(
                 request.Address.Province,
                 request.Address.District,
@@ -69,7 +71,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
 
             await _context.Orders.AddAsync(newOrder, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-            
+
             // Kafka ile gönderme işini event tarafında yapabiliriz.
             // Mesajı kafkaya gönderiyoruz.
             var orderResponseForElastic = new OrderResponseForElastic
@@ -79,10 +81,11 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
             };
 
             var jsonKafkaMessage = JsonSerializer.Serialize(orderResponseForElastic);
-            var kafkaProducer = new KafkaProducer(_config.Kafka.Address);
-            await kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage,_config.Kafka.TopicName["OrderID"]);
-            
-            return CustomResponse<CreatedOrderResponse>.Success(201, new CreatedOrderResponse { OrderId = newOrder.Id });
+
+            await _kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage, _config.Kafka.TopicName["OrderID"]);
+
+            return CustomResponse<CreatedOrderResponse>.Success(201,
+                new CreatedOrderResponse { OrderId = newOrder.Id });
         }
         catch (Exception ex)
         {
@@ -91,7 +94,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
                 Log.Information(ex, "CreateOrderCommandHandler exception. Not Found Error");
                 throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
             }
-            
+
             Log.Error(ex, "CreateOrderCommandHandler Exception");
             throw new Exception($"Something went wrong!");
         }

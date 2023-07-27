@@ -1,4 +1,3 @@
-using Confluent.Kafka;
 using MicroserviceProject.Services.Order.Application;
 using MicroserviceProject.Services.Order.Infrastructure;
 using MicroserviceProject.Shared.Extensions;
