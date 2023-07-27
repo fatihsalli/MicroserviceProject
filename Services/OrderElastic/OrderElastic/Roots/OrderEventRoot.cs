@@ -25,11 +25,13 @@ public class OrderEventRoot
         _kafkaConsumer = setup.CreateKafkaConsumer(_config);
     }
 
-    public async Task StartGetOrderAndPushOrder()
+    public async Task StartGetOrderAndPushOrderAsync()
     {
         // Dinlemek istediğimiz topic adını belirtiyoruz.
         var topics = new List<string> { _config.Kafka.TopicName["OrderID"] };
         _kafkaConsumer.SubscribeToTopics(topics);
+        
+        Log.Information("Order with topic [{TopicName}] is listening",_config.Kafka.TopicName["OrderID"]);
 
         while (true)
         {

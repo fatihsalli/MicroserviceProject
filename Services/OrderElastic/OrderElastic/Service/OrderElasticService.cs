@@ -15,11 +15,11 @@ public class OrderElasticService
         _client = client;
     }
 
-    public void SaveOrderToElasticsearch(OrderResponse order)
+    public async Task SaveOrderToElasticsearch(OrderResponse order)
     {
         try
         {
-            var indexResponse = _client.IndexDocument(order);
+            var indexResponse = await _client.IndexDocumentAsync(order);
 
             if (!indexResponse.IsValid)
                 throw new Exception(indexResponse.ServerError.Error.Reason);
