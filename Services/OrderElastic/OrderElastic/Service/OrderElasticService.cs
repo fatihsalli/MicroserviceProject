@@ -22,7 +22,8 @@ public class OrderElasticService
             var indexResponse = await _client.IndexDocumentAsync(order);
 
             if (!indexResponse.IsValid)
-                throw new Exception(indexResponse.ServerError.Error.Reason);
+                throw new Exception(indexResponse.DebugInformation);
+            
             Log.Information("Order model successfully saved on elasticsearch. ID: {OrderId}",order.Id);
         }
         catch (Exception ex)
@@ -34,22 +35,22 @@ public class OrderElasticService
 
     public void DeleteOrderFromElasticsearch(string orderId)
     {
-        // Elasticsearch'den silme işlemi
-        var deleteResponse = _client.Delete<byte[]>(orderId, d => d
-                .Refresh(Refresh.True) // Elasticsearch'ten silindikten sonra hemen güncellemesi için
-        );
-
-        // Hata kontrolü
-        if (!deleteResponse.IsValid)
+        try
         {
-            Console.WriteLine(
-                $"Elasticsearch'den silme işlemi başarısız oldu. Hata: {deleteResponse.DebugInformation}");
-            // Burada hata durumuna göre işlemler yapabilirsiniz.
+            // Elasticsearch'den silme işlemi
+            var deleteResponse = _client.Delete<byte[]>(orderId, d => d
+                    .Refresh(Refresh.True) // Elasticsearch'ten silindikten sonra hemen güncellemesi için
+            );
+            
+            if (!deleteResponse.IsValid)
+                throw new Exception(deleteResponse.DebugInformation);
+            
+            Log.Information("Order model successfully deleted from elasticsearch. ID: {OrderId}",orderId);
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine($"Sipariş Elasticsearch'den başarıyla silindi. ID: {orderId}");
-            // Başarılı silme durumunda yapılacak işlemler
+            Log.Error(ex, "DeleteOrderFromElasticsearch exception. Internal Server Error");
+            throw new Exception("Something went wrong.");
         }
     }
 }

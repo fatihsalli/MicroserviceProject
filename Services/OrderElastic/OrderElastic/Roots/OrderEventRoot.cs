@@ -30,8 +30,8 @@ public class OrderEventRoot
         // Dinlemek istediğimiz topic adını belirtiyoruz.
         var topics = new List<string> { _config.Kafka.TopicName["OrderID"] };
         _kafkaConsumer.SubscribeToTopics(topics);
-        
-        Log.Information("Order with topic [{TopicName}] is listening",_config.Kafka.TopicName["OrderID"]);
+
+        Log.Information("Order with topic [{TopicName}] is listening", _config.Kafka.TopicName["OrderID"]);
 
         while (true)
         {
@@ -41,27 +41,29 @@ public class OrderEventRoot
             foreach (var message in messages)
             {
                 var orderResponseForElastic = JsonSerializer.Deserialize<OrderResponseForElastic>(message.Value);
-                Log.Information($"Received message: {message.Value}");
-                
+                Log.Information("Received message: {MessageValue}", message.Value);
+
                 switch (orderResponseForElastic.Status)
                 {
                     // Gelen mesaj status değeri "Created" veya "Updated" ise "HttpClient" ile order modelimi alıyorum. Bu order modelimi tekrar kafkaya gönderiyorum. Bunun sebebi de bu gönderdiğim ordermodeli birden fazla servis dinleyebilir ve işlem yapabilir.
                     case "Created":
                     case "Updated":
-                        var orderResponse = await _orderEventService.GetOrderWithHttpClientAsync(orderResponseForElastic.OrderId);
-                        _orderElasticService.SaveOrderToElasticsearch(orderResponse);
+                        var orderResponse =
+                            await _orderEventService.GetOrderWithHttpClientAsync(orderResponseForElastic.OrderId);
                         var jsonKafkaMessage = JsonSerializer.Serialize(orderResponse);
-                        await _kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage,_config.Kafka.TopicName["OrderModel"]);
-                        Log.Information($"Pushed order model: {orderResponse.Id} | Topic: {_config.Kafka.TopicName["OrderModel"]}");
+                        await _kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage,
+                            _config.Kafka.TopicName["OrderModel"]);
+                        Log.Information(
+                            "Pushed order model: {OrderResponseId} | Topic: {TopicName}",orderResponse.Id,_config.Kafka.TopicName["OrderModel"]);
                         break;
-                    
+
                     // Gelen mesaj status değeri "Deleted" ise elasticsearch'den direkt olarak siliyorum.
                     case "Deleted":
                         _orderElasticService.DeleteOrderFromElasticsearch(orderResponseForElastic.OrderId);
-                        Log.Information($"Deleted order: {orderResponseForElastic.OrderId}");
                         break;
                     default:
-                        Log.Error("Unknown order response status. | Status: {OrderStatus}", orderResponseForElastic.Status);
+                        Log.Error("Unknown order response status. | Status: {OrderStatus}",
+                            orderResponseForElastic.Status);
                         break;
                 }
             }
