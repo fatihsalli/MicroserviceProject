@@ -2,7 +2,7 @@
 using MicroserviceProject.Services.Order.Domain.Events;
 using Serilog;
 
-namespace MicroserviceProject.Services.Order.Application.Orders.EventHandlers;
+namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.EventHandlers;
 
 public class OrderCreatedEventHandler : INotificationHandler<OrderCreatedEvent>
 {

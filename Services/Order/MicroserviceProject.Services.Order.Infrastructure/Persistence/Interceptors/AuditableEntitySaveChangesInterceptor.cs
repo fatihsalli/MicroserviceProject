@@ -6,7 +6,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 namespace MicroserviceProject.Services.Order.Infrastructure.Persistence.Interceptors;
 
 /// <summary>
-/// SavingChanges veya SavingChangesAsync metotları için "interceptor" metotlarımızı oluşturuyoruz. Amacımız "CreatedAt" veya "UpdatedAt" gibi değerleri business katmanında tek tek vermek yerine daha merkezi bir noktadan kontrol etmek.
+///     SavingChanges veya SavingChangesAsync metotları için "interceptor" metotlarımızı oluşturuyoruz. Amacımız
+///     "CreatedAt" veya "UpdatedAt" gibi değerleri business katmanında tek tek vermek yerine daha merkezi bir noktadan
+///     kontrol etmek.
 /// </summary>
 public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 {
@@ -46,15 +48,18 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
     }
 }
 
-
 public static class Extensions
 {
     /// <summary>
-    /// Owned varlık nesnelerinde herhangi bir değişim olup olmadığını kontrol etmek için kullanılır. Örneğin "Order" modelinde sadece value object olan "Address" kısmında bir değişiklik olduğu taktirde bu metot sayesinde "UpdateEntities" metodunda bu durumu yakalayabiliyoruz.
+    ///     Owned varlık nesnelerinde herhangi bir değişim olup olmadığını kontrol etmek için kullanılır. Örneğin "Order"
+    ///     modelinde sadece value object olan "Address" kısmında bir değişiklik olduğu taktirde bu metot sayesinde
+    ///     "UpdateEntities" metodunda bu durumu yakalayabiliyoruz.
     /// </summary>
-    public static bool HasChangedOwnedEntities(this EntityEntry entry) =>
-        entry.References.Any(r => 
-            r.TargetEntry != null && 
-            r.TargetEntry.Metadata.IsOwned() && 
+    public static bool HasChangedOwnedEntities(this EntityEntry entry)
+    {
+        return entry.References.Any(r =>
+            r.TargetEntry != null &&
+            r.TargetEntry.Metadata.IsOwned() &&
             (r.TargetEntry.State == EntityState.Added || r.TargetEntry.State == EntityState.Modified));
+    }
 }

@@ -1,8 +1,8 @@
 using MicroserviceProject.Services.Order.Application;
 using MicroserviceProject.Services.Order.Infrastructure;
+using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Extensions;
 using Serilog;
-using Config = MicroserviceProject.Shared.Configs.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 

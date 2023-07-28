@@ -11,10 +11,9 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrder
 
 public record GetOrderByIdQuery(string Id) : IRequest<CustomResponse<OrderResponse>>
 {
-
 }
 
-public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery,CustomResponse<OrderResponse>>
+public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, CustomResponse<OrderResponse>>
 {
     private readonly IOrderDbContext _context;
     private readonly IMapper _mapper;
@@ -25,22 +24,23 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery,Custom
         _mapper = mapper;
     }
 
-    public async Task<CustomResponse<OrderResponse>> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CustomResponse<OrderResponse>> Handle(GetOrderByIdQuery request,
+        CancellationToken cancellationToken)
     {
         try
         {
             var order = await _context.Orders
                 .AsNoTracking()
                 .Include(x => x.OrderItems)
-                .Where(x=>x.Id==request.Id)
+                .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (order == null)
-                throw new NotFoundException("order",request.Id);
+                throw new NotFoundException("order", request.Id);
 
             var orderResponse = _mapper.Map<OrderResponse>(order);
 
-            return CustomResponse<OrderResponse>.Success(200,orderResponse);
+            return CustomResponse<OrderResponse>.Success(200, orderResponse);
         }
         catch (Exception ex)
         {
@@ -49,7 +49,7 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery,Custom
                 Log.Information(ex, "GetOrderByIdQueryHandler exception. Not Found Error");
                 throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
             }
-            
+
             Log.Error(ex, "GetOrderByIdQueryHandler exception. Internal Server Error");
             throw new Exception("Something went wrong.");
         }

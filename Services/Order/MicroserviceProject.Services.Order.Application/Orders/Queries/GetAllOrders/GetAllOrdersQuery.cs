@@ -10,10 +10,9 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Queries.GetAllOr
 
 public class GetAllOrdersQuery : IRequest<CustomResponse<List<OrderResponse>>>
 {
-    
 }
 
-public class GetOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery,CustomResponse<List<OrderResponse>>>
+public class GetOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, CustomResponse<List<OrderResponse>>>
 {
     private readonly IOrderDbContext _context;
     private readonly IMapper _mapper;
@@ -24,7 +23,8 @@ public class GetOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery,CustomRes
         _mapper = mapper;
     }
 
-    public async Task<CustomResponse<List<OrderResponse>>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
+    public async Task<CustomResponse<List<OrderResponse>>> Handle(GetAllOrdersQuery request,
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -35,11 +35,11 @@ public class GetOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery,CustomRes
 
             //Maplemeden önce dolu mu boş mu diye kontrol ediyoruz. Yoksa Automapper kullanırken hata alırız.
             if (!orders.Any())
-                return CustomResponse<List<OrderResponse>>.Success(200,new List<OrderResponse>());
+                return CustomResponse<List<OrderResponse>>.Success(200, new List<OrderResponse>());
 
             var orderResponses = _mapper.Map<List<OrderResponse>>(orders);
 
-            return CustomResponse<List<OrderResponse>>.Success(200,orderResponses);
+            return CustomResponse<List<OrderResponse>>.Success(200, orderResponses);
         }
         catch (Exception ex)
         {

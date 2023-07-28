@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using AutoMapper;
 using MediatR;
 using MicroserviceProject.Services.Order.Application.Dtos.Requests;
 using MicroserviceProject.Services.Order.Application.Dtos.Responses;
@@ -16,11 +17,13 @@ namespace MicroserviceProject.Services.Order.API.Controllers;
 
 public class OrdersController : CustomBaseController
 {
+    private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
-    public OrdersController(IMediator mediator)
+    public OrdersController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -28,7 +31,7 @@ public class OrdersController : CustomBaseController
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> GetAllOrders()
     {
-        var response = await _mediator.Send(new GetAllOrdersQuery { });
+        var response = await _mediator.Send(new GetAllOrdersQuery());
         return CreateActionResult(response);
     }
 
@@ -51,14 +54,13 @@ public class OrdersController : CustomBaseController
         return CreateActionResult(response);
     }
 
-    
-    // TODO: Request nesnesi ile alarak commande çevir
     [HttpPost]
     [ProducesResponseType(typeof(CustomResponse<CreatedOrderResponse>), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> SaveOrder([FromBody] CreateOrderCommand createOrderCommand)
+    public async Task<IActionResult> SaveOrder([FromBody] CreateOrderRequest createOrderRequest)
     {
+        var createOrderCommand = _mapper.Map<CreateOrderCommand>(createOrderRequest);
         var response = await _mediator.Send(createOrderCommand);
         return CreateActionResult(response);
     }

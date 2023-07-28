@@ -2,7 +2,6 @@
 using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Dtos.Responses;
-using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -44,7 +43,7 @@ public class
         catch (Exception ex)
         {
             Log.Error(ex, "GetOrderByUserIdQueryHandler Exception");
-            throw new Exception($"Something went wrong!");
+            throw new Exception("Something went wrong!");
         }
     }
 }

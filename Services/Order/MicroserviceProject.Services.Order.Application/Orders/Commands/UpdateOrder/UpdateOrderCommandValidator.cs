@@ -12,8 +12,7 @@ public class UpdateOrderCommandValidator : AbstractValidator<UpdateOrderCommand>
             .NotNull().WithMessage("{PropertyName} is required")
             .NotEmpty().WithMessage("{PropertyName} is required")
             .Must(Helpers.BeValidGuid).WithMessage("{PropertyName} must be uuid");
-        
+
         RuleFor(x => x.Address).SetValidator(new AddressRequestValidator());
-        
     }
 }

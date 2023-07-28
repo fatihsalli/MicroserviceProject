@@ -1,9 +1,8 @@
 ﻿using MediatR;
 using MicroserviceProject.Services.Order.Domain.Events;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
-namespace MicroserviceProject.Services.Order.Application.Orders.EventHandlers;
+namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.EventHandlers;
 
 public class OrderCompletedEventHandler : INotificationHandler<OrderCompletedEvent>
 {

@@ -13,4 +13,3 @@ public class GetOrdersByUserIdQueryValidator : AbstractValidator<GetOrdersByUser
             .Must(Helpers.BeValidGuid).WithMessage("{PropertyName} must be uuid");
     }
 }
-
