@@ -2,8 +2,6 @@ using MicroserviceProject.Services.Order.Application;
 using MicroserviceProject.Services.Order.Infrastructure;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Extensions;
-using MicroserviceProject.Shared.Kafka;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

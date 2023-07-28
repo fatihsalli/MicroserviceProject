@@ -4,6 +4,11 @@ namespace MicroserviceProject.Services.Order.Domain.Entities;
 
 public class OrderItem : BaseAuditableEntity
 {
+    public string ProductId { get; private set; }
+    public string ProductName { get; private set; }
+    public int Quantity { get; private set; }
+    public decimal Price { get; private set; }
+    
     public OrderItem()
     {
         
@@ -16,12 +21,7 @@ public class OrderItem : BaseAuditableEntity
         Quantity = quantity;
         Price = price;
     }
-
-    public string ProductId { get; private set; }
-    public string ProductName { get; private set; }
-    public int Quantity { get; private set; }
-    public decimal Price { get; private set; }
-
+    
     public void UpdateOrderItem(string productName, int quantity, decimal price)
     {
         ProductName = productName;

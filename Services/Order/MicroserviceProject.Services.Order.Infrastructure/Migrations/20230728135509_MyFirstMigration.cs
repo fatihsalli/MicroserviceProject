@@ -20,13 +20,16 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Address_Province = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_District = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_Zip = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_Line = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Address_Province = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Address_District = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Address_Street = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Address_Zip = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Address_Line = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Done = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdadetAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -42,8 +45,8 @@ namespace MicroserviceProject.Services.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OrderId = table.Column<string>(type: "nvarchar(450)", nullable: true),

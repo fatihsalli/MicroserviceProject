@@ -85,4 +85,9 @@ public class OrdersController : CustomBaseController
         var response = await _mediator.Send(new DeleteOrderCommand(id));
         return CreateActionResult(response);
     }
+    
+    // TODO: UpdateStatus
+    // TODO: GetOrdersByStatus
+    
+    
 }

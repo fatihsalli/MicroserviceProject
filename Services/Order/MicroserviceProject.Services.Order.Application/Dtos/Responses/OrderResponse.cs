@@ -1,4 +1,6 @@
-﻿namespace MicroserviceProject.Services.Order.Application.Dtos.Responses;
+﻿using MicroserviceProject.Services.Order.Domain.Enums;
+
+namespace MicroserviceProject.Services.Order.Application.Dtos.Responses;
 
 public class OrderResponse
 {
@@ -13,5 +15,8 @@ public class OrderResponse
     public DateTime CreatedAt { get; set; }
     public DateTime UpdadetAt { get; set; }
     public AddressResponse Address { get; set; }
+    public OrderStatus StatusId { get; set; }
+    public string Status { get; set; }
+    public string Description { get; set; }
     public List<OrderItemResponse> OrderItems { get; set; }
 }

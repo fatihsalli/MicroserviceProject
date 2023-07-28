@@ -3,6 +3,7 @@ using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
+using MicroserviceProject.Services.Order.Domain.Enums;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
 using MicroserviceProject.Shared.Configs;
@@ -21,12 +22,12 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
     private readonly HttpClient _httpClient;
     private readonly KafkaProducer _kafkaProducer;
 
-    public CreateOrderCommandHandler(IOrderDbContext context, HttpClient httpClient, IOptions<Config> config,KafkaProducer kafkaProducer)
+    public CreateOrderCommandHandler(IOrderDbContext context, HttpClient httpClient, IOptions<Config> config,
+        KafkaProducer kafkaProducer)
     {
         _context = context;
         _httpClient = httpClient;
         _config = config.Value;
-        //_kafkaProducer = new KafkaProducer(_config.Kafka.Address);
         _kafkaProducer = kafkaProducer;
     }
 
@@ -38,10 +39,10 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
             // User Check
             var requestUrl = $"{_config.HttpClient.UserApi}/{request.UserId}";
             var response = await _httpClient.GetAsync(requestUrl, cancellationToken);
-
             if (!response.IsSuccessStatusCode)
                 throw new NotFoundException("order with userid", request.UserId);
 
+            // Value object - Set edilmesini private ettiğimiz için constructordan set ediyoruz.
             var newAddress = new Address(
                 request.Address.Province,
                 request.Address.District,
@@ -49,17 +50,22 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
                 request.Address.Zip,
                 request.Address.Line);
 
-            var newOrder = new Domain.Entities.Order(newAddress, request.UserId, false)
-            {
-                Id = Guid.NewGuid().ToString()
-            };
+            var newOrder = new Domain.Entities.Order();
 
+            newOrder.Id = Guid.NewGuid().ToString();
+            newOrder.UserId = request.UserId;
+            newOrder.Address = newAddress;
+            newOrder.StatusId = OrderStatus.Pending;
+            newOrder.Status = OrderStatusHelper.OrderStatusString[(int)newOrder.StatusId];
+            newOrder.Description = OrderStatusHelper.OrderStatusDescriptions[(int)newOrder.StatusId];
+            newOrder.Done = false;
+            
             request.OrderItems.ForEach(x =>
             {
                 newOrder.AddOrderItem(x.ProductId, x.ProductName, x.Quantity, x.Price);
             });
-            newOrder.TotalPrice = request.OrderItems.Sum(x => x.Price * x.Quantity);
-
+            newOrder.TotalPrice = newOrder.OrderItems.Sum(x => x.Price * x.Quantity);
+            
             newOrder.AddDomainEvent(new OrderCreatedEvent(newOrder));
 
             await _context.Orders.AddAsync(newOrder, cancellationToken);

@@ -1,4 +1,6 @@
-﻿namespace MicroserviceProject.Services.Order.Application.Dtos.Requests;
+﻿using MicroserviceProject.Services.Order.Domain.Enums;
+
+namespace MicroserviceProject.Services.Order.Application.Dtos.Requests;
 
 public class CreateOrderRequest
 {

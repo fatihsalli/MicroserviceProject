@@ -1,46 +1,50 @@
 ﻿using MicroserviceProject.Services.Order.Domain.Common;
+using MicroserviceProject.Services.Order.Domain.Enums;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
 
 namespace MicroserviceProject.Services.Order.Domain.Entities;
 
 // EF Core Features
-// --Owned Types
+// -- Owned Types
 // -- Shadow Property
 // -- Backing Field
 public class Order : BaseAuditableEntity
 {
-    public Order()
-    {
-        
-    }
-
-    public Order(Address address, string userId, bool done)
-    {
-        _orderItems = new List<OrderItem>();
-        Address = address;
-        UserId = userId;
-        Done = done;
-    }
-
-    // Kapsülleme
-    private readonly List<OrderItem> _orderItems;
-    private bool _done;
-    public Address Address { get; set; }
     public string UserId { get; set; }
+    public decimal TotalPrice{ get; set; }
 
-    public decimal TotalPrice { get; set; }
+    //"Owned Entity Type" biz bunu tanımladığımızda EF Core'a müdahale etmez isek Order içinde Address ile ilgili sütunları oluşturur.
+    public Address Address { get; set; }
+    public OrderStatus StatusId { get; set; }
+    public string Status { get; set; }
+    public string Description { get; set; }
+
+    //Backing fields. Order üzerinden kontrolsüz şekilde kimse orderItems a data eklememesi için oluşturduk. EF core dolduracak bir alt satırda da readonly olarak dış dünyaya açacağız.
+    private readonly List<OrderItem> _orderItems;
+
+    //Kapsülleme işlemi yaptık. Sadece okunması için.
     public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
+
+    private bool _done;
 
     public bool Done
     {
         get => _done;
         set
         {
-            if (value && _done == false) AddDomainEvent(new OrderCompletedEvent(this));
+            if (value && !_done)
+            {
+                AddDomainEvent(new OrderCompletedEvent(this));
+            }
 
             _done = value;
         }
+    }
+
+    public Order()
+    {
+        _orderItems = new List<OrderItem>();
     }
 
     public void AddOrderItem(string productId, string productName, int quantity, decimal price)
@@ -49,8 +53,10 @@ public class Order : BaseAuditableEntity
 
         if (!existProduct)
         {
-            var newOrderItem = new OrderItem(productId, productName, quantity, price);
-            newOrderItem.Id = Guid.NewGuid().ToString();
+            var newOrderItem = new OrderItem(productId, productName, quantity, price)
+            {
+                Id = Guid.NewGuid().ToString()
+            };
             _orderItems.Add(newOrderItem);
         }
     }
