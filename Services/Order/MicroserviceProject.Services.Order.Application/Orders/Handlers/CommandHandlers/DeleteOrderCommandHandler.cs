@@ -18,11 +18,13 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Cus
 {
     private readonly Config _config;
     private readonly IOrderDbContext _context;
+    private readonly KafkaProducer _kafkaProducer;
 
-    public DeleteOrderCommandHandler(IOrderDbContext context, IOptions<Config> config)
+    public DeleteOrderCommandHandler(IOrderDbContext context, IOptions<Config> config,KafkaProducer kafkaProducer)
     {
         _context = context;
         _config = config.Value;
+        _kafkaProducer = kafkaProducer;
     }
 
     public async Task<CustomResponse<bool>> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
@@ -52,8 +54,7 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Cus
             };
 
             var jsonKafkaMessage = JsonSerializer.Serialize(orderResponseForElastic);
-            var kafkaProducer = new KafkaProducer(_config.Kafka.Address);
-            await kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage, _config.Kafka.TopicName["OrderID"]);
+            await _kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage, _config.Kafka.TopicName["OrderID"]);
 
             return CustomResponse<bool>.Success(200, true);
         }

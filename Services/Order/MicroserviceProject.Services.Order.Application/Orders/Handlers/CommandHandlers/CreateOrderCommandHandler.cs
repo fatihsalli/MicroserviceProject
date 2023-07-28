@@ -21,12 +21,13 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
     private readonly HttpClient _httpClient;
     private readonly KafkaProducer _kafkaProducer;
 
-    public CreateOrderCommandHandler(IOrderDbContext context, HttpClient httpClient, IOptions<Config> config)
+    public CreateOrderCommandHandler(IOrderDbContext context, HttpClient httpClient, IOptions<Config> config,KafkaProducer kafkaProducer)
     {
         _context = context;
         _httpClient = httpClient;
         _config = config.Value;
-        _kafkaProducer = new KafkaProducer(_config.Kafka.Address);
+        //_kafkaProducer = new KafkaProducer(_config.Kafka.Address);
+        _kafkaProducer = kafkaProducer;
     }
 
     public async Task<CustomResponse<CreatedOrderResponse>> Handle(CreateOrderCommand request,
