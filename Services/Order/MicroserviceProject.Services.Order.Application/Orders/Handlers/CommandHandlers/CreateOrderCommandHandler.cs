@@ -81,14 +81,15 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
         }
         catch (Exception ex)
         {
-            if (ex is NotFoundException)
+            switch (ex)
             {
-                Log.Information(ex, "CreateOrderCommandHandler exception. Not Found Error");
-                throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
+                case NotFoundException:
+                    Log.Information(ex, "CreateOrderCommandHandler exception. Not Found Error");
+                    throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
+                default:
+                    Log.Error(ex, "CreateOrderCommandHandler Exception");
+                    throw new Exception("Something went wrong!");
             }
-
-            Log.Error(ex, "CreateOrderCommandHandler Exception");
-            throw new Exception("Something went wrong!");
         }
     }
 }

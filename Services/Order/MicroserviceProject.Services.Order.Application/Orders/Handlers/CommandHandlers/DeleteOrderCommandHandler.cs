@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteOrder;
@@ -13,7 +14,7 @@ using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.CommandHandlers;
 
-public class DeleteOrderCommandHandler
+public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, CustomResponse<bool>>
 {
     private readonly Config _config;
     private readonly IOrderDbContext _context;
@@ -34,7 +35,7 @@ public class DeleteOrderCommandHandler
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (order == null)
-                throw new NotFoundException(nameof(Domain.Entities.Order), request.Id);
+                throw new NotFoundException("order", request.Id);
 
             _context.Orders.Remove(order);
 
@@ -58,14 +59,15 @@ public class DeleteOrderCommandHandler
         }
         catch (Exception ex)
         {
-            if (ex is NotFoundException)
+            switch (ex)
             {
-                Log.Information(ex, "DeleteTodoItemCommandHandler exception. Not Found Error");
-                throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
+                case NotFoundException:
+                    Log.Information(ex, "DeleteTodoItemCommandHandler exception. Not Found Error");
+                    throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
+                default:
+                    Log.Error(ex, "DeleteTodoItemCommandHandler exception. Internal Server Error");
+                    throw new Exception("Something went wrong.");
             }
-
-            Log.Error(ex, "DeleteTodoItemCommandHandler exception. Internal Server Error");
-            throw new Exception("Something went wrong.");
         }
     }
 }

@@ -10,13 +10,9 @@ namespace MicroserviceProject.Services.Order.Domain.Entities;
 // -- Backing Field
 public class Order : BaseAuditableEntity
 {
-    // Kapsülleme
-    private readonly List<OrderItem> _orderItems;
-
-    private bool _done;
-
     public Order()
     {
+        
     }
 
     public Order(Address address, string userId, bool done)
@@ -27,6 +23,9 @@ public class Order : BaseAuditableEntity
         Done = done;
     }
 
+    // Kapsülleme
+    private readonly List<OrderItem> _orderItems;
+    private bool _done;
     public Address Address { get; set; }
     public string UserId { get; set; }
 

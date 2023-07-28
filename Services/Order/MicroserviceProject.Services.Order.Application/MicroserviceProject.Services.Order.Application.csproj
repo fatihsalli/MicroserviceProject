@@ -7,19 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Shared\MicroserviceProject.Shared\MicroserviceProject.Shared.csproj"/>
-        <ProjectReference Include="..\MicroserviceProject.Services.Order.Domain\MicroserviceProject.Services.Order.Domain.csproj"/>
+        <ProjectReference Include="..\..\..\Shared\MicroserviceProject.Shared\MicroserviceProject.Shared.csproj" />
+        <ProjectReference Include="..\MicroserviceProject.Services.Order.Domain\MicroserviceProject.Services.Order.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="12.0.1"/>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.7"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Orders\Handlers\QueryHandlers\"/>
+        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.7" />
     </ItemGroup>
 
 </Project>

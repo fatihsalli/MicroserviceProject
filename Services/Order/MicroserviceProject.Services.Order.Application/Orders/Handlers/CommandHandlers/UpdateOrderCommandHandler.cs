@@ -1,4 +1,5 @@
-﻿using MicroserviceProject.Services.Order.Application.Common.Interfaces;
+﻿using MediatR;
+using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
 using MicroserviceProject.Shared.Exceptions;
@@ -8,7 +9,7 @@ using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.CommandHandlers;
 
-public class UpdateOrderCommandHandler
+public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, CustomResponse<bool>>
 {
     private readonly IOrderDbContext _context;
 
@@ -45,14 +46,15 @@ public class UpdateOrderCommandHandler
         }
         catch (Exception ex)
         {
-            if (ex is NotFoundException)
+            switch (ex)
             {
-                Log.Information(ex, "UpdateOrderCommandHandler exception. Not Found Error");
-                throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
+                case NotFoundException:
+                    Log.Information(ex, "UpdateOrderCommandHandler exception. Not Found Error");
+                    throw new NotFoundException($"Not Found Error. Error message:{ex.Message}");
+                default:
+                    Log.Error(ex, "UpdateOrderCommandHandler exception. Internal Server Error");
+                    throw new Exception("Something went wrong.");
             }
-
-            Log.Error(ex, "UpdateOrderCommandHandler exception. Internal Server Error");
-            throw new Exception("Something went wrong.");
         }
     }
 }

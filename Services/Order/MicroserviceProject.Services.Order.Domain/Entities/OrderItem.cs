@@ -6,6 +6,7 @@ public class OrderItem : BaseAuditableEntity
 {
     public OrderItem()
     {
+        
     }
 
     public OrderItem(string productId, string productName, int quantity, decimal price)
