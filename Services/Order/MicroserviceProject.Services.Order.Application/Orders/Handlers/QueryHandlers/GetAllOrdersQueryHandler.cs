@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
+using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
-using MicroserviceProject.Services.Order.Application.Dtos.Responses;
+using MicroserviceProject.Services.Order.Application.Common.Mappings;
+using MicroserviceProject.Services.Order.Application.Common.Models;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetAllOrders;
 using MicroserviceProject.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +12,7 @@ using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.QueryHandlers;
 
-public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, CustomResponse<List<OrderResponse>>>
+public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, CustomResponse<PaginatedList<OrderResponse>>>
 {
     private readonly IOrderDbContext _context;
     private readonly IMapper _mapper;
@@ -20,7 +23,7 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, Custo
         _mapper = mapper;
     }
 
-    public async Task<CustomResponse<List<OrderResponse>>> Handle(GetAllOrdersQuery request,
+    public async Task<CustomResponse<PaginatedList<OrderResponse>>> Handle(GetAllOrdersQuery request,
         CancellationToken cancellationToken)
     {
         try
@@ -28,16 +31,11 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, Custo
             var orders = await _context.Orders
                 .AsNoTracking()
                 .Include(x => x.OrderItems)
-                .OrderByDescending(x=>x.CreatedAt)
-                .ToListAsync(cancellationToken);
+                .OrderByDescending(x => x.CreatedAt)
+                .ProjectTo<OrderResponse>(_mapper.ConfigurationProvider)
+                .PaginatedAllListAsync();
 
-            //Maplemeden önce dolu mu boş mu diye kontrol ediyoruz. Yoksa Automapper kullanırken hata alırız.
-            if (!orders.Any())
-                return CustomResponse<List<OrderResponse>>.Success(200, new List<OrderResponse>());
-
-            var orderResponses = _mapper.Map<List<OrderResponse>>(orders);
-
-            return CustomResponse<List<OrderResponse>>.Success(200, orderResponses,orderResponses.Count);
+            return CustomResponse<PaginatedList<OrderResponse>>.Success(200, orders);
         }
         catch (Exception ex)
         {

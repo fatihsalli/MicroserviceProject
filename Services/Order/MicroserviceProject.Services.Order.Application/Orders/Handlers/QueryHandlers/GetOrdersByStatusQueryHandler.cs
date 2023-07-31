@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
+using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
-using MicroserviceProject.Services.Order.Application.Dtos.Responses;
+using MicroserviceProject.Services.Order.Application.Common.Mappings;
+using MicroserviceProject.Services.Order.Application.Common.Models;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByStatus;
 using MicroserviceProject.Shared.Enums;
 using MicroserviceProject.Shared.Responses;
@@ -10,7 +13,7 @@ using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.QueryHandlers;
 
-public class GetOrdersByStatusQueryHandler: IRequestHandler<GetOrdersByStatusQuery, CustomResponse<List<OrderResponse>>>
+public class GetOrdersByStatusQueryHandler: IRequestHandler<GetOrdersByStatusQuery, CustomResponse<PaginatedList<OrderResponse>>>
 {
     private readonly IOrderDbContext _context;
     private readonly IMapper _mapper;
@@ -21,7 +24,7 @@ public class GetOrdersByStatusQueryHandler: IRequestHandler<GetOrdersByStatusQue
         _mapper = mapper;
     }
     
-    public async Task<CustomResponse<List<OrderResponse>>> Handle(GetOrdersByStatusQuery request, CancellationToken cancellationToken)
+    public async Task<CustomResponse<PaginatedList<OrderResponse>>> Handle(GetOrdersByStatusQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -29,11 +32,11 @@ public class GetOrdersByStatusQueryHandler: IRequestHandler<GetOrdersByStatusQue
                 .AsNoTracking()
                 .Include(x => x.OrderItems)
                 .Where(x => x.StatusId == (OrderStatus)request.StatusId)
-                .ToListAsync(cancellationToken);
+                .OrderByDescending(x => x.CreatedAt)
+                .ProjectTo<OrderResponse>(_mapper.ConfigurationProvider)
+                .PaginatedAllListAsync();
 
-            var ordersResponse = _mapper.Map<List<OrderResponse>>(orders);
-
-            return CustomResponse<List<OrderResponse>>.Success(200, ordersResponse,ordersResponse.Count);
+            return CustomResponse<PaginatedList<OrderResponse>>.Success(200, orders);
         }
         catch (Exception ex)
         {

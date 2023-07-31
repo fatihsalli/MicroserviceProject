@@ -1,6 +1,6 @@
-﻿namespace MicroserviceProject.Services.Order.Application.Dtos.Requests;
+﻿namespace MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
 
-public class AddressRequest
+public class AddressResponse
 {
     public string Province { get; set; }
     public string District { get; set; }

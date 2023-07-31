@@ -4,7 +4,6 @@ namespace MicroserviceProject.Shared.Responses;
 
 public class CustomResponse<T>
 {
-    public int TotalItemCount { get; set; }
     public T Data { get; set; }
     
     [JsonIgnore]
@@ -18,11 +17,6 @@ public class CustomResponse<T>
         return new CustomResponse<T> { StatusCode = statusCode, Data = data};
     }
     
-    public static CustomResponse<T> Success(int statusCode, T data,int totalItemCount)
-    {
-        return new CustomResponse<T> { StatusCode = statusCode,TotalItemCount = totalItemCount, Data = data};
-    }
-
     public static CustomResponse<T> Success(int statusCode)
     {
         return new CustomResponse<T> { StatusCode = statusCode };

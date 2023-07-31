@@ -1,4 +1,4 @@
-﻿namespace MicroserviceProject.Services.Order.Application.Dtos.Requests;
+﻿namespace MicroserviceProject.Services.Order.Application.Common.Dtos.Requests;
 
 public class OrderItemRequest
 {

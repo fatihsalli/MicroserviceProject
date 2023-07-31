@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using AutoMapper;
 using MediatR;
-using MicroserviceProject.Services.Order.Application.Dtos.Requests;
-using MicroserviceProject.Services.Order.Application.Dtos.Responses;
+using MicroserviceProject.Services.Order.Application.Common.Dtos.Requests;
+using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteOrder;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
@@ -11,6 +11,7 @@ using MicroserviceProject.Services.Order.Application.Orders.Queries.GetAllOrders
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByStatus;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByUserId;
+using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersWithPagination;
 using MicroserviceProject.Shared.BaseController;
 using MicroserviceProject.Shared.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -64,6 +65,13 @@ public class OrdersController : CustomBaseController
     public async Task<IActionResult> GetOrdersByUserId([FromQuery] string userId)
     {
         var response = await _mediator.Send(new GetOrdersByUserIdQuery { UserId = userId });
+        return CreateActionResult(response);
+    }
+    
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetTodoItemsWithPagination([FromQuery] GetOrdersWithPaginationQuery query)
+    {
+        var response =await _mediator.Send(query);
         return CreateActionResult(response);
     }
 

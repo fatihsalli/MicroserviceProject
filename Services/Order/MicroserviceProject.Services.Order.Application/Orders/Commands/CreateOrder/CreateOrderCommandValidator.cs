@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MicroserviceProject.Services.Order.Application.Dtos.Requests;
+using MicroserviceProject.Services.Order.Application.Common.Dtos.Requests;
 using MicroserviceProject.Shared.Helpers;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
