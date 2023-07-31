@@ -8,7 +8,7 @@ public class OrderCompletedEventHandler : INotificationHandler<OrderCompletedEve
 {
     public Task Handle(OrderCompletedEvent notification, CancellationToken cancellationToken)
     {
-        Log.Information("MicroserviceProject Domain Event: {DomainEvent}", notification.GetType().Name);
+        Log.Information("MicroserviceProject Domain Event: {DomainEvent} - OrderId: {OrderID}", notification.GetType().Name,notification.Order.Id);
 
         return Task.CompletedTask;
     }

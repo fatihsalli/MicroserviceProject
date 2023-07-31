@@ -28,7 +28,7 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, Custo
             var orders = await _context.Orders
                 .AsNoTracking()
                 .Include(x => x.OrderItems)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             //Maplemeden önce dolu mu boş mu diye kontrol ediyoruz. Yoksa Automapper kullanırken hata alırız.
             if (!orders.Any())

@@ -3,6 +3,7 @@ using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
+using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Exceptions;
@@ -45,6 +46,8 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Cus
                 request.Address.Street,
                 request.Address.Zip,
                 request.Address.Line);
+            
+            order.AddDomainEvent(new OrderUpdatedEvent(order));
 
             order.UpdateAddress(newAddress);
 

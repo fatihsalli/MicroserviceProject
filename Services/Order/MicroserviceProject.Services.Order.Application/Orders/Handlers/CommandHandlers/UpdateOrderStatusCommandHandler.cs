@@ -3,6 +3,7 @@ using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrderStatus;
+using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Enums;
 using MicroserviceProject.Shared.Exceptions;
@@ -42,6 +43,15 @@ public class UpdateOrderStatusCommandHandler: IRequestHandler<UpdateOrderStatusC
             order.StatusId = (OrderStatus)request.StatusId;
             order.Status = OrderStatusHelper.OrderStatusString[(int)order.StatusId];
             order.Description = OrderStatusHelper.OrderStatusDescriptions[(int)order.StatusId];
+
+            if (order.StatusId==OrderStatus.Completed)
+            {
+                order.Done = true;
+            }
+            else
+            {
+                order.AddDomainEvent(new OrderUpdatedEvent(order));
+            }
 
             await _context.SaveChangesAsync(cancellationToken);
             

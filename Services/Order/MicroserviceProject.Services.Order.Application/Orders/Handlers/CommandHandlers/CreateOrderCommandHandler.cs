@@ -69,6 +69,8 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
             newOrder.AddDomainEvent(new OrderCreatedEvent(newOrder));
 
             await _context.Orders.AddAsync(newOrder, cancellationToken);
+            
+            // SaveChangesAsync metodu çalışmadan önce eventler otomatik publish ediliyor.
             await _context.SaveChangesAsync(cancellationToken);
 
             // Kafka ile gönderme işini event tarafında yapabiliriz.
