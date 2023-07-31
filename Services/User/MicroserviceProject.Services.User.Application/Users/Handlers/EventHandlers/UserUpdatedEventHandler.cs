@@ -2,7 +2,7 @@
 using MicroserviceProject.Services.User.Domain.Events;
 using Serilog;
 
-namespace MicroserviceProject.Services.User.Application.Users.EventHandlers;
+namespace MicroserviceProject.Services.User.Application.Users.Handlers.EventHandlers;
 
 public class UserUpdatedEventHandler : INotificationHandler<UserUpdatedEvent>
 {

@@ -33,7 +33,7 @@ public class GetOrdersByStatusQueryHandler: IRequestHandler<GetOrdersByStatusQue
 
             var ordersResponse = _mapper.Map<List<OrderResponse>>(orders);
 
-            return CustomResponse<List<OrderResponse>>.Success(200, ordersResponse);
+            return CustomResponse<List<OrderResponse>>.Success(200, ordersResponse,ordersResponse.Count);
         }
         catch (Exception ex)
         {

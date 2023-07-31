@@ -4,8 +4,9 @@ namespace MicroserviceProject.Shared.Responses;
 
 public class CustomResponse<T>
 {
+    public int TotalItemCount { get; set; }
     public T Data { get; set; }
-
+    
     [JsonIgnore]
     public int StatusCode { get; set; }
     
@@ -14,7 +15,12 @@ public class CustomResponse<T>
     //Static factory method => Factory design pattern
     public static CustomResponse<T> Success(int statusCode, T data)
     {
-        return new CustomResponse<T> { StatusCode = statusCode, Data = data };
+        return new CustomResponse<T> { StatusCode = statusCode, Data = data};
+    }
+    
+    public static CustomResponse<T> Success(int statusCode, T data,int totalItemCount)
+    {
+        return new CustomResponse<T> { StatusCode = statusCode,TotalItemCount = totalItemCount, Data = data};
     }
 
     public static CustomResponse<T> Success(int statusCode)

@@ -28,6 +28,7 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, Custo
             var orders = await _context.Orders
                 .AsNoTracking()
                 .Include(x => x.OrderItems)
+                .OrderByDescending(x=>x.CreatedAt)
                 .ToListAsync(cancellationToken);
 
             //Maplemeden önce dolu mu boş mu diye kontrol ediyoruz. Yoksa Automapper kullanırken hata alırız.
@@ -36,7 +37,7 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, Custo
 
             var orderResponses = _mapper.Map<List<OrderResponse>>(orders);
 
-            return CustomResponse<List<OrderResponse>>.Success(200, orderResponses);
+            return CustomResponse<List<OrderResponse>>.Success(200, orderResponses,orderResponses.Count);
         }
         catch (Exception ex)
         {
