@@ -16,25 +16,17 @@ public class OrderEventService
     
     public async Task<OrderResponse> GetOrderWithHttpClientAsync(string orderId)
     {
-        try
-        {
-            var httpClient = new HttpClient();
-            string requestUrl = $"{_config.HttpClient.OrderApi}/{orderId}";
-            HttpResponseMessage response = await httpClient.GetAsync(requestUrl);
+        var httpClient = new HttpClient();
+        string requestUrl = $"{_config.HttpClient.OrderApi}/{orderId}";
+        HttpResponseMessage response = await httpClient.GetAsync(requestUrl);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var responseFail = await response.Content.ReadFromJsonAsync<CustomResponse<NoContent>>();
-                throw new Exception($"Errors:{responseFail.Errors} - StatusCode:{responseFail.StatusCode}");
-            }
-
-            var responseSuccess = await response.Content.ReadFromJsonAsync<CustomResponse<OrderResponse>>();
-            return responseSuccess.Data;
-        }
-        catch (Exception ex)
+        if (!response.IsSuccessStatusCode)
         {
-            Log.Error(ex, "GetOrderWithHttpClientAsync Exception");
-            throw new Exception($"Something went wrong!",ex);
+            var responseFail = await response.Content.ReadFromJsonAsync<CustomResponse<NoContent>>();
+            Log.Error("Order with id ({OrderId}) cannot found!",orderId);
         }
+
+        var responseSuccess = await response.Content.ReadFromJsonAsync<CustomResponse<OrderResponse>>();
+        return responseSuccess.Data;
     }
 }

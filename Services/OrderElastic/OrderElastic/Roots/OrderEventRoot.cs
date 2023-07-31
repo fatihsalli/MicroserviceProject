@@ -48,8 +48,7 @@ public class OrderEventRoot
                     // Gelen mesaj status değeri "Created" veya "Updated" ise "HttpClient" ile order modelimi alıyorum. Bu order modelimi tekrar kafkaya gönderiyorum. Bunun sebebi de bu gönderdiğim ordermodeli birden fazla servis dinleyebilir ve işlem yapabilir.
                     case "Created":
                     case "Updated":
-                        var orderResponse =
-                            await _orderEventService.GetOrderWithHttpClientAsync(orderResponseForElastic.OrderId);
+                        var orderResponse = await _orderEventService.GetOrderWithHttpClientAsync(orderResponseForElastic.OrderId);
                         var jsonKafkaMessage = JsonSerializer.Serialize(orderResponse);
                         await _kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage,
                             _config.Kafka.TopicName["OrderModel"]);

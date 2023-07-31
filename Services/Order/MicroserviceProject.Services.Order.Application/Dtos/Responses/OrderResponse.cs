@@ -1,4 +1,4 @@
-﻿using MicroserviceProject.Services.Order.Domain.Enums;
+﻿using MicroserviceProject.Shared.Enums;
 
 namespace MicroserviceProject.Services.Order.Application.Dtos.Responses;
 

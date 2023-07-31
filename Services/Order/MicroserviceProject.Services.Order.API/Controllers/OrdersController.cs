@@ -6,8 +6,10 @@ using MicroserviceProject.Services.Order.Application.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteOrder;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
+using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrderStatus;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetAllOrders;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById;
+using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByStatus;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByUserId;
 using MicroserviceProject.Shared.BaseController;
 using MicroserviceProject.Shared.Responses;
@@ -47,6 +49,17 @@ public class OrdersController : CustomBaseController
 
     [HttpGet("[action]")]
     [ProducesResponseType(typeof(CustomResponse<List<OrderResponse>>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> GetOrdersByStatus([FromQuery] int statusId)
+    {
+        var response = await _mediator.Send(new GetOrdersByStatusQuery { StatusId = statusId });
+        return CreateActionResult(response);
+    }
+    
+    [HttpGet("[action]")]
+    [ProducesResponseType(typeof(CustomResponse<List<OrderResponse>>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> GetOrdersByUserId([FromQuery] string userId)
     {
@@ -75,6 +88,18 @@ public class OrdersController : CustomBaseController
         var response = await _mediator.Send(new UpdateOrderCommand { Id = id, Address = addressRequest });
         return CreateActionResult(response);
     }
+    
+    [HttpPut("[action]/{id:length(36)}")]
+    [ProducesResponseType(typeof(CustomResponse<bool>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> UpdateOrderStatus([FromRoute] string id, [FromQuery] int statusId)
+    {
+        var response = await _mediator.Send(new UpdateOrderStatusCommand { Id = id, StatusId = statusId });
+        return CreateActionResult(response);
+    }
+    
 
     [HttpDelete("{id:length(36)}")]
     [ProducesResponseType(typeof(CustomResponse<bool>), (int)HttpStatusCode.OK)]
@@ -85,9 +110,6 @@ public class OrdersController : CustomBaseController
         var response = await _mediator.Send(new DeleteOrderCommand(id));
         return CreateActionResult(response);
     }
-    
+
     // TODO: UpdateStatus
-    // TODO: GetOrdersByStatus
-    
-    
 }

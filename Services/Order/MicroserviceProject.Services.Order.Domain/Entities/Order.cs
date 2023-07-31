@@ -1,7 +1,7 @@
 ﻿using MicroserviceProject.Services.Order.Domain.Common;
-using MicroserviceProject.Services.Order.Domain.Enums;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
+using MicroserviceProject.Shared.Enums;
 
 namespace MicroserviceProject.Services.Order.Domain.Entities;
 

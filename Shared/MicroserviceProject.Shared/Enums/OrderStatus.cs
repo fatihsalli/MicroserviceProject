@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace MicroserviceProject.Services.Order.Domain.Enums;
+namespace MicroserviceProject.Shared.Enums;
 
 public enum OrderStatus
 {
