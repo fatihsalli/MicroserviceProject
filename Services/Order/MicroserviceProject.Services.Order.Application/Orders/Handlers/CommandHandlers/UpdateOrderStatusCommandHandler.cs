@@ -35,6 +35,7 @@ public class UpdateOrderStatusCommandHandler: IRequestHandler<UpdateOrderStatusC
             order.Status = OrderStatusHelper.OrderStatusString[(int)order.StatusId];
             order.Description = OrderStatusHelper.OrderStatusDescriptions[(int)order.StatusId];
 
+            // Done=true olduğunda otomatik olarak OrderCompletedEvent fırlatılıyor.
             if (order.StatusId==OrderStatus.Completed)
             {
                 order.Done = true;
