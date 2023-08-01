@@ -12,6 +12,9 @@ using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.QueryHandlers;
 
+/// <summary>
+/// Tüm order modellerimi response olarak döndüğüm metottur. "PaginatedAllListAsync" kullanmamızın nedeni sayfalama yapmadan "PaginatedList" içerisindeki count vb. değerleri kullanmak içindir.
+/// </summary>
 public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, CustomResponse<PaginatedList<OrderResponse>>>
 {
     private readonly IOrderDbContext _context;

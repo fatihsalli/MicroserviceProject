@@ -2,6 +2,10 @@
 
 namespace MicroserviceProject.Services.Order.Application.Common.Models;
 
+/// <summary>
+/// Generic olarak oluşturulan "PaginatedList" sınıfımız sayfalama yaparak ya da sayfalama yapmadan response modellerimizi oluşturmamızı sağlar. Sayfalama yapmamamıza rağmen bu modeli kullanma nedenimiz "TotalCount" değerini response içerisinde dönmek içindir.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class PaginatedList<T>
 {
     public int TotalCount { get; }
@@ -32,7 +36,6 @@ public class PaginatedList<T>
     {
         var count = await source.CountAsync();
         var items = await source.ToListAsync();
-        
         return new PaginatedList<T>(items, count, 1, count);
     }
 }
