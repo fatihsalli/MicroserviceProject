@@ -1,10 +1,10 @@
 ﻿using System.Net.Http.Json;
+using MicroserviceProject.Services.OrderElastic.Dtos;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Responses;
-using OrderElastic.Dtos;
 using Serilog;
 
-namespace OrderElastic.Service;
+namespace MicroserviceProject.Services.OrderElastic.Service;
 
 public class OrderEventService
 {

@@ -1,4 +1,4 @@
-﻿namespace OrderElastic.Dtos;
+﻿namespace MicroserviceProject.Services.OrderElastic.Dtos;
 
 public class AddressResponse
 {

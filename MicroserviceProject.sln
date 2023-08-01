@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceProject.Service
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrderElastic", "OrderElastic", "{8007FDB4-DB95-48A9-89FA-63ED4A12A6DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderElastic", "Services\OrderElastic\OrderElastic\OrderElastic.csproj", "{A9FA8FB9-13C6-4EB3-8E45-0071F6160A80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceProject.Services.OrderElastic", "Services\OrderElastic\MicroserviceProject.Services.OrderElastic\MicroserviceProject.Services.OrderElastic.csproj", "{A9FA8FB9-13C6-4EB3-8E45-0071F6160A80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

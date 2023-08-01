@@ -1,4 +1,4 @@
-﻿using OrderElastic.Roots;
+﻿using MicroserviceProject.Services.OrderElastic.Roots;
 using Serilog;
 
 var asyncLocalLogger = new AsyncLocal<ILogger>();
@@ -9,7 +9,7 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext() // Ek bilgi eklemek için (opsiyonel)
     .CreateLogger();
 
-Log.Information("OrderElastic Service is starting...");
+Log.Information("MicroserviceProject.Services.OrderElastic Service is starting...");
 
 var orderElasticRoot = new OrderElasticRoot();
 var orderEventRoot = new OrderEventRoot();

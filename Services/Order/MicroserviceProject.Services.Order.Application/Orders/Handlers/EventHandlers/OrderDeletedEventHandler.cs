@@ -10,7 +10,7 @@ using Serilog;
 namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.EventHandlers;
 
 /// <summary>
-/// "OrderDeletedEventHandler" sınıfında order model başarıyla silindikten sonra "Kafka" ya Id değerini mesaj olarak gönderiyoruz. Bu mesajı dinleyen "OrderElastic" sınıfımızda gerekli işlemler yapıldıktan sonra Elasticsearch üzerindeki kopya da siliniyor.
+/// "OrderDeletedEventHandler" sınıfında order model başarıyla silindikten sonra "Kafka" ya Id değerini mesaj olarak gönderiyoruz. Bu mesajı dinleyen "MicroserviceProject.Services.OrderElastic" sınıfımızda gerekli işlemler yapıldıktan sonra Elasticsearch üzerindeki kopya da siliniyor.
 /// </summary>
 public class OrderDeletedEventHandler: INotificationHandler<OrderDeletedEvent>
 {

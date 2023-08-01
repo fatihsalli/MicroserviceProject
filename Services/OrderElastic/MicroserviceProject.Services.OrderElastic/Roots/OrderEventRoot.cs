@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
+using MicroserviceProject.Services.OrderElastic.Dtos;
+using MicroserviceProject.Services.OrderElastic.Service;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
-using OrderElastic.Dtos;
-using OrderElastic.Service;
 using Serilog;
 
-namespace OrderElastic.Roots;
+namespace MicroserviceProject.Services.OrderElastic.Roots;
 
 public class OrderEventRoot
 {

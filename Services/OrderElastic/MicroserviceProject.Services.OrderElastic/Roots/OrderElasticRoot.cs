@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
+using MicroserviceProject.Services.OrderElastic.Dtos;
+using MicroserviceProject.Services.OrderElastic.Service;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
-using OrderElastic.Dtos;
-using OrderElastic.Service;
 using Serilog;
 
-namespace OrderElastic.Roots;
+namespace MicroserviceProject.Services.OrderElastic.Roots;
 
 /// <summary>
 /// OrderElasticRoot sınıfım Kafka'ya "OrderEventRoot" tarafından gönderilen OrderResponse modelimi içeren mesajımı dinlemektir. Bu mesajı aldıktan sonra da elasticsearch'e kayıt (Create veya update) işlemini yapmaktadır. 

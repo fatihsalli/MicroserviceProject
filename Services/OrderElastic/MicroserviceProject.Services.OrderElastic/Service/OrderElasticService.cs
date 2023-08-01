@@ -1,10 +1,10 @@
-﻿using OrderElastic.Dtos;
-using Elasticsearch.Net;
+﻿using Elasticsearch.Net;
+using MicroserviceProject.Services.OrderElastic.Dtos;
 using MicroserviceProject.Shared.Configs;
 using Nest;
 using Serilog;
 
-namespace OrderElastic.Service;
+namespace MicroserviceProject.Services.OrderElastic.Service;
 
 public class OrderElasticService
 {

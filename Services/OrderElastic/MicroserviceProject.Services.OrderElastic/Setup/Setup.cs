@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
+using MicroserviceProject.Services.OrderElastic.Service;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
 using Nest;
-using OrderElastic.Service;
 
-namespace OrderElastic.Setup;
+namespace MicroserviceProject.Services.OrderElastic.Setup;
 
 public class Setup
 {

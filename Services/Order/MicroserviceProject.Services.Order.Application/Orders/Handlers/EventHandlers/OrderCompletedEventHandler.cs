@@ -10,7 +10,7 @@ using Serilog;
 namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.EventHandlers;
 
 /// <summary>
-/// "OrderCreatedEventHandler" sınıfında order model başarıyla update edildikten sonra "Kafka" ya Id değerini mesaj olarak gönderiyoruz. Bu mesajı dinleyen "OrderElastic" sınıfımızda gerekli işlemler yapıldıktan sonra Elasticsearch üzerindeki kopyada update ediliyor.
+/// "OrderCreatedEventHandler" sınıfında order model başarıyla update edildikten sonra "Kafka" ya Id değerini mesaj olarak gönderiyoruz. Bu mesajı dinleyen "MicroserviceProject.Services.OrderElastic" sınıfımızda gerekli işlemler yapıldıktan sonra Elasticsearch üzerindeki kopyada update ediliyor.
 /// </summary>
 public class OrderCompletedEventHandler : INotificationHandler<OrderCompletedEvent>
 {
