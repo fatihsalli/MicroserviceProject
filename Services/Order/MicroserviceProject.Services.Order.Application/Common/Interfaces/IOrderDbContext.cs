@@ -8,6 +8,7 @@ public interface IOrderDbContext
     DbSet<Domain.Entities.Order> Orders { get; set; }
 
     DbSet<OrderItem> OrderItems { get; set; }
+    Task PublishDomainEvents();
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

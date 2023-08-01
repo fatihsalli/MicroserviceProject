@@ -26,10 +26,17 @@ public class OrderDbContext : DbContext, IOrderDbContext
     public DbSet<Domain.Entities.Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
 
+    // Eventleri burada publish etmek doğru bir yaklaşım değil. Çünkü daha database'e kaydetme işleminin sorunsuz gerçekleştiğini garanti edemedik. O sebeple de eğer ki database tarafına kaydetme esnasında hata alınırsa eventler publish edilmiş olacaktır. Diğer durumda burada eventler publish edildiğinde ilgili handlerlarda Kafka'ya mesaj gönderecek şekilde senaryo revize edilmiştir.
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await _mediator.DispatchDomainEvents(this);
+        // await _mediator.DispatchDomainEvents(this);
         return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    // Eventleri daha kontrollü şekilde publish edebilmek için bu metot ayrıca yazılmıştır.
+    public async Task PublishDomainEvents()
+    {
+        await _mediator.DispatchDomainEvents(this);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

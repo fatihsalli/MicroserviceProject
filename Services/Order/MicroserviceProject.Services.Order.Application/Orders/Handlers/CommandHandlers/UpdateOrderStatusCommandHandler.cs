@@ -1,16 +1,11 @@
-﻿using System.Text.Json;
-using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
+﻿using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrderStatus;
 using MicroserviceProject.Services.Order.Domain.Events;
-using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Enums;
 using MicroserviceProject.Shared.Exceptions;
-using MicroserviceProject.Shared.Kafka;
 using MicroserviceProject.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.CommandHandlers;
@@ -18,14 +13,10 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.Command
 public class UpdateOrderStatusCommandHandler: IRequestHandler<UpdateOrderStatusCommand, CustomResponse<bool>>
 {
     private readonly IOrderDbContext _context;
-    private readonly KafkaProducer _kafkaProducer;
-    private readonly Config _config;
 
-    public UpdateOrderStatusCommandHandler(IOrderDbContext context,KafkaProducer kafkaProducer,IOptions<Config> config)
+    public UpdateOrderStatusCommandHandler(IOrderDbContext context)
     {
         _context = context;
-        _kafkaProducer = kafkaProducer;
-        _config = config.Value;
     }
     
     public async Task<CustomResponse<bool>> Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
@@ -54,17 +45,6 @@ public class UpdateOrderStatusCommandHandler: IRequestHandler<UpdateOrderStatusC
             }
 
             await _context.SaveChangesAsync(cancellationToken);
-            
-            // Kafka ile gönderme işini event tarafında yapabiliriz.
-            // Mesajı kafkaya gönderiyoruz.
-            var orderResponseForElastic = new OrderResponseForElastic
-            {
-                OrderId = order.Id,
-                Status = "Updated"
-            };
-
-            var jsonKafkaMessage = JsonSerializer.Serialize(orderResponseForElastic);
-            await _kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage, _config.Kafka.TopicName["OrderID"]);
 
             return CustomResponse<bool>.Success(200, true);
         }

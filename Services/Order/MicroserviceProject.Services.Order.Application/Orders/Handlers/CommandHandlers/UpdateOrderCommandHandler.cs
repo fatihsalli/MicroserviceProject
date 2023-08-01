@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
+﻿using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
 using MicroserviceProject.Services.Order.Domain.Events;
@@ -53,16 +51,7 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Cus
 
             await _context.SaveChangesAsync(cancellationToken);
             
-            // Kafka ile gönderme işini event tarafında yapabiliriz.
-            // Mesajı kafkaya gönderiyoruz.
-            var orderResponseForElastic = new OrderResponseForElastic
-            {
-                OrderId = order.Id,
-                Status = "Updated"
-            };
 
-            var jsonKafkaMessage = JsonSerializer.Serialize(orderResponseForElastic);
-            await _kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage, _config.Kafka.TopicName["OrderID"]);
 
             return CustomResponse<bool>.Success(200, true);
         }
