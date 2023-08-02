@@ -20,13 +20,13 @@ await Task.WhenAll(
     Task.Run(async () =>
     {
         await orderEventRoot.StartGetOrderAndPushOrderAsync();
-    }),
-    Task.Run(async () =>
-    {
-        // Loglama context'ini yeni thread'e taşıyoruz.
-        asyncLocalLogger.Value = Log.Logger;
-        await orderElasticRoot.StartConsumeAndSaveOrderAsync();
     })
+    // Task.Run(async () =>
+    // {
+    //     // Loglama context'ini yeni thread'e taşıyoruz.
+    //     asyncLocalLogger.Value = Log.Logger;
+    //     await orderElasticRoot.StartConsumeAndSaveOrderAsync();
+    // })
 );
 
 Log.Information("All tasks completed. Exiting the application");

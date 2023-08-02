@@ -65,10 +65,10 @@ public class OrderEventRoot
                             orderResponseForElastic.Status);
                         break;
                 }
+                
+                // Aynı mesajların tekrar okunmaması için message offsetlerini commitleyip temizliyoruz.
+                _kafkaConsumer.CommitOffsets();
             }
-
-            // Aynı mesajların tekrar okunmaması için message offsetlerini commitleyip temizliyoruz.
-            _kafkaConsumer.CommitOffsets();
         }
     }
 }
