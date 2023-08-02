@@ -33,8 +33,10 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Cus
             order.AddDomainEvent(new OrderDeletedEvent(order));
             
             _context.Orders.Remove(order);
-            await _context.SaveChangesAsync(cancellationToken);
+            
+            // SaveChangesAsync metodundan önce çalışmalı diğer durumda "DispatchDomainEvents" metodunda context üzerinden "DomainEvent" nesnelerini çekemiyoruz.
             await _context.PublishDomainEvents();
+            await _context.SaveChangesAsync(cancellationToken);
             
             return CustomResponse<bool>.Success(200, true);
         }

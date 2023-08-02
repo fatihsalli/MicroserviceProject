@@ -42,10 +42,10 @@ public class OrderElasticRoot
                 var orderResponse = JsonSerializer.Deserialize<OrderResponse>(message.Value);
                 Log.Information("Received message: {MessageValue}", message.Value);
                 await _orderElasticService.SaveOrderToElasticsearch(orderResponse);
-                
-                // Aynı mesajların tekrar okunmaması için message offsetlerini commitleyip temizliyoruz.
-                _kafkaConsumer.CommitOffsets();
             }
+            
+            // Aynı mesajların tekrar okunmaması için message offsetlerini commitleyip temizliyoruz.
+            _kafkaConsumer.CommitOffsets();
         }
     }
 }

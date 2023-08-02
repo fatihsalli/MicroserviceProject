@@ -46,13 +46,10 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Cus
                 request.Address.Line);
             
             order.AddDomainEvent(new OrderUpdatedEvent(order));
-
             order.UpdateAddress(newAddress);
-
             await _context.SaveChangesAsync(cancellationToken);
+            await _context.PublishDomainEvents();
             
-
-
             return CustomResponse<bool>.Success(200, true);
         }
         catch (Exception ex)

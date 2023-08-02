@@ -10,8 +10,11 @@ public class KafkaConsumer : IDisposable
 {
     private readonly IConsumer<string, string> _consumer;
     
-    // Kafka mesajlarının konumunu takip etmek için liste
-    private readonly List<TopicPartitionOffset> _messageOffsets;
+    // Kafka mesajlarının offset işlemini yapabilmek için "ConsumeResult" listesini kullanıyoruz. Bu listeyi consume ederken doldurup "CommitOffsets" kısmında da okuyarak commit işlemini yapıyorum.
+    private readonly List<ConsumeResult<string, string>> _lastMessages;
+    
+    // Kafka mesajlarının konumunu takip etmek için liste => "TopicPartitionOffset" kullandığımda program sonlanıp tekrar başladığında son mesajı tekrar dinliyor.
+    // private readonly List<TopicPartitionOffset> _messageOffsets;
 
     public KafkaConsumer(string kafkaUrl)
     {
@@ -25,8 +28,10 @@ public class KafkaConsumer : IDisposable
 
         _consumer = new ConsumerBuilder<string, string>(config).Build();
         
-        // Kafka mesajlarının konumlarını tutmak için boş bir liste oluşturuyoruz
-        _messageOffsets = new List<TopicPartitionOffset>();
+        // Kafka mesajları offsetleyebilmek adına boş bir ConsumeResult listesi oluşturuyoruz.
+        _lastMessages = new List<ConsumeResult<string, string>>();
+        
+        // _messageOffsets = new List<TopicPartitionOffset>();
     }
 
     public void SubscribeToTopics(IEnumerable<string> topics)
@@ -74,8 +79,10 @@ public class KafkaConsumer : IDisposable
                     messages.Add(consumeResult.Message);
                 }
 
-                // Tüketilen mesajın konumunu kaydediyoruz
-                _messageOffsets.Add(consumeResult.TopicPartitionOffset);
+                _lastMessages.Add(consumeResult);
+
+                // Tüketilen mesajın konumunu kaydediyoruz. Bu yöntemde hata aldık property'nin olduğu kısımda açıklama yapıldı.
+                // _messageOffsets.Add(consumeResult.TopicPartitionOffset);
 
                 var elapsedTime = DateTime.Now - start;
                 if (elapsedTime.Seconds > bulkConsumeIntervalInSeconds || messages.Count >= maxReadCount)
@@ -100,15 +107,19 @@ public class KafkaConsumer : IDisposable
 
     public void CommitOffsets()
     {
-        if (_messageOffsets.Count > 0)
+        if (_lastMessages.Count > 0)
         {
             try
             {
-                // Tüketilen mesajların konumlarını Kafka'ya göndererek ofsetleri kaydediyoruz
-                _consumer.Commit(_messageOffsets);
+                // Her bir consumeresult'ı okuyarak Commit işlemini gerçekleştiriyoruz.
+                _lastMessages.ForEach(message => _consumer.Commit(message));
+
+                // Tüketilen mesajların konumlarını Kafka'ya göndererek ofsetleri kaydediyoruz.
+                // _consumer.Commit(_lastMessage);
             
                 // Kaydedilen ofsetleri temizliyoruz
-                _messageOffsets.Clear();
+                _lastMessages.Clear();
+                
             }
             catch (ProduceException<Null, string> e)
             {

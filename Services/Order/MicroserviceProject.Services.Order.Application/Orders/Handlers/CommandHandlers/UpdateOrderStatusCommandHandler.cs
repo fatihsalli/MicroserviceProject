@@ -46,6 +46,7 @@ public class UpdateOrderStatusCommandHandler: IRequestHandler<UpdateOrderStatusC
             }
 
             await _context.SaveChangesAsync(cancellationToken);
+            await _context.PublishDomainEvents();
 
             return CustomResponse<bool>.Success(200, true);
         }
