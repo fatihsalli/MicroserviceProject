@@ -1,10 +1,8 @@
 ﻿using System.Text.Json;
 using MicroserviceProject.Services.OrderElastic.Dtos;
-using MicroserviceProject.Services.OrderElastic.Services;
 using MicroserviceProject.Services.OrderElastic.Services.Interfaces;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
 
