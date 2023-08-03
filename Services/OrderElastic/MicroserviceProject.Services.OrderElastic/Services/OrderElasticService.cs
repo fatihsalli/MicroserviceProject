@@ -1,18 +1,24 @@
 ﻿using Elasticsearch.Net;
 using MicroserviceProject.Services.OrderElastic.Dtos;
+using MicroserviceProject.Services.OrderElastic.Services.Interfaces;
 using MicroserviceProject.Shared.Configs;
+using Microsoft.Extensions.Options;
 using Nest;
 using Serilog;
 
-namespace MicroserviceProject.Services.OrderElastic.Service;
+namespace MicroserviceProject.Services.OrderElastic.Services;
 
-public class OrderElasticService
+
+public class OrderElasticService : IOrderElasticService
 {
     private readonly IElasticClient _client;
-
-    public OrderElasticService(IElasticClient client)
+    public OrderElasticService(IOptions<Config> config)
     {
-        _client = client;
+        // Elasticsearch bağlantısı ve indeksleme işlemi için yapılandırma ayarları
+        var settings = new ConnectionSettings(new Uri(config.Value.Elasticsearch.Addresses["Address-1"]))
+            .DefaultIndex(config.Value.Elasticsearch.IndexName["OrderSave"]);
+
+        _client = new ElasticClient(settings);
     }
 
     public async Task SaveOrderToElasticsearch(OrderResponse order)
@@ -23,8 +29,8 @@ public class OrderElasticService
 
             if (!indexResponse.IsValid)
                 throw new Exception(indexResponse.DebugInformation);
-            
-            Log.Information("Order model successfully saved on elasticsearch. ID: {OrderId}",order.Id);
+
+            Log.Information("Order model successfully saved on elasticsearch. ID: {OrderId}", order.Id);
         }
         catch (Exception ex)
         {
@@ -41,11 +47,11 @@ public class OrderElasticService
             var deleteResponse = _client.Delete<byte[]>(orderId, d => d
                     .Refresh(Refresh.True) // Elasticsearch'ten silindikten sonra hemen güncellemesi için
             );
-            
+
             if (!deleteResponse.IsValid)
                 throw new Exception(deleteResponse.DebugInformation);
-            
-            Log.Information("Order model successfully deleted from elasticsearch. ID: {OrderId}",orderId);
+
+            Log.Information("Order model successfully deleted from elasticsearch. ID: {OrderId}", orderId);
         }
         catch (Exception ex)
         {

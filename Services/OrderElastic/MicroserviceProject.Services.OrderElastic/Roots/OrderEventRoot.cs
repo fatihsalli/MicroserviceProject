@@ -1,8 +1,11 @@
 ﻿using System.Text.Json;
 using MicroserviceProject.Services.OrderElastic.Dtos;
-using MicroserviceProject.Services.OrderElastic.Service;
+using MicroserviceProject.Services.OrderElastic.Services;
+using MicroserviceProject.Services.OrderElastic.Services.Interfaces;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace MicroserviceProject.Services.OrderElastic.Roots;
@@ -12,17 +15,17 @@ public class OrderEventRoot
     private readonly Config _config;
     private readonly KafkaProducer _kafkaProducer;
     private readonly KafkaConsumer _kafkaConsumer;
-    private readonly OrderElasticService _orderElasticService;
-    private readonly OrderEventService _orderEventService;
+    private readonly IOrderElasticService _orderElasticService;
+    private readonly IOrderEventService _orderEventService;
 
-    public OrderEventRoot()
+    public OrderEventRoot
+        (IOptions<Config> config, IOrderElasticService orderElasticService, IOrderEventService orderEventService)
     {
-        var setup = new Setup.Setup();
-        _config = setup.CreateConfig();
-        _orderElasticService = setup.CreateOrderElasticService(_config);
-        _orderEventService = setup.CreateOrderEventService(_config);
-        _kafkaProducer = setup.CreateKafkaProducer(_config);
-        _kafkaConsumer = setup.CreateKafkaConsumer(_config);
+        _config = config.Value;
+        _orderElasticService = orderElasticService;
+        _orderEventService = orderEventService;
+        _kafkaProducer = new KafkaProducer(_config.Kafka.Address);
+        _kafkaConsumer = new KafkaConsumer(_config.Kafka.Address);
     }
 
     public async Task StartGetOrderAndPushOrderAsync()
@@ -48,12 +51,14 @@ public class OrderEventRoot
                     // Gelen mesaj status değeri "Created" veya "Updated" ise "HttpClient" ile order modelimi alıyorum. Bu order modelimi tekrar kafkaya gönderiyorum. Bunun sebebi de bu gönderdiğim ordermodeli birden fazla servis dinleyebilir ve işlem yapabilir.
                     case "Created":
                     case "Updated":
-                        var orderResponse = await _orderEventService.GetOrderWithHttpClientAsync(orderResponseForElastic.OrderId);
+                        var orderResponse =
+                            await _orderEventService.GetOrderWithHttpClientAsync(orderResponseForElastic.OrderId);
                         var jsonKafkaMessage = JsonSerializer.Serialize(orderResponse);
                         await _kafkaProducer.SendToKafkaWithMessageAsync(jsonKafkaMessage,
                             _config.Kafka.TopicName["OrderModel"]);
                         Log.Information(
-                            "Pushed order model: {OrderResponseId} | Topic: {TopicName}",orderResponse.Id,_config.Kafka.TopicName["OrderModel"]);
+                            "Pushed order model: {OrderResponseId} | Topic: {TopicName}", orderResponse.Id,
+                            _config.Kafka.TopicName["OrderModel"]);
                         break;
 
                     // Gelen mesaj status değeri "Deleted" ise elasticsearch'den direkt olarak siliyorum.
@@ -65,9 +70,8 @@ public class OrderEventRoot
                             orderResponseForElastic.Status);
                         break;
                 }
-                
             }
-            
+
             // Aynı mesajların tekrar okunmaması için message offsetlerini commitleyip temizliyoruz.
             _kafkaConsumer.CommitOffsets();
         }

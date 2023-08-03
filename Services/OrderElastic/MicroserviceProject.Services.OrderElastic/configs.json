@@ -1,21 +1,23 @@
 {
-  "Elasticsearch": {
-    "Addresses": {
-      "Address-1": "http://localhost:9200"
+  "Config": {
+    "Elasticsearch": {
+      "Addresses": {
+        "Address-1": "http://localhost:9200"
+      },
+      "IndexName": {
+        "OrderSave": "order_duplicate_v01"
+      }
     },
-    "IndexName": {
-      "OrderSave": "order_duplicate_v01"
+    "Kafka": {
+      "Address": "localhost:9092",
+      "TopicName": {
+        "OrderID": "orderID-created-v01",
+        "OrderModel": "orderDuplicate-created-v01"
+      }
+    },
+    "HttpClient": {
+      "UserApi": "http://localhost:5012/api/Users",
+      "OrderApi": "http://localhost:5011/api/Orders"
     }
-  },
-  "Kafka": {
-    "Address": "localhost:9092",
-    "TopicName": {
-      "OrderID": "orderID-created-v01",
-      "OrderModel": "orderDuplicate-created-v01"
-    }
-  },
-  "HttpClient": {
-    "UserApi": "http://localhost:5012/api/Users",
-    "OrderApi": "http://localhost:5011/api/Orders"
   }
 }

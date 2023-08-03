@@ -1,8 +1,11 @@
 ﻿using System.Text.Json;
 using MicroserviceProject.Services.OrderElastic.Dtos;
-using MicroserviceProject.Services.OrderElastic.Service;
+using MicroserviceProject.Services.OrderElastic.Services;
+using MicroserviceProject.Services.OrderElastic.Services.Interfaces;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace MicroserviceProject.Services.OrderElastic.Roots;
@@ -14,14 +17,13 @@ public class OrderElasticRoot
 {
     private readonly Config _config;
     private readonly KafkaConsumer _kafkaConsumer;
-    private readonly OrderElasticService _orderElasticService;
+    private readonly IOrderElasticService _orderElasticService;
 
-    public OrderElasticRoot()
+    public OrderElasticRoot(IOptions<Config> config, IOrderElasticService orderElasticService)
     {
-        var setup = new Setup.Setup();
-        _config = setup.CreateConfig();
-        _kafkaConsumer = setup.CreateKafkaConsumer(_config);
-        _orderElasticService = setup.CreateOrderElasticService(_config);
+        _config = config.Value;
+        _kafkaConsumer = new KafkaConsumer(_config.Kafka.Address);
+        _orderElasticService = orderElasticService;
     }
 
     public async Task StartConsumeAndSaveOrderAsync()
@@ -43,7 +45,7 @@ public class OrderElasticRoot
                 Log.Information("Received message: {MessageValue}", message.Value);
                 await _orderElasticService.SaveOrderToElasticsearch(orderResponse);
             }
-            
+
             // Aynı mesajların tekrar okunmaması için message offsetlerini commitleyip temizliyoruz.
             _kafkaConsumer.CommitOffsets();
         }

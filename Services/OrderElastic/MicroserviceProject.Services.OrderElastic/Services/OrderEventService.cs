@@ -1,19 +1,22 @@
 ﻿using System.Net.Http.Json;
 using MicroserviceProject.Services.OrderElastic.Dtos;
+using MicroserviceProject.Services.OrderElastic.Services.Interfaces;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Responses;
+using Microsoft.Extensions.Options;
 using Serilog;
 
-namespace MicroserviceProject.Services.OrderElastic.Service;
+namespace MicroserviceProject.Services.OrderElastic.Services;
 
-public class OrderEventService
+public class OrderEventService : IOrderEventService
 {
     private readonly Config _config;
-    public OrderEventService(Config config)
+
+    public OrderEventService(IOptions<Config> config)
     {
-        _config = config;
+        _config = config.Value;
     }
-    
+
     public async Task<OrderResponse> GetOrderWithHttpClientAsync(string orderId)
     {
         var httpClient = new HttpClient();
@@ -23,7 +26,7 @@ public class OrderEventService
         if (!response.IsSuccessStatusCode)
         {
             var responseFail = await response.Content.ReadFromJsonAsync<CustomResponse<NoContent>>();
-            Log.Error("Order with id ({OrderId}) cannot found!",orderId);
+            Log.Error("Order with id ({OrderId}) cannot found!", orderId);
         }
 
         var responseSuccess = await response.Content.ReadFromJsonAsync<CustomResponse<OrderResponse>>();
