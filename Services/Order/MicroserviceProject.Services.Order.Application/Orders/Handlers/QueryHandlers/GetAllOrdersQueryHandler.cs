@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
+using MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositories;
 using MicroserviceProject.Services.Order.Application.Common.Mappings;
 using MicroserviceProject.Services.Order.Application.Common.Models;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetAllOrders;

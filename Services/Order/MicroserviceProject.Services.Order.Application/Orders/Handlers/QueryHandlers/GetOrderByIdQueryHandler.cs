@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
+using MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositories;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById;
 using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Models;
@@ -12,12 +13,12 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.QueryHa
 
 public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, CustomResponse<OrderResponse>>
 {
-    private readonly IOrderDbContext _context;
+    private readonly IOrderRepository _repository;
     private readonly IMapper _mapper;
 
-    public GetOrderByIdQueryHandler(IOrderDbContext context, IMapper mapper)
+    public GetOrderByIdQueryHandler(IOrderRepository repository, IMapper mapper)
     {
-        _context = context;
+        _repository = repository;
         _mapper = mapper;
     }
 
@@ -26,11 +27,7 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Custo
     {
         try
         {
-            var order = await _context.Orders
-                .AsNoTracking()
-                .Include(x => x.OrderItems)
-                .Where(x => x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+            var order = await _repository.GetByIdWithIncludeAsync(request.Id, "OrderItems");
 
             if (order == null)
                 throw new NotFoundException("order", request.Id);

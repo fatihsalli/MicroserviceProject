@@ -1,6 +1,8 @@
 ﻿using MicroserviceProject.Services.Order.Application.Common.Interfaces;
+using MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositories;
 using MicroserviceProject.Services.Order.Infrastructure.Persistence;
 using MicroserviceProject.Services.Order.Infrastructure.Persistence.Interceptors;
+using MicroserviceProject.Services.Order.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +21,9 @@ public static class ConfigureServices
             opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 configure => { configure.MigrationsAssembly(typeof(OrderDbContext).Assembly.FullName); });
         });
+
+        services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        services.AddScoped<IOrderRepository, OrderRepository>();
 
         // Direkt olarak OrderDbContext'i de geçebilirdik ancak proje referans yapılanmasında Infrastructure=>Application katmanını kullandığı için interface üzerinden erişebilecek.
         services.AddScoped<IOrderDbContext>(provider => provider.GetRequiredService<OrderDbContext>());
