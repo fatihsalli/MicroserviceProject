@@ -1,4 +1,4 @@
-﻿using MicroserviceProject.Shared.Responses;
+﻿using MicroserviceProject.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroserviceProject.Shared.BaseController;

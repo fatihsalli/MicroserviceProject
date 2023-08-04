@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MicroserviceProject.Shared.Responses;
+namespace MicroserviceProject.Shared.Models;
 
 public class CustomResponse<T>
 {

@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.User.Application.Dtos.Requests;
-using MicroserviceProject.Services.User.Application.Dtos.Responses;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Requests;
+using MicroserviceProject.Shared.Models.Responses;
 
 namespace MicroserviceProject.Services.User.Application.Users.Commands.CreateUser;
 
-public class CreateUserCommand : IRequest<CustomResponse<CreatedUserResponse>>
+public class CreateUserCommand : IRequest<CustomResponse<UserCreatedResponse>>
 {
     public string Username { get; set; }
     public string Email { get; set; }

@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Requests;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Requests;
+using MicroserviceProject.Shared.Models.Responses;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 
-public class CreateOrderCommand : IRequest<CustomResponse<CreatedOrderResponse>>
+public class CreateOrderCommand : IRequest<CustomResponse<OrderCreatedResponse>>
 {
     public string UserId { get; set; }
     public List<OrderItemRequest> OrderItems { get; set; }

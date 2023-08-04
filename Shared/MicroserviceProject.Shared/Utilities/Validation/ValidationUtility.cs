@@ -1,6 +1,6 @@
-﻿namespace MicroserviceProject.Shared.Helpers;
+﻿namespace MicroserviceProject.Shared.Utilities.Validation;
 
-public static class Helpers
+public static class ValidationUtility
 {
     /// <summary>
     /// FluentValidation kullanırken "uuid" değerini kontrol etmek için kullanılır.

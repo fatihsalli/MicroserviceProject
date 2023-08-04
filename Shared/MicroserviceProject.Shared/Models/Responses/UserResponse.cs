@@ -1,4 +1,4 @@
-﻿namespace MicroserviceProject.Services.User.Application.Dtos.Responses;
+﻿namespace MicroserviceProject.Shared.Models.Responses;
 
 public class UserResponse
 {

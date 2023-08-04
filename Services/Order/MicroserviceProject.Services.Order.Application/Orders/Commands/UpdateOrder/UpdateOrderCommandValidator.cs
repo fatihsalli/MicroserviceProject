@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
-using MicroserviceProject.Shared.Helpers;
+using MicroserviceProject.Shared.Utilities.Validation;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
 
@@ -11,7 +11,7 @@ public class UpdateOrderCommandValidator : AbstractValidator<UpdateOrderCommand>
         RuleFor(x => x.Id)
             .NotNull().WithMessage("{PropertyName} is required")
             .NotEmpty().WithMessage("{PropertyName} is required")
-            .Must(Helpers.BeValidGuid).WithMessage("{PropertyName} must be uuid");
+            .Must(ValidationUtility.BeValidGuid).WithMessage("{PropertyName} must be uuid");
 
         RuleFor(x => x.Address).SetValidator(new AddressRequestValidator());
     }

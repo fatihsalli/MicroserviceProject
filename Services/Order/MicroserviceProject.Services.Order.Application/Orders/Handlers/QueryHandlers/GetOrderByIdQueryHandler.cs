@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById;
 using MicroserviceProject.Shared.Exceptions;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 

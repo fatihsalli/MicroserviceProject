@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using MicroserviceProject.Services.User.Application.Dtos.Requests;
-using MicroserviceProject.Services.User.Application.Dtos.Responses;
-using MicroserviceProject.Services.User.Domain.Entities;
 using MicroserviceProject.Services.User.Domain.ValueObjects;
+using MicroserviceProject.Shared.Models.Requests;
+using MicroserviceProject.Shared.Models.Responses;
 
 namespace MicroserviceProject.Services.User.Application.Mapping;
 

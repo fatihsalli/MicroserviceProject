@@ -6,7 +6,7 @@ using MicroserviceProject.Services.User.Application.Users.Commands.UpdateUser;
 using MicroserviceProject.Services.User.Domain.Events;
 using MicroserviceProject.Services.User.Domain.ValueObjects;
 using MicroserviceProject.Shared.Exceptions;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
 using MongoDB.Driver;
 using Serilog;
 

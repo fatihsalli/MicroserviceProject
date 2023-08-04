@@ -3,7 +3,7 @@ using MicroserviceProject.Services.User.Application.Common.Interfaces;
 using MicroserviceProject.Services.User.Application.Users.Commands.DeleteUser;
 using MicroserviceProject.Services.User.Domain.Events;
 using MicroserviceProject.Shared.Exceptions;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
 using MongoDB.Driver;
 using Serilog;
 

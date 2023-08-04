@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Json;
-using MicroserviceProject.Services.OrderElastic.Dtos;
 using MicroserviceProject.Services.OrderElastic.Services.Interfaces;
 using MicroserviceProject.Shared.Configs;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Responses;
 using Microsoft.Extensions.Options;
 using Serilog;
 

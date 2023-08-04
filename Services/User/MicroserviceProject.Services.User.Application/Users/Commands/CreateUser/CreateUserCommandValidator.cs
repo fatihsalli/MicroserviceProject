@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MicroserviceProject.Services.User.Application.Dtos.Requests;
+using MicroserviceProject.Shared.Models.Requests;
 
 namespace MicroserviceProject.Services.User.Application.Users.Commands.CreateUser;
 

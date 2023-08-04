@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
 using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
+using MicroserviceProject.Shared.Models.Responses;
 using Microsoft.Extensions.Options;
 using Serilog;
 

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Requests;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Requests;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
 

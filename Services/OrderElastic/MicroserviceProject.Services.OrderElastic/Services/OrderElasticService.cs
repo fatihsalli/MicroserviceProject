@@ -1,7 +1,7 @@
 ﻿using Elasticsearch.Net;
-using MicroserviceProject.Services.OrderElastic.Dtos;
 using MicroserviceProject.Services.OrderElastic.Services.Interfaces;
 using MicroserviceProject.Shared.Configs;
+using MicroserviceProject.Shared.Models.Responses;
 using Microsoft.Extensions.Options;
 using Nest;
 using Serilog;

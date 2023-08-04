@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using MediatR;
-using MicroserviceProject.Services.User.Application.Dtos.Responses;
 using MicroserviceProject.Services.User.Application.Users.Commands.CreateUser;
 using MicroserviceProject.Services.User.Application.Users.Commands.DeleteUser;
 using MicroserviceProject.Services.User.Application.Users.Commands.UpdateUser;
@@ -8,7 +7,8 @@ using MicroserviceProject.Services.User.Application.Users.Queries.GetAllUsers;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetUserById;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetUserByIdWithOrders;
 using MicroserviceProject.Shared.BaseController;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroserviceProject.Services.User.API.Controllers;
@@ -52,7 +52,7 @@ public class UsersController : CustomBaseController
     }
     
     [HttpPost]
-    [ProducesResponseType(typeof(CustomResponse<CreatedUserResponse>), (int)HttpStatusCode.Created)]
+    [ProducesResponseType(typeof(CustomResponse<UserCreatedResponse>), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> SaveUser([FromBody] CreateUserCommand createUserCommand)

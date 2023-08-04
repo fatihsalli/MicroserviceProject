@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Services.Order.Domain.Events;
@@ -7,13 +6,14 @@ using MicroserviceProject.Services.Order.Domain.ValueObjects;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Enums;
 using MicroserviceProject.Shared.Exceptions;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Responses;
 using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.CommandHandlers;
 
-public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CustomResponse<CreatedOrderResponse>>
+public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CustomResponse<OrderCreatedResponse>>
 {
     private readonly Config _config;
     private readonly IOrderDbContext _context;
@@ -26,7 +26,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
         _config = config.Value;
     }
 
-    public async Task<CustomResponse<CreatedOrderResponse>> Handle(CreateOrderCommand request,
+    public async Task<CustomResponse<OrderCreatedResponse>> Handle(CreateOrderCommand request,
         CancellationToken cancellationToken)
     {
         try
@@ -68,8 +68,8 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cus
             await _context.SaveChangesAsync(cancellationToken);
             await _context.PublishDomainEvents();
 
-            return CustomResponse<CreatedOrderResponse>.Success(201,
-                new CreatedOrderResponse { OrderId = newOrder.Id });
+            return CustomResponse<OrderCreatedResponse>.Success(201,
+                new OrderCreatedResponse { OrderId = newOrder.Id });
         }
         catch (Exception ex)
         {

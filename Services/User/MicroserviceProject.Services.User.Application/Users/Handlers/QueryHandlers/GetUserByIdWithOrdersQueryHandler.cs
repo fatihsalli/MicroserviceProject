@@ -2,11 +2,11 @@
 using AutoMapper;
 using MediatR;
 using MicroserviceProject.Services.User.Application.Common.Interfaces;
-using MicroserviceProject.Services.User.Application.Dtos.Responses;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetUserByIdWithOrders;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Exceptions;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Responses;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Serilog;

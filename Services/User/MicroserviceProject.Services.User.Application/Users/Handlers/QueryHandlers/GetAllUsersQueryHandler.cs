@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using MicroserviceProject.Services.User.Application.Common.Interfaces;
-using MicroserviceProject.Services.User.Application.Dtos.Responses;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetAllUsers;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Responses;
 using MongoDB.Driver;
 
 namespace MicroserviceProject.Services.User.Application.Users.Handlers.QueryHandlers;

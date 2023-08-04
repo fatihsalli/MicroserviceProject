@@ -3,7 +3,7 @@ using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteOrder;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Shared.Exceptions;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 

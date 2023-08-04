@@ -1,4 +1,4 @@
-﻿namespace MicroserviceProject.Services.Order.Application.Common.Dtos.Requests;
+﻿namespace MicroserviceProject.Shared.Models.Requests;
 
 public class CreateOrderRequest
 {

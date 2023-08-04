@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
 
 namespace MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteOrder;
 

@@ -1,6 +1,6 @@
-﻿namespace MicroserviceProject.Services.Order.Application.Common.Dtos.Requests;
+﻿namespace MicroserviceProject.Shared.Models.Responses;
 
-public class OrderItemRequest
+public class OrderItemResponse
 {
     public string ProductId { get; set; }
     public string ProductName { get; set; }

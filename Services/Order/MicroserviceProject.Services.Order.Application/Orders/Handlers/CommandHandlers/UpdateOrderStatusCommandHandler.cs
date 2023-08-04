@@ -4,7 +4,7 @@ using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Shared.Enums;
 using MicroserviceProject.Shared.Exceptions;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 

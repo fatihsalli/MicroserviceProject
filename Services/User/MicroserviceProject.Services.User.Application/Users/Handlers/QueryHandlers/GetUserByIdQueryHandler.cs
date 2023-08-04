@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using MicroserviceProject.Services.User.Application.Common.Interfaces;
-using MicroserviceProject.Services.User.Application.Dtos.Responses;
 using MicroserviceProject.Services.User.Application.Users.Queries.GetUserById;
 using MicroserviceProject.Shared.Exceptions;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Responses;
 using MongoDB.Driver;
 using Serilog;
 

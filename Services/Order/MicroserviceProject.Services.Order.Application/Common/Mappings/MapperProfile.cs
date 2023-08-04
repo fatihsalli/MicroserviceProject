@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Requests;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Services.Order.Domain.Entities;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
+using MicroserviceProject.Shared.Models.Requests;
+using MicroserviceProject.Shared.Models.Responses;
 
 namespace MicroserviceProject.Services.Order.Application.Common.Mappings;
 

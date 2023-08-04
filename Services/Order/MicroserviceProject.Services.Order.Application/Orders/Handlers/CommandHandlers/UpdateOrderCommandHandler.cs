@@ -6,7 +6,7 @@ using MicroserviceProject.Services.Order.Domain.ValueObjects;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Kafka;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;

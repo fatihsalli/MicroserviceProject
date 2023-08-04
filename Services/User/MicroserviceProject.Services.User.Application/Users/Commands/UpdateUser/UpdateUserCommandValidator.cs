@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MicroserviceProject.Services.User.Application.Users.Commands.CreateUser;
-using MicroserviceProject.Shared.Helpers;
+using MicroserviceProject.Shared.Utilities.Validation;
 
 namespace MicroserviceProject.Services.User.Application.Users.Commands.UpdateUser;
 
@@ -11,7 +11,7 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
         RuleFor(x => x.Id)
             .NotNull().WithMessage("{PropertyName} is required")
             .NotEmpty().WithMessage("{PropertyName} is required")
-            .Must(Helpers.BeValidGuid).WithMessage("{PropertyName} must be uuid");
+            .Must(ValidationUtility.BeValidGuid).WithMessage("{PropertyName} must be uuid");
         
         RuleFor(x => x.Username)
             .NotNull().WithMessage("{PropertyName} is required")

@@ -2,16 +2,16 @@
 using MediatR;
 using MicroserviceProject.Services.User.Application.Common;
 using MicroserviceProject.Services.User.Application.Common.Interfaces;
-using MicroserviceProject.Services.User.Application.Dtos.Responses;
 using MicroserviceProject.Services.User.Application.Users.Commands.CreateUser;
 using MicroserviceProject.Services.User.Domain.Events;
 using MicroserviceProject.Services.User.Domain.ValueObjects;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Responses;
 using MongoDB.Driver;
 
 namespace MicroserviceProject.Services.User.Application.Users.Handlers.CommandHandlers;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CustomResponse<CreatedUserResponse>>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CustomResponse<UserCreatedResponse>>
 {
     private readonly IUserDbContext _context;
     private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Custo
         _mediator = mediator;
     }
 
-    public async Task<CustomResponse<CreatedUserResponse>> Handle(CreateUserCommand request,
+    public async Task<CustomResponse<UserCreatedResponse>> Handle(CreateUserCommand request,
         CancellationToken cancellationToken)
     {
         var newUser = new Domain.Entities.User
@@ -45,7 +45,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Custo
 
         await _context.Users.InsertOneAsync(newUser, new InsertOneOptions(), cancellationToken);
         
-        return CustomResponse<CreatedUserResponse>
-            .Success(201, new CreatedUserResponse{UserId = newUser.Id});
+        return CustomResponse<UserCreatedResponse>
+            .Success(201, new UserCreatedResponse{UserId = newUser.Id});
     }
 }

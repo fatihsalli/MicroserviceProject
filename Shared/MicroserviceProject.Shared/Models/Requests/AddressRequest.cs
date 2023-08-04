@@ -1,6 +1,6 @@
-﻿namespace MicroserviceProject.Services.OrderElastic.Dtos;
+﻿namespace MicroserviceProject.Shared.Models.Requests;
 
-public class AddressResponse
+public class AddressRequest
 {
     public string Province { get; set; }
     public string District { get; set; }

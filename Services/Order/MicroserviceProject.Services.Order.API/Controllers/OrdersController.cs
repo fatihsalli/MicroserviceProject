@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using AutoMapper;
 using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Requests;
-using MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteOrder;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
@@ -13,7 +11,9 @@ using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByS
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByUserId;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersWithPagination;
 using MicroserviceProject.Shared.BaseController;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Requests;
+using MicroserviceProject.Shared.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroserviceProject.Services.Order.API.Controllers;
@@ -76,7 +76,7 @@ public class OrdersController : CustomBaseController
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CustomResponse<CreatedOrderResponse>), (int)HttpStatusCode.Created)]
+    [ProducesResponseType(typeof(CustomResponse<OrderCreatedResponse>), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> SaveOrder([FromBody] CreateOrderRequest createOrderRequest)

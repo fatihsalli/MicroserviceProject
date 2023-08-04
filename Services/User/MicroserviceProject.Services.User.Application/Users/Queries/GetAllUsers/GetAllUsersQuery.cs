@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.User.Application.Dtos.Responses;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
+using MicroserviceProject.Shared.Models.Responses;
 
 namespace MicroserviceProject.Services.User.Application.Users.Queries.GetAllUsers;
 

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MicroserviceProject.Shared.Responses;
+using MicroserviceProject.Shared.Models;
 
 namespace MicroserviceProject.Services.User.Application.Users.Commands.DeleteUser;
 

@@ -1,6 +1,6 @@
 ﻿using MicroserviceProject.Shared.Enums;
 
-namespace MicroserviceProject.Services.OrderElastic.Dtos;
+namespace MicroserviceProject.Shared.Models.Responses;
 
 public class OrderResponse
 {

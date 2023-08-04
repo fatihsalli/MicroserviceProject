@@ -1,4 +1,4 @@
-﻿using MicroserviceProject.Services.OrderElastic.Dtos;
+﻿using MicroserviceProject.Shared.Models.Responses;
 
 namespace MicroserviceProject.Services.OrderElastic.Services.Interfaces;
 

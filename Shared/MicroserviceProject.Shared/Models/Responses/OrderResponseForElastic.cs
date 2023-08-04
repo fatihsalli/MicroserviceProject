@@ -1,4 +1,4 @@
-﻿namespace MicroserviceProject.Services.Order.Application.Common.Dtos.Responses;
+﻿namespace MicroserviceProject.Shared.Models.Responses;
 
 public class OrderResponseForElastic
 {
