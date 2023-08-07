@@ -1,3 +1,6 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using MicroserviceProject.Services.Order.API.Modules;
 using MicroserviceProject.Services.Order.Application;
 using MicroserviceProject.Services.Order.Infrastructure;
 using MicroserviceProject.Shared.Configs;
@@ -24,6 +27,12 @@ builder.Services.AddSwaggerGen();
 
 // Serilog
 builder.Host.UseSerilog();
+
+//Autofac kütüphanesini yükledikten sonra kullanmak için yazıyoruz.
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+//Buradan Autofac kullanarak yazdığımız RepoServiceModule'ü dahil ediyoruz.
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder => containerBuilder.RegisterModule(new RepoServiceModule()));
 
 var app = builder.Build();
 

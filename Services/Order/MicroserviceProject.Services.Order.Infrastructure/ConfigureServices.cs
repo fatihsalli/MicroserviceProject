@@ -22,8 +22,8 @@ public static class ConfigureServices
                 configure => { configure.MigrationsAssembly(typeof(OrderDbContext).Assembly.FullName); });
         });
 
-        services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-        services.AddScoped<IOrderRepository, OrderRepository>();
+        // services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        // services.AddScoped<IOrderRepository, OrderRepository>();
 
         // Direkt olarak OrderDbContext'i de geçebilirdik ancak proje referans yapılanmasında Infrastructure=>Application katmanını kullandığı için interface üzerinden erişebilecek.
         services.AddScoped<IOrderDbContext>(provider => provider.GetRequiredService<OrderDbContext>());
