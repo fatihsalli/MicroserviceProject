@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Autofac;
-using MicroserviceProject.Services.Order.Application.Common.Behaviours;
 using MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositories;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Services.Order.Infrastructure.Persistence;
@@ -24,7 +23,7 @@ public class RepoServiceModule : Module
             var apiAssembly = Assembly.GetExecutingAssembly();
             // Application katmanındaki herhangi bir classı typeof içine verebiliriz. Bu şekilde diğerlerini kendisi bulacaktır.
             var applicationAssembly = Assembly.GetAssembly(typeof(CreateOrderCommand));
-            //Service katmanındaki herhangi bir classı typeof içine verebiliriz. Bu şekilde diğerlerini kendisi bulacaktır.
+            // Infrastructure katmanındaki herhangi bir classı typeof içine verebiliriz. Bu şekilde diğerlerini kendisi bulacaktır.
             var infrastructureAssembly = Assembly.GetAssembly(typeof(OrderDbContext));
 
             //InstancePerLifetimeScope => Scope a karşılık gelir.
