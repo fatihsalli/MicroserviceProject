@@ -4,6 +4,7 @@ using MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositor
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Services.Order.Infrastructure.Persistence;
 using MicroserviceProject.Services.Order.Infrastructure.Persistence.Repositories;
+using MicroserviceProject.Services.Order.Infrastructure.Persistence.Repositories.Autofac;
 using Module = Autofac.Module;
 
 namespace MicroserviceProject.Services.Order.API.Modules;
@@ -32,6 +33,16 @@ public class RepoServiceModule : Module
             builder.RegisterAssemblyTypes(apiAssembly, applicationAssembly, infrastructureAssembly).Where(x => x.Name.EndsWith("Repository")).AsImplementedInterfaces().InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(apiAssembly, applicationAssembly, infrastructureAssembly).Where(x => x.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerLifetimeScope();
+            
+            // Once a listener has been fully constructed and is ready to be used, automatically start listening.
+            builder.RegisterType<AutofacRepoTest>()
+                .As<IAutofacRepoTest>()
+                .OnActivated(e => e.Instance.StartListening());
+ 
+            // When a processor is being constructed but before it's ready to be used, call an initialization method.
+            builder.RegisterType<AutofacRepoTest2>()
+                .As<IAutofacRepoTest2>()
+                .OnActivating(e => e.Instance.Initialize());
             
         }
 }

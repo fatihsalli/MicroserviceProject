@@ -2,5 +2,7 @@
 
 public interface IAutofacRepoTest2
 {
-    
+    void Initialize();
+    void GetRequest();
+
 }

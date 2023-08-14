@@ -2,20 +2,20 @@
 
 namespace MicroserviceProject.Services.Order.Infrastructure.Persistence.Repositories.Autofac;
 
-public class AutofacTestRepo2
+public class AutofacRepoTest2 : IAutofacRepoTest2
 {
-    public AutofacTestRepo2()
+    public AutofacRepoTest2()
     {
-        Log.Information("AutofacTestRepo2 Constructor çalıştı!");
+        Log.Information("AutofacRepoTest2 Constructor çalıştı!");
     }
-    
+
     public void Initialize()
     {
         Log.Information("Initialize çalıştı!");
     }
-    
+
     public void GetRequest()
     {
-        Log.Information("AutofacTestRepo2-GetRequest çalıştı!");
+        Log.Information("AutofacRepoTest2-GetRequest çalıştı!");
     }
 }

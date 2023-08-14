@@ -10,11 +10,13 @@ using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByStatus;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByUserId;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersWithPagination;
+using MicroserviceProject.Services.Order.Infrastructure.Persistence.Repositories.Autofac;
 using MicroserviceProject.Shared.BaseController;
 using MicroserviceProject.Shared.Models;
 using MicroserviceProject.Shared.Models.Requests;
 using MicroserviceProject.Shared.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace MicroserviceProject.Services.Order.API.Controllers;
 
@@ -22,11 +24,15 @@ public class OrdersController : CustomBaseController
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
-
-    public OrdersController(IMediator mediator, IMapper mapper)
+    private readonly IAutofacRepoTest _autofacRepoTest;
+    private readonly IAutofacRepoTest2 _autofacRepoTest2;
+    
+    public OrdersController(IMapper mapper, IMediator mediator, IAutofacRepoTest autofacRepoTest, IAutofacRepoTest2 autofacRepoTest2)
     {
-        _mediator = mediator;
         _mapper = mapper;
+        _mediator = mediator;
+        _autofacRepoTest = autofacRepoTest;
+        _autofacRepoTest2 = autofacRepoTest2;
     }
 
     [HttpGet]
@@ -118,6 +124,13 @@ public class OrdersController : CustomBaseController
         var response = await _mediator.Send(new DeleteOrderCommand(id));
         return CreateActionResult(response);
     }
-    
-    
+
+    [HttpGet("[action]")]
+    public IActionResult AutofacTest()
+    {
+        _autofacRepoTest.GetRequest();
+        _autofacRepoTest2.GetRequest();
+
+        return Ok();
+    }
 }

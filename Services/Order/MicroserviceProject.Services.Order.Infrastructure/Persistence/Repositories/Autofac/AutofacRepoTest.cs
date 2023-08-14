@@ -2,11 +2,11 @@
 
 namespace MicroserviceProject.Services.Order.Infrastructure.Persistence.Repositories.Autofac;
 
-public class AutofacTestRepo : IAutofacTestRepo
+public class AutofacRepoTest : IAutofacRepoTest
 {
-    public AutofacTestRepo()
+    public AutofacRepoTest()
     {
-        Log.Information("AutofacTestRepo Constructor çalıştı!");
+        Log.Information("AutofacRepoTest Constructor çalıştı!");
     }
 
     public void StartListening()
@@ -16,9 +16,6 @@ public class AutofacTestRepo : IAutofacTestRepo
 
     public void GetRequest()
     {
-        Log.Information("AutofacTestRepo-GetRequest çalıştı!");
+        Log.Information("AutofacRepoTest-GetRequest çalıştı!");
     }
-
-
-    
 }
