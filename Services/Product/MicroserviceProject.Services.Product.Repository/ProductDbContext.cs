@@ -22,7 +22,7 @@ namespace MicroserviceProject.Services.Product.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.LogTo(message=> Debug.WriteLine(message));
+            optionsBuilder.LogTo(message => Debug.WriteLine(message));
             optionsBuilder.AddInterceptors(_makerCheckerEntitySaveInterceptor);
 
         }
@@ -38,9 +38,9 @@ namespace MicroserviceProject.Services.Product.Repository
         {
             ChangeTracker.DetectChanges();
 
-            var added=ChangeTracker.Entries()
-                .Where(t=>t.State==EntityState.Added)
-                .Select(t=>t.Entity)
+            var added = ChangeTracker.Entries()
+                .Where(t => t.State == EntityState.Added)
+                .Select(t => t.Entity)
                 .ToArray();
 
             foreach (var entity in added)
