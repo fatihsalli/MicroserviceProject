@@ -11,6 +11,6 @@ namespace MicroserviceProject.Services.Product.Domain
     {
         Task<TEntity> GetByIdAsync(Guid id, bool isActive = true);
         Task<List<TEntity>> AllAsync(bool isActive = true);
-        Task SaveAsync(TEntity entity);
+        Task CreateAsync(TEntity entity);
     }
 }

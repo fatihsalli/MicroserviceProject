@@ -51,3 +51,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+// Portainer şifre : Password12345? / kullanıcı: admin

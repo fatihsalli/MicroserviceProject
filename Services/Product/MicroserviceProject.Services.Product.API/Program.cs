@@ -1,4 +1,5 @@
 ﻿using Autofac.Extensions.DependencyInjection;
+using MicroserviceProject.Services.Product.Container;
 using MicroserviceProject.Services.Product.Container.Modules;
 using Microsoft.Extensions.Configuration;
 
@@ -16,6 +17,9 @@ var app = builder.Build();
 
 //Autofac kütüphanesini yükledikten sonra kullanmak için yazıyoruz.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+var container = app.Services.GetAutofacRoot();
+Bootstrapper.SetContainer(container);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

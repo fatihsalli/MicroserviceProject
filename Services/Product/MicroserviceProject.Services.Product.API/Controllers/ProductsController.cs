@@ -18,11 +18,15 @@ namespace MicroserviceProject.Services.Product.API.Controllers
             _mediator = mediator;
         }
 
+
+
+
+
         [HttpPost("[action]")]
         public async Task<IActionResult> SaveProduct(CreateProductCommand request)
         {
-            var createSellerResult = await _mediator.Send(request);
-            return Ok(createSellerResult);
+            var createProductResult = await _mediator.Send(request);
+            return Ok(createProductResult);
         }
 
 

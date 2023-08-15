@@ -4,11 +4,6 @@ using MicroserviceProject.Services.Product.APIContract.Response.Command.Product;
 using MicroserviceProject.Services.Product.Domain.ProductAggregate;
 using MicroserviceProject.Shared.Models.Responses;
 using ProductModel = MicroserviceProject.Services.Product.Domain.ProductAggregate.Product;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MicroserviceProject.Services.Product.Domain;
 
 namespace MicroserviceProject.Services.Product.Application.Handler.Command.Product
@@ -26,13 +21,12 @@ namespace MicroserviceProject.Services.Product.Application.Handler.Command.Produ
 
         public async Task<ResponseBase<CreateProduct>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = new ProductModel
-                (request.Product.CategoryId, request.Product.ProductName, request.Product.Stock)
+            var product = new ProductModel(request.Product.CategoryId, request.Product.ProductName, request.Product.Stock)
             {
                 Id = Guid.NewGuid()
             };
 
-            await _productRepository.SaveAsync(product);
+            await _productRepository.CreateAsync(product);
             await _dbContextHandler.SaveChangesAsync(cancellationToken);
 
             var responseCreateProduct = new ResponseBase<CreateProduct>
@@ -42,7 +36,6 @@ namespace MicroserviceProject.Services.Product.Application.Handler.Command.Produ
                     ProductId = product.Id
                 },
                 Success = true
-                
             };
 
             return responseCreateProduct;

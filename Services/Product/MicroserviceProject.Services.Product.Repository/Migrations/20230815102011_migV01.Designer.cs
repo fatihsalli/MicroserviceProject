@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroserviceProject.Services.Product.Repository.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20230814124146_migV01")]
+    [Migration("20230815102011_migV01")]
     partial class migV01
     {
         /// <inheritdoc />

@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MicroserviceProject.Services.Product.Application\MicroserviceProject.Services.Product.Application.csproj" />
     <ProjectReference Include="..\MicroserviceProject.Services.Product.Repository\MicroserviceProject.Services.Product.Repository.csproj" />
   </ItemGroup>
 

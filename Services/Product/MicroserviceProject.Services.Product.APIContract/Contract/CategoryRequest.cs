@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace MicroserviceProject.Services.Product.APIContract.Contract
 {
-    public class ProductRequest
+    public class CategoryRequest
     {
-        public Guid CategoryId { get; set; }
-        public string ProductName { get; set; }
-        public int Stock { get; set; }
-
-
+        public string CategoryName { get; set; }
     }
 }
