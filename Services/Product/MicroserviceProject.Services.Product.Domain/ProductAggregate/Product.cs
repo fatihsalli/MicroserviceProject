@@ -7,22 +7,15 @@ using System.Threading.Tasks;
 
 namespace MicroserviceProject.Services.Product.Domain.ProductAggregate
 {
-    public class ProductModel : Entity
+    public class Product : Entity
     {
         public Guid CategoryId { get; protected set; }
         public string ProductName { get; protected set; }
         public int Stock { get; protected set; }
-
-        private readonly List<CategoryModel> _categories;
-        public ICollection<CategoryModel> Categories => _categories;
-
-        protected ProductModel()
-        {
-            _categories = new List<CategoryModel>();
-        }
+        public Category Category { get; protected set; }
 
         // This ile "Product()" çalıştırılıyor.
-        public ProductModel(Guid categoryId, string productName, int stock) : this()
+        public Product(Guid categoryId, string productName, int stock)
         {
             CategoryId = categoryId;
             ProductName = productName;

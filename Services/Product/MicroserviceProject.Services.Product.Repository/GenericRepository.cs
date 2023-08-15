@@ -34,6 +34,11 @@ namespace MicroserviceProject.Services.Product.Repository
                 .ToListAsync();
         }
 
+        public async Task SaveAsync(TEntity entity)
+        {
+            await _entities.AddAsync(entity);
+        }
+
 
     }
 }

@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "http": {
+    "OrderAPI": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,

@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -16,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\MicroserviceProject.Shared\MicroserviceProject.Shared.csproj" />
     <ProjectReference Include="..\MicroserviceProject.Services.Product.APIContract\MicroserviceProject.Services.Product.APIContract.csproj" />
+    <ProjectReference Include="..\MicroserviceProject.Services.Product.Container\MicroserviceProject.Services.Product.Container.csproj" />
   </ItemGroup>
 
 </Project>

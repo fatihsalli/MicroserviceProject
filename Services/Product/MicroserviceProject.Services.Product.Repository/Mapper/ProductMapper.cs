@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace MicroserviceProject.Services.Product.Repository.Mapper
 {
-    public class ProductMapper : BaseEntityMap<ProductModel>
+    public class ProductMapper : BaseEntityMap<Domain.ProductAggregate.Product>
     {
-        protected override void Map(EntityTypeBuilder<ProductModel> eb)
+        protected override void Map(EntityTypeBuilder<Domain.ProductAggregate.Product> eb)
         {
             eb.Property(p => p.CategoryId).HasColumnType("uniqueidentifier");
             eb.Property(p => p.ProductName).HasColumnType("nvarchar(50)");

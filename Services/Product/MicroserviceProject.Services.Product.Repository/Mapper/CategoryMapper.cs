@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace MicroserviceProject.Services.Product.Repository.Mapper
 {
-    public class CategoryMapper : BaseEntityMap<CategoryModel>
+    public class CategoryMapper : BaseEntityMap<Category>
     {
-        protected override void Map(EntityTypeBuilder<CategoryModel> eb)
+        protected override void Map(EntityTypeBuilder<Category> eb)
         {
             eb.Property(c => c.CategoryName).HasColumnType("nvarchar(50)");
 
