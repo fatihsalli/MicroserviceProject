@@ -2,7 +2,6 @@
 using Autofac.Extensions.DependencyInjection;
 using MicroserviceProject.Services.Product.Container;
 using MicroserviceProject.Services.Product.Container.Modules;
-using MicroserviceProject.Services.Product.Domain.Helpers;
 using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
