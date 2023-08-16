@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MicroserviceProject.Services.Product.APIContract\MicroserviceProject.Services.Product.APIContract.csproj" />
     <ProjectReference Include="..\MicroserviceProject.Services.Product.Container\MicroserviceProject.Services.Product.Container.csproj" />
   </ItemGroup>
 
