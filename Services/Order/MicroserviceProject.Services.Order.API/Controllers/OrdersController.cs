@@ -10,6 +10,7 @@ using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByStatus;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByUserId;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersWithPagination;
+using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderTest;
 using MicroserviceProject.Services.Order.Infrastructure.Persistence.Repositories.Autofac;
 using MicroserviceProject.Shared.BaseController;
 using MicroserviceProject.Shared.Models;
@@ -26,7 +27,7 @@ public class OrdersController : CustomBaseController
     private readonly IMediator _mediator;
     private readonly IAutofacRepoTest _autofacRepoTest;
     private readonly IAutofacRepoTest2 _autofacRepoTest2;
-    
+
     public OrdersController(IMapper mapper, IMediator mediator, IAutofacRepoTest autofacRepoTest, IAutofacRepoTest2 autofacRepoTest2)
     {
         _mapper = mapper;
@@ -63,7 +64,7 @@ public class OrdersController : CustomBaseController
         var response = await _mediator.Send(new GetOrdersByStatusQuery { StatusId = statusId });
         return CreateActionResult(response);
     }
-    
+
     [HttpGet("[action]")]
     [ProducesResponseType(typeof(CustomResponse<List<OrderResponse>>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
@@ -73,11 +74,11 @@ public class OrdersController : CustomBaseController
         var response = await _mediator.Send(new GetOrdersByUserIdQuery { UserId = userId });
         return CreateActionResult(response);
     }
-    
+
     [HttpGet("[action]")]
     public async Task<IActionResult> GetTodoItemsWithPagination([FromQuery] GetOrdersWithPaginationQuery query)
     {
-        var response =await _mediator.Send(query);
+        var response = await _mediator.Send(query);
         return CreateActionResult(response);
     }
 
@@ -102,7 +103,7 @@ public class OrdersController : CustomBaseController
         var response = await _mediator.Send(new UpdateOrderCommand { Id = id, Address = addressRequest });
         return CreateActionResult(response);
     }
-    
+
     [HttpPut("[action]/{id:length(36)}")]
     [ProducesResponseType(typeof(CustomResponse<bool>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CustomResponse<NoContent>), (int)HttpStatusCode.BadRequest)]
@@ -113,7 +114,7 @@ public class OrdersController : CustomBaseController
         var response = await _mediator.Send(new UpdateOrderStatusCommand { Id = id, StatusId = statusId });
         return CreateActionResult(response);
     }
-    
+
 
     [HttpDelete("{id:length(36)}")]
     [ProducesResponseType(typeof(CustomResponse<bool>), (int)HttpStatusCode.OK)]
@@ -133,4 +134,12 @@ public class OrdersController : CustomBaseController
 
         return Ok();
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> TestOrder([FromQuery] string id)
+    {
+        var response = await _mediator.Send(new GetOrderTestQuery { Id = id });
+        return CreateActionResult(response);
+    }
+
 }
