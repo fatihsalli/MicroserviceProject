@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Behaviours;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Kafka;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,13 +27,6 @@ public static class ConfigureServices
 
         // Add HttpClient
         services.AddHttpClient();
-
-        // Add MediatR
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-        });
 
         return services;
     }

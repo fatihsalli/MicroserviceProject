@@ -4,6 +4,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
+        <RootNamespace>MicroserviceProject.Services.Order.Application</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,6 +17,10 @@
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Common\Behaviours\" />
     </ItemGroup>
 
 </Project>
