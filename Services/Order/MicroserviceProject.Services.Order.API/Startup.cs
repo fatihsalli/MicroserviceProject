@@ -30,6 +30,7 @@ public class Startup
         public void ConfigureServices(IServiceCollection services)
         {
             RepositoryModule.AddDbContext(services, Configuration);
+            RmqBusModule.SetProperties(Configuration);
             
             services.AddControllers();
             

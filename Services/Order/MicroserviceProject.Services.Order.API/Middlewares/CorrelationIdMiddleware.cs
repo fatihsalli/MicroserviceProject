@@ -32,6 +32,8 @@ public class CorrelationIdMiddleware
         }
     }
 
+    // TODO: CorrelationId ile çalışmadı
+    
     private static void AddCorrelationIdHeaderToResponse(HttpContext context, StringValues correlationId)
     { 
         context.Response.OnStarting(() =>

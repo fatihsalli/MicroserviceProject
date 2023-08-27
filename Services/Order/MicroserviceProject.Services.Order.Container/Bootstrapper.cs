@@ -13,6 +13,7 @@ public class Bootstrapper
     {
         containerBuilder.RegisterModule(new MediatRModule());
         containerBuilder.RegisterModule(new RepositoryModule());
+        containerBuilder.RegisterModule(new RmqBusModule());
         
         containerBuilder.RegisterType<AuditableEntitySaveChangesInterceptor>().InstancePerLifetimeScope();
         
