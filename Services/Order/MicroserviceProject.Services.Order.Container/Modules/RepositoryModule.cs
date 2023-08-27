@@ -8,7 +8,7 @@ using Module = Autofac.Module;
 
 namespace MicroserviceProject.Services.Order.Container.Modules;
 
-public class RepositoryModule:Module
+public class RepositoryModule : Module
 {
     private static string _connectionString;
 

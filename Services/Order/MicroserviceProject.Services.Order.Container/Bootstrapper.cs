@@ -11,6 +11,7 @@ public class Bootstrapper
     public static void RegisterModules(ContainerBuilder containerBuilder)
     {
         containerBuilder.RegisterModule(new MediatRModule());
+        containerBuilder.RegisterModule(new RepositoryModule());
         
         containerBuilder.RegisterType<CorrelationIdGenerator>().As<ICorrelationIdGenerator>().InstancePerLifetimeScope();
     }
