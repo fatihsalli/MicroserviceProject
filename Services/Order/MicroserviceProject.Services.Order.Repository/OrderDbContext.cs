@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
 using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Domain.Entities;
-using MicroserviceProject.Services.Order.Infrastructure.Common;
-using MicroserviceProject.Services.Order.Infrastructure.Persistence.Interceptors;
+using MicroserviceProject.Services.Order.Repository.Common;
+using MicroserviceProject.Services.Order.Repository.Interceptors;
+using MicroserviceProject.Services.Order.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace MicroserviceProject.Services.Order.Infrastructure.Persistence;
+namespace MicroserviceProject.Services.Order.Repository;
 
-public class OrderDbContext : DbContext, IOrderDbContext
+public class OrderDbContext : DbContext
 {
     public const string DEFAULT_SCHEMA = "ordering";
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;

@@ -1,6 +1,6 @@
-﻿using MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositories;
+﻿using MicroserviceProject.Services.Order.Repository.Interfaces.Repositories;
 
-namespace MicroserviceProject.Services.Order.Infrastructure.Persistence.Repositories;
+namespace MicroserviceProject.Services.Order.Repository;
 
 public class OrderRepository : BaseRepository<Domain.Entities.Order>, IOrderRepository
 {

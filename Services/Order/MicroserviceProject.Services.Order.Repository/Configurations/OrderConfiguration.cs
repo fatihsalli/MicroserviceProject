@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MicroserviceProject.Services.Order.Infrastructure.Persistence.Configurations;
+namespace MicroserviceProject.Services.Order.Repository.Configurations;
 
 public class OrderConfiguration : IEntityTypeConfiguration<Domain.Entities.Order>
 {

@@ -8,12 +8,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MicroserviceProject.Services.Order.ApplicationService\MicroserviceProject.Services.Order.ApplicationService.csproj" />
-      <ProjectReference Include="..\MicroserviceProject.Services.Order.Repository\MicroserviceProject.Services.Order.Repository.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="7.1.0" />
       <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+      <PackageReference Include="MassTransit" Version="8.0.16" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.16" />
     </ItemGroup>
 
 </Project>

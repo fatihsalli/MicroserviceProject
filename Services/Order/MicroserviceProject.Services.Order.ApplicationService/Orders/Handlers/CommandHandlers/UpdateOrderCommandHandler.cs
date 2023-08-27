@@ -1,8 +1,9 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrder;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
+using MicroserviceProject.Services.Order.Repository;
+using MicroserviceProject.Services.Order.Repository.Interfaces;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Kafka;
@@ -15,11 +16,11 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.Command
 
 public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, CustomResponse<bool>>
 {
-    private readonly IOrderDbContext _context;
+    private readonly OrderDbContext _context;
     private readonly KafkaProducer _kafkaProducer;
     private readonly Config _config;
 
-    public UpdateOrderCommandHandler(IOrderDbContext context,KafkaProducer kafkaProducer,IOptions<Config> config)
+    public UpdateOrderCommandHandler(OrderDbContext context,KafkaProducer kafkaProducer,IOptions<Config> config)
     {
         _context = context;
         _kafkaProducer = kafkaProducer;

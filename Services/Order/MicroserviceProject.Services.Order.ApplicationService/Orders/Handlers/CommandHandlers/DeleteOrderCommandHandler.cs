@@ -1,7 +1,8 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.DeleteOrder;
 using MicroserviceProject.Services.Order.Domain.Events;
+using MicroserviceProject.Services.Order.Repository;
+using MicroserviceProject.Services.Order.Repository.Interfaces;
 using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +12,9 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.Command
 
 public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, CustomResponse<bool>>
 {
-    private readonly IOrderDbContext _context;
+    private readonly OrderDbContext _context;
 
-    public DeleteOrderCommandHandler(IOrderDbContext context)
+    public DeleteOrderCommandHandler(OrderDbContext context)
     {
         _context = context;
     }

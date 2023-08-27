@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositories;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById;
+using MicroserviceProject.Services.Order.Repository.Interfaces.Repositories;
 using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Models;
 using MicroserviceProject.Shared.Models.Responses;

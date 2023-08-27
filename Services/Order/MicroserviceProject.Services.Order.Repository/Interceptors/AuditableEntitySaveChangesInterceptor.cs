@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace MicroserviceProject.Services.Order.Infrastructure.Persistence.Interceptors;
+namespace MicroserviceProject.Services.Order.Repository.Interceptors;
 
 /// <summary>
 ///     SavingChanges veya SavingChangesAsync metotları için "interceptor" metotlarımızı oluşturuyoruz. Amacımız
@@ -39,7 +39,7 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
                 entry.Entity.UpdadetAt = entry.Entity.CreatedAt;
             }
 
-            if (entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
+            if (entry.State == EntityState.Modified || Extensions.HasChangedOwnedEntities(entry))
             {
                 entry.Property(x => x.CreatedAt).IsModified = false;
                 entry.Entity.UpdadetAt = DateTime.Now;

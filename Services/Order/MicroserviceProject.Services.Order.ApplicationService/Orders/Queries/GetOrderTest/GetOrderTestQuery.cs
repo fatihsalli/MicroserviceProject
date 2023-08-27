@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositories;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrderById;
+using MicroserviceProject.Services.Order.Repository;
+using MicroserviceProject.Services.Order.Repository.Interfaces;
 using MicroserviceProject.Shared.Exceptions;
 using Serilog;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MicroserviceProject.Shared.Enums;
 
@@ -24,10 +24,10 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrder
 
     public class GetOrderTestHandler : IRequestHandler<GetOrderTestQuery, CustomResponse<OrderCustomResponse>>
     {
-        private readonly IOrderDbContext _context;
+        private readonly OrderDbContext _context;
         private readonly IMapper _mapper;
 
-        public GetOrderTestHandler(IOrderDbContext context, IMapper mapper)
+        public GetOrderTestHandler(OrderDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

@@ -2,7 +2,7 @@
 using MicroserviceProject.Services.Order.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace MicroserviceProject.Services.Order.Infrastructure.Common;
+namespace MicroserviceProject.Services.Order.Repository.Common;
 
 public static class MediatorExtensions
 {

@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using MicroserviceProject.Services.Order.Domain.Common;
 
-namespace MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositories;
+namespace MicroserviceProject.Services.Order.Repository.Interfaces.Repositories;
 
 public interface IBaseRepository<T> where T : BaseEntity
 {

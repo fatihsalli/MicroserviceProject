@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Common.Mappings;
 using MicroserviceProject.Services.Order.Application.Common.Models;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersByStatus;
+using MicroserviceProject.Services.Order.Repository;
+using MicroserviceProject.Services.Order.Repository.Interfaces;
 using MicroserviceProject.Shared.Enums;
 using MicroserviceProject.Shared.Models;
 using MicroserviceProject.Shared.Models.Responses;
@@ -15,10 +16,10 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.QueryHa
 
 public class GetOrdersByStatusQueryHandler: IRequestHandler<GetOrdersByStatusQuery, CustomResponse<PaginatedList<OrderResponse>>>
 {
-    private readonly IOrderDbContext _context;
+    private readonly OrderDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetOrdersByStatusQueryHandler(IOrderDbContext context, IMapper mapper)
+    public GetOrdersByStatusQueryHandler(OrderDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

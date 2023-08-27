@@ -17,7 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MicroserviceProject.Services.Order.Infrastructure\MicroserviceProject.Services.Order.Infrastructure.csproj" />
+        <ProjectReference Include="..\MicroserviceProject.Services.Order.Container\MicroserviceProject.Services.Order.Container.csproj" />
     </ItemGroup>
+
 
 </Project>

@@ -1,8 +1,9 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.CreateOrder;
 using MicroserviceProject.Services.Order.Domain.Events;
 using MicroserviceProject.Services.Order.Domain.ValueObjects;
+using MicroserviceProject.Services.Order.Repository;
+using MicroserviceProject.Services.Order.Repository.Interfaces;
 using MicroserviceProject.Shared.Configs;
 using MicroserviceProject.Shared.Enums;
 using MicroserviceProject.Shared.Exceptions;
@@ -16,10 +17,10 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.Command
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CustomResponse<OrderCreatedResponse>>
 {
     private readonly Config _config;
-    private readonly IOrderDbContext _context;
+    private readonly OrderDbContext _context;
     private readonly HttpClient _httpClient;
 
-    public CreateOrderCommandHandler(IOrderDbContext context, HttpClient httpClient, IOptions<Config> config)
+    public CreateOrderCommandHandler(OrderDbContext context, HttpClient httpClient, IOptions<Config> config)
     {
         _context = context;
         _httpClient = httpClient;

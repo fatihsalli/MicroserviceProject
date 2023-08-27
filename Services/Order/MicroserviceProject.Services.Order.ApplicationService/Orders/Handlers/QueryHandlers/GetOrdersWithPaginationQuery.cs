@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Common.Mappings;
 using MicroserviceProject.Services.Order.Application.Common.Models;
 using MicroserviceProject.Services.Order.Application.Orders.Queries.GetOrdersWithPagination;
+using MicroserviceProject.Services.Order.Repository;
+using MicroserviceProject.Services.Order.Repository.Interfaces;
 using MicroserviceProject.Shared.Models;
 using MicroserviceProject.Shared.Models.Responses;
 
@@ -16,10 +17,10 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.QueryHa
 public class GetOrdersWithPaginationQueryHandler : IRequestHandler
     <GetOrdersWithPaginationQuery, CustomResponse<PaginatedList<OrderResponse>>>
 {
-    private readonly IOrderDbContext _context;
+    private readonly OrderDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetOrdersWithPaginationQueryHandler(IOrderDbContext context, IMapper mapper)
+    public GetOrdersWithPaginationQueryHandler(OrderDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

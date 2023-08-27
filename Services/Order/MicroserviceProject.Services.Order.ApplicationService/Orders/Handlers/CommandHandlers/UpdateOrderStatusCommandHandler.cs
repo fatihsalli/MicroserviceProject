@@ -1,7 +1,8 @@
 ﻿using MediatR;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
 using MicroserviceProject.Services.Order.Application.Orders.Commands.UpdateOrderStatus;
 using MicroserviceProject.Services.Order.Domain.Events;
+using MicroserviceProject.Services.Order.Repository;
+using MicroserviceProject.Services.Order.Repository.Interfaces;
 using MicroserviceProject.Shared.Enums;
 using MicroserviceProject.Shared.Exceptions;
 using MicroserviceProject.Shared.Models;
@@ -12,9 +13,9 @@ namespace MicroserviceProject.Services.Order.Application.Orders.Handlers.Command
 
 public class UpdateOrderStatusCommandHandler: IRequestHandler<UpdateOrderStatusCommand, CustomResponse<bool>>
 {
-    private readonly IOrderDbContext _context;
+    private readonly OrderDbContext _context;
 
-    public UpdateOrderStatusCommandHandler(IOrderDbContext context)
+    public UpdateOrderStatusCommandHandler(OrderDbContext context)
     {
         _context = context;
     }

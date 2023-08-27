@@ -1,10 +1,9 @@
 ﻿using System.Linq.Expressions;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces;
-using MicroserviceProject.Services.Order.Application.Common.Interfaces.Repositories;
 using MicroserviceProject.Services.Order.Domain.Common;
+using MicroserviceProject.Services.Order.Repository.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace MicroserviceProject.Services.Order.Infrastructure.Persistence.Repositories;
+namespace MicroserviceProject.Services.Order.Repository;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 {
@@ -34,14 +33,14 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     
     public IQueryable<T> GetAll()
     {
-        var entities = _dbSet.AsNoTracking().AsQueryable();
+        var entities = Queryable.AsQueryable<T>(_dbSet.AsNoTracking());
         return entities;
     }
     
     public async Task<List<T>> GetAllWithIncludeAsync(params string[] includes)
     {
         var query = _dbSet.AsQueryable();
-        query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+        query = includes.Aggregate<string, IQueryable<T>>(query, (current, inc) => current.Include(inc));
         return await query.ToListAsync();
     }
     
@@ -53,7 +52,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     public async Task<T> GetByIdWithIncludeAsync(string id, params string[] includes)
     {
         var query = _dbSet.AsQueryable();
-        query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+        query = includes.Aggregate<string, IQueryable<T>>(query, (current, inc) => current.Include(inc));
         return await query.FirstOrDefaultAsync(x => x.Id == id);
     }
     
@@ -80,8 +79,8 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     public IEnumerable<T> WhereWithInclude(Expression<Func<T, bool>> expression, params string[] includes)
     {
         var query = _dbSet.AsQueryable();
-        query = query.Where(expression);
-        query = includes.Aggregate(query, (current, inc) => current.Include(inc));
-        return query.ToList();
+        query = Queryable.Where(query, expression);
+        query = includes.Aggregate<string, IQueryable<T>>(query, (current, inc) => current.Include(inc));
+        return Enumerable.ToList<T>(query);
     }
 }
