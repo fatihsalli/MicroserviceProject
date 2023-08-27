@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using MicroserviceProject.Services.Order.Application.Helpers;
 using MicroserviceProject.Services.Order.Container.Modules;
+using MicroserviceProject.Services.Order.Repository.Interceptors;
 
 namespace MicroserviceProject.Services.Order.Container;
 
@@ -12,6 +13,8 @@ public class Bootstrapper
     {
         containerBuilder.RegisterModule(new MediatRModule());
         containerBuilder.RegisterModule(new RepositoryModule());
+        
+        containerBuilder.RegisterType<AuditableEntitySaveChangesInterceptor>().InstancePerLifetimeScope();
         
         containerBuilder.RegisterType<CorrelationIdGenerator>().As<ICorrelationIdGenerator>().InstancePerLifetimeScope();
     }
